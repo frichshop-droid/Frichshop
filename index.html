@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>FRICH STYLE KZ — Технические работы</title>
+<title>FRICH STYLE KZ — Обновление</title>
 
 <style>
 * {
@@ -13,528 +13,902 @@
     box-sizing: border-box;
 }
 
-html, body {
+:root {
+    --red: #ff1111;
+    --red-light: #ff3838;
+    --black: #030303;
+}
+
+html,
+body {
     width: 100%;
     height: 100%;
+    overflow: hidden;
 }
 
 body {
-    overflow: hidden;
-    background: #050505;
-    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
+    background: var(--black);
+    color: white;
 }
 
-/* =========================
+/* =====================================================
    ФОН
-========================= */
+===================================================== */
 
 .background {
     position: fixed;
     inset: 0;
     overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
+
+    background:
+        radial-gradient(
+            circle at 50% 50%,
+            rgba(255, 0, 0, .20),
+            transparent 32%
+        ),
+        radial-gradient(
+            circle at 15% 85%,
+            rgba(255, 0, 0, .12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 10%,
+            rgba(255, 0, 0, .09),
+            transparent 25%
+        ),
+        #030303;
 }
 
-.background::before {
-    content: "";
-    position: absolute;
-    width: 550px;
-    height: 550px;
-    background: #ff1717;
-    filter: blur(180px);
-    opacity: .10;
-    top: -220px;
-    left: -180px;
-}
-
-.background::after {
-    content: "";
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: #ff0000;
-    filter: blur(190px);
-    opacity: .08;
-    right: -220px;
-    bottom: -220px;
-}
-
-/* =========================
+/* =====================================================
    СЕТКА
-========================= */
+===================================================== */
 
 .grid {
     position: absolute;
-    inset: 0;
+
+    width: 200%;
+    height: 200%;
+
+    left: -50%;
+    top: -50%;
 
     background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+        linear-gradient(
+            rgba(255, 0, 0, .045) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(255, 0, 0, .045) 1px,
+            transparent 1px
+        );
 
-    background-size: 45px 45px;
+    background-size: 65px 65px;
 
-    mask-image: linear-gradient(
-        to bottom,
-        transparent,
-        black 25%,
-        black 75%,
-        transparent
-    );
+    transform: rotate(7deg);
+
+    animation: gridMove 18s linear infinite;
 }
 
-/* =========================
-   ОШИБКИ
-========================= */
+@keyframes gridMove {
+    0% {
+        transform: rotate(7deg) translateY(0);
+    }
 
-.error {
+    100% {
+        transform: rotate(7deg) translateY(65px);
+    }
+}
+
+/* =====================================================
+   КРАСНЫЕ СВЕТОВЫЕ ПЯТНА
+===================================================== */
+
+.light {
     position: absolute;
 
-    padding: 8px 12px;
+    width: 400px;
+    height: 400px;
 
-    border: 1px solid rgba(255, 50, 50, .16);
-    border-radius: 8px;
+    border-radius: 50%;
 
-    background: rgba(255, 0, 0, .025);
+    background: rgba(255, 0, 0, .10);
 
-    color: rgba(255, 70, 70, .28);
+    filter: blur(100px);
 
-    font-family: monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
+    animation: lightMove 8s ease-in-out infinite;
+}
+
+.light.one {
+    left: -150px;
+    top: -150px;
+}
+
+.light.two {
+    right: -150px;
+    bottom: -150px;
+
+    animation-delay: 3s;
+}
+
+@keyframes lightMove {
+    0%,
+    100% {
+        transform: scale(1);
+        opacity: .6;
+    }
+
+    50% {
+        transform: scale(1.5);
+        opacity: 1;
+    }
+}
+
+/* =====================================================
+   ФОНОВЫЙ ТЕКСТ
+===================================================== */
+
+.bg-text {
+    position: absolute;
 
     white-space: nowrap;
 
-    animation: errorFloat linear infinite;
+    user-select: none;
+    pointer-events: none;
+
+    font-weight: 1000;
+
+    color: rgba(255, 20, 20, .34);
+
+    text-shadow:
+        0 0 20px rgba(255, 0, 0, .25);
+
+    animation:
+        backgroundFloat 6s ease-in-out infinite,
+        backgroundGlow 2.5s ease-in-out infinite alternate;
 }
 
-.e1 {
-    top: 12%;
-    left: -10%;
-    animation-duration: 17s;
+/* Верхняя надпись */
+
+.bg1 {
+    top: 7%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: clamp(42px, 7vw, 105px);
+
+    letter-spacing: -4px;
 }
 
-.e2 {
-    top: 28%;
-    left: -15%;
-    animation-duration: 23s;
-    animation-delay: -8s;
+/* Нижняя надпись */
+
+.bg2 {
+    bottom: 7%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    font-size: clamp(42px, 7vw, 105px);
+
+    letter-spacing: -4px;
+
+    color: rgba(255, 20, 20, .25);
+
+    animation-delay: 1.5s;
 }
 
-.e3 {
-    top: 46%;
-    left: -20%;
-    animation-duration: 19s;
-    animation-delay: -4s;
+/* Левая */
+
+.bg3 {
+    top: 45%;
+    left: -3%;
+
+    font-size: clamp(20px, 3vw, 38px);
+
+    letter-spacing: 6px;
+
+    color: rgba(255, 20, 20, .15);
+
+    animation-delay: 2s;
 }
 
-.e4 {
-    top: 68%;
-    left: -10%;
-    animation-duration: 25s;
-    animation-delay: -12s;
+/* Правая */
+
+.bg4 {
+    top: 35%;
+    right: -3%;
+
+    font-size: clamp(16px, 2vw, 27px);
+
+    letter-spacing: 5px;
+
+    color: rgba(255, 255, 255, .07);
+
+    animation-delay: 3s;
 }
 
-.e5 {
-    top: 84%;
-    left: -20%;
-    animation-duration: 21s;
-    animation-delay: -5s;
-}
+@keyframes backgroundFloat {
 
-.e6 {
-    top: 20%;
-    right: -15%;
-    animation-name: errorFloatReverse;
-    animation-duration: 22s;
-}
-
-.e7 {
-    top: 57%;
-    right: -20%;
-    animation-name: errorFloatReverse;
-    animation-duration: 18s;
-    animation-delay: -7s;
-}
-
-.e8 {
-    top: 78%;
-    right: -15%;
-    animation-name: errorFloatReverse;
-    animation-duration: 26s;
-    animation-delay: -15s;
-}
-
-@keyframes errorFloat {
-    0% {
-        transform: translateX(0) rotate(-2deg);
-        opacity: 0;
-    }
-
-    10% {
-        opacity: 1;
+    0%,
+    100% {
+        margin-top: 0;
     }
 
     50% {
-        transform: translateX(65vw) translateY(-20px) rotate(2deg);
-    }
-
-    90% {
-        opacity: 1;
-    }
-
-    100% {
-        transform: translateX(125vw) translateY(20px) rotate(-2deg);
-        opacity: 0;
+        margin-top: -18px;
     }
 }
 
-@keyframes errorFloatReverse {
+@keyframes backgroundGlow {
+
     0% {
-        transform: translateX(0) rotate(2deg);
-        opacity: 0;
-    }
+        filter: brightness(.75);
 
-    10% {
-        opacity: 1;
-    }
-
-    50% {
-        transform: translateX(-65vw) translateY(25px) rotate(-2deg);
-    }
-
-    90% {
-        opacity: 1;
+        text-shadow:
+            0 0 10px rgba(255, 0, 0, .15);
     }
 
     100% {
-        transform: translateX(-125vw) translateY(-20px) rotate(2deg);
-        opacity: 0;
+        filter: brightness(1.35);
+
+        text-shadow:
+            0 0 25px rgba(255, 0, 0, .5),
+            0 0 60px rgba(255, 0, 0, .18);
     }
 }
 
-/* =========================
-   МЕЛКИЕ ТОЧКИ
-========================= */
+/* =====================================================
+   ПЛАВАЮЩИЕ ЗНАЧКИ
+===================================================== */
 
-.dot {
+.float-icon {
     position: absolute;
+
+    color: rgba(255, 25, 25, .35);
+
+    font-size: 30px;
+
+    text-shadow:
+        0 0 20px rgba(255, 0, 0, .4);
+
+    animation:
+        iconFloat 4s ease-in-out infinite,
+        iconRotate 7s ease-in-out infinite;
+}
+
+.icon1 {
+    top: 18%;
+    left: 9%;
+}
+
+.icon2 {
+    top: 28%;
+    right: 10%;
+
+    animation-delay: 1s;
+}
+
+.icon3 {
+    bottom: 25%;
+    left: 8%;
+
+    animation-delay: 2s;
+}
+
+.icon4 {
+    bottom: 18%;
+    right: 12%;
+
+    animation-delay: 3s;
+}
+
+.icon5 {
+    top: 13%;
+    right: 30%;
+
+    animation-delay: 1.5s;
+}
+
+@keyframes iconFloat {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-25px);
+    }
+}
+
+@keyframes iconRotate {
+
+    0%,
+    100% {
+        rotate: 0deg;
+    }
+
+    50% {
+        rotate: 15deg;
+    }
+}
+
+/* =====================================================
+   ЧАСТИЦЫ
+===================================================== */
+
+.particle {
+    position: absolute;
+
     width: 3px;
     height: 3px;
-    background: #ff2222;
+
     border-radius: 50%;
-    box-shadow: 0 0 12px #ff2222;
-    animation: blink 2s infinite;
+
+    background: #ff1717;
+
+    box-shadow:
+        0 0 12px #ff1717;
+
+    animation: particleMove linear infinite;
 }
 
-.d1 { left: 12%; top: 25%; }
-.d2 { left: 86%; top: 18%; animation-delay: .4s; }
-.d3 { left: 72%; top: 76%; animation-delay: 1s; }
-.d4 { left: 24%; top: 82%; animation-delay: 1.5s; }
-.d5 { left: 50%; top: 12%; animation-delay: .8s; }
-.d6 { left: 92%; top: 48%; animation-delay: 1.2s; }
+@keyframes particleMove {
 
-@keyframes blink {
-    0%, 100% {
-        opacity: .15;
-        transform: scale(.7);
+    0% {
+        transform: translateY(110vh);
+        opacity: 0;
     }
 
-    50% {
-        opacity: 1;
-        transform: scale(1.6);
+    15% {
+        opacity: .8;
+    }
+
+    85% {
+        opacity: .8;
+    }
+
+    100% {
+        transform: translateY(-10vh);
+        opacity: 0;
     }
 }
 
-/* =========================
+/* =====================================================
    ОСНОВНОЙ КОНТЕНТ
-========================= */
+===================================================== */
 
-.content {
+.container {
     position: relative;
-    z-index: 5;
+    z-index: 10;
 
-    width: 100%;
+    width: min(900px, 92%);
+
     min-height: 100vh;
 
+    margin: auto;
+
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+
     align-items: center;
+    justify-content: center;
 
-    padding: 25px;
-}
-
-.main {
-    width: min(700px, 100%);
     text-align: center;
 
-    animation: showUp 1s ease forwards;
+    animation: containerAppear 1s ease forwards;
 }
 
-@keyframes showUp {
+@keyframes containerAppear {
+
     from {
         opacity: 0;
-        transform: translateY(25px);
+        transform: translateY(30px) scale(.96);
     }
 
     to {
         opacity: 1;
-        transform: translateY(0);
+        transform: translateY(0) scale(1);
     }
 }
 
-/* =========================
-   ЗНАЧОК !
-========================= */
+/* =====================================================
+   ЛОГО
+===================================================== */
 
-.warning {
-    width: 90px;
-    height: 90px;
+.logo {
+    font-size: clamp(28px, 5vw, 56px);
 
-    margin: 0 auto 25px;
+    font-weight: 1000;
+
+    letter-spacing: -3px;
+
+    margin-bottom: 28px;
+
+    animation: logoPulse 3s ease-in-out infinite;
+}
+
+.logo span {
+    color: var(--red);
+
+    text-shadow:
+        0 0 25px rgba(255, 0, 0, .7);
+}
+
+@keyframes logoPulse {
+
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.025);
+    }
+}
+
+/* =====================================================
+   ИКОНКА ОБНОВЛЕНИЯ
+===================================================== */
+
+.update-icon {
+    position: relative;
+
+    width: 125px;
+    height: 125px;
+
+    border-radius: 36px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    border-radius: 50%;
-
-    color: #fff;
-    background: #e50909;
-
-    font-size: 58px;
-    font-weight: 900;
+    background:
+        linear-gradient(
+            145deg,
+            #ff3838,
+            #a00000
+        );
 
     box-shadow:
-        0 0 25px rgba(255, 0, 0, .45),
-        0 0 80px rgba(255, 0, 0, .18);
+        0 0 35px rgba(255, 0, 0, .5),
+        0 0 90px rgba(255, 0, 0, .2);
 
-    animation: warningPulse 2.2s ease-in-out infinite;
+    animation:
+        iconUpDown 3s ease-in-out infinite,
+        iconGlow 2s ease-in-out infinite;
 }
 
-@keyframes warningPulse {
-    0%, 100% {
-        transform: scale(1);
-        box-shadow:
-            0 0 25px rgba(255, 0, 0, .4),
-            0 0 70px rgba(255, 0, 0, .15);
+.update-icon::before {
+    content: "";
+
+    position: absolute;
+
+    inset: -9px;
+
+    border-radius: 44px;
+
+    border: 2px solid rgba(255, 0, 0, .5);
+
+    animation: ring 2s linear infinite;
+}
+
+.update-icon::after {
+    content: "";
+
+    position: absolute;
+
+    inset: -22px;
+
+    border-radius: 55px;
+
+    border: 1px solid rgba(255, 0, 0, .25);
+
+    animation:
+        ring 3s linear infinite reverse;
+}
+
+.icon-symbol {
+    font-size: 62px;
+
+    text-shadow:
+        0 0 20px rgba(255, 255, 255, .5);
+
+    animation:
+        rotateUpdate 2.5s linear infinite;
+}
+
+@keyframes rotateUpdate {
+
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes iconUpDown {
+
+    0%,
+    100% {
+        transform: translateY(0);
     }
 
     50% {
-        transform: scale(1.06);
-        box-shadow:
-            0 0 40px rgba(255, 0, 0, .65),
-            0 0 110px rgba(255, 0, 0, .25);
+        transform: translateY(-10px);
     }
 }
 
-/* =========================
-   НАЗВАНИЕ
-========================= */
+@keyframes iconGlow {
 
-.brand {
-    font-size: clamp(34px, 8vw, 68px);
-    font-weight: 900;
+    0%,
+    100% {
+        box-shadow:
+            0 0 30px rgba(255, 0, 0, .4);
+    }
 
-    letter-spacing: -3px;
-    line-height: 1;
-
-    text-shadow:
-        0 0 25px rgba(255, 0, 0, .08);
+    50% {
+        box-shadow:
+            0 0 75px rgba(255, 0, 0, .75);
+    }
 }
 
-.brand span {
-    color: #ff1717;
-}
+@keyframes ring {
 
-/* =========================
-   СТАТУС
-========================= */
-
-.status {
-    margin: 22px auto;
-
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-
-    color: #ff3b3b;
-
-    font-family: monospace;
-    font-size: 13px;
-    letter-spacing: 1px;
-
-    animation: statusBlink 1.8s infinite;
-}
-
-.status::before {
-    content: "";
-    width: 7px;
-    height: 7px;
-
-    border-radius: 50%;
-    background: #ff1717;
-
-    box-shadow: 0 0 12px #ff1717;
-}
-
-@keyframes statusBlink {
-    0%, 100% {
+    from {
+        transform: scale(.8);
         opacity: 1;
     }
 
-    50% {
-        opacity: .45;
+    to {
+        transform: scale(1.2);
+        opacity: 0;
     }
 }
 
-/* =========================
-   ТЕКСТ
-========================= */
+/* =====================================================
+   СТАТУС
+===================================================== */
 
-.description {
-    max-width: 570px;
-    margin: 0 auto;
-
-    color: #a7a7a7;
-
-    font-size: 16px;
-    line-height: 1.7;
-}
-
-.description strong {
-    color: #fff;
-}
-
-.date {
-    color: #ff2525;
-    font-weight: 800;
-}
-
-/* =========================
-   TELEGRAM
-========================= */
-
-.telegram {
-    margin: 30px auto 0;
-
-    width: min(350px, 100%);
+.status {
+    margin-top: 34px;
 
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 11px;
 
-    padding: 16px 22px;
+    gap: 9px;
 
-    color: white;
-    text-decoration: none;
+    padding: 10px 18px;
 
-    background: #e50909;
+    border-radius: 50px;
 
-    border-radius: 13px;
+    background: rgba(255, 0, 0, .12);
 
-    font-size: 15px;
-    font-weight: 800;
+    border: 1px solid rgba(255, 0, 0, .45);
 
-    box-shadow:
-        0 10px 35px rgba(255, 0, 0, .18);
+    color: #ff4545;
 
-    transition: .25s ease;
-}
+    font-size: 12px;
 
-.telegram:hover {
-    transform: translateY(-4px);
+    font-weight: 900;
 
-    background: #ff1515;
+    letter-spacing: 1.5px;
 
     box-shadow:
-        0 15px 50px rgba(255, 0, 0, .35);
+        0 0 25px rgba(255, 0, 0, .15);
+
+    animation: statusPulse 2s infinite;
 }
 
-.telegram:active {
-    transform: scale(.97);
+.status-dot {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+
+    background: #ff1717;
+
+    box-shadow:
+        0 0 15px red;
+
+    animation: blink .8s infinite;
 }
 
-.telegram svg {
-    width: 23px;
-    height: 23px;
-    fill: white;
+@keyframes blink {
+
+    50% {
+        opacity: .2;
+    }
 }
 
-/* =========================
-   МЕНЕДЖЕР
-========================= */
+@keyframes statusPulse {
 
-.manager {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.04);
+    }
+}
+
+/* =====================================================
+   ГЛАВНЫЙ ТЕКСТ
+===================================================== */
+
+h1 {
+    margin-top: 20px;
+
+    font-size: clamp(38px, 8vw, 82px);
+
+    line-height: .9;
+
+    font-weight: 1000;
+
+    letter-spacing: -4px;
+
+    text-shadow:
+        0 0 30px rgba(255, 0, 0, .15);
+
+    animation:
+        titleGlow 2.5s ease-in-out infinite alternate;
+}
+
+h1 span {
+    color: var(--red);
+
+    text-shadow:
+        0 0 25px rgba(255, 0, 0, .75),
+        0 0 60px rgba(255, 0, 0, .3);
+}
+
+@keyframes titleGlow {
+
+    from {
+        filter: brightness(.9);
+    }
+
+    to {
+        filter: brightness(1.15);
+    }
+}
+
+/* =====================================================
+   ОПИСАНИЕ
+===================================================== */
+
+.description {
+    max-width: 650px;
+
     margin-top: 23px;
 
-    color: #6f6f6f;
+    color: #aaa;
+
+    font-size: 16px;
+
+    line-height: 1.6;
+}
+
+.date {
+    margin-top: 18px;
+
+    color: #666;
 
     font-size: 13px;
 }
 
-.manager a {
-    display: inline-block;
+.date strong {
+    color: white;
+}
 
-    margin-top: 7px;
+/* =====================================================
+   КНОПКИ
+===================================================== */
 
-    color: #fff;
+.buttons {
+    display: flex;
+
+    justify-content: center;
+
+    gap: 14px;
+
+    margin-top: 32px;
+
+    flex-wrap: wrap;
+}
+
+.btn {
+    position: relative;
+
+    min-width: 220px;
+
+    padding: 17px 25px;
+
+    border-radius: 15px;
 
     text-decoration: none;
 
-    font-weight: 700;
+    color: white;
 
-    transition: .2s;
+    font-size: 14px;
+
+    font-weight: 900;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+
+    overflow: hidden;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
 }
 
-.manager a:hover {
-    color: #ff2525;
+.btn:hover {
+    transform: translateY(-6px) scale(1.02);
 }
 
-/* =========================
+/* Telegram */
+
+.telegram {
+    background: #ff1717;
+
+    box-shadow:
+        0 10px 40px rgba(255, 0, 0, .3);
+
+    animation:
+        buttonGlow 2s infinite;
+}
+
+.telegram:hover {
+    box-shadow:
+        0 15px 60px rgba(255, 0, 0, .55);
+}
+
+/* Менеджер */
+
+.manager {
+    background: rgba(255, 255, 255, .06);
+
+    border: 1px solid rgba(255, 255, 255, .15);
+}
+
+.manager:hover {
+    background: rgba(255, 0, 0, .12);
+
+    border-color: rgba(255, 0, 0, .5);
+}
+
+/* Блик */
+
+.btn::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -120%;
+
+    width: 70%;
+    height: 100%;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255, 255, 255, .2),
+            transparent
+        );
+
+    transform: skewX(-20deg);
+
+    animation:
+        buttonShine 4s infinite;
+}
+
+@keyframes buttonGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 10px 35px rgba(255, 0, 0, .25);
+    }
+
+    50% {
+        box-shadow:
+            0 10px 55px rgba(255, 0, 0, .5);
+    }
+}
+
+@keyframes buttonShine {
+
+    0%,
+    60% {
+        left: -120%;
+    }
+
+    80%,
+    100% {
+        left: 140%;
+    }
+}
+
+/* =====================================================
    FOOTER
-========================= */
+===================================================== */
 
 .footer {
-    margin-top: 35px;
+    margin-top: 27px;
 
-    color: #404040;
+    color: #444;
 
-    font-size: 11px;
-    letter-spacing: 1px;
+    font-size: 10px;
+
+    letter-spacing: 2px;
 }
 
-/* =========================
-   МОБИЛЬНЫЙ
-========================= */
+/* =====================================================
+   ТЕЛЕФОН
+===================================================== */
 
 @media (max-width: 600px) {
 
-    .content {
-        padding: 20px;
+    .container {
+        width: 92%;
     }
 
-    .warning {
-        width: 75px;
-        height: 75px;
-
-        font-size: 47px;
-
-        margin-bottom: 22px;
+    .logo {
+        margin-bottom: 20px;
     }
 
-    .brand {
-        letter-spacing: -2px;
+    .update-icon {
+        width: 105px;
+        height: 105px;
+    }
+
+    .icon-symbol {
+        font-size: 50px;
+    }
+
+    .status {
+        margin-top: 30px;
     }
 
     .description {
+        max-width: 350px;
+
         font-size: 14px;
     }
 
-    .error {
-        font-size: 9px;
+    .buttons {
+        width: 100%;
+
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .bg1,
+    .bg2 {
+        font-size: 40px;
+    }
+
+    .bg3 {
+        left: -20%;
+    }
+
+    .bg4 {
+        right: -20%;
     }
 }
 </style>
@@ -542,95 +916,131 @@ body {
 
 <body>
 
-<!-- =========================
-     АНИМИРОВАННЫЙ ФОН
-========================= -->
+<!-- =====================================================
+     ФОН
+===================================================== -->
 
 <div class="background">
 
     <div class="grid"></div>
 
-    <div class="error e1">ERROR_404 // PAGE_NOT_FOUND</div>
-    <div class="error e2">SYSTEM_ERROR // 0x000404</div>
-    <div class="error e3">CONNECTION_LOST...</div>
-    <div class="error e4">SERVER_MAINTENANCE</div>
-    <div class="error e5">ACCESS_TEMPORARILY_DENIED</div>
+    <div class="light one"></div>
+    <div class="light two"></div>
 
-    <div class="error e6">ERROR://FRICH_STYLE</div>
-    <div class="error e7">RESTART_REQUIRED</div>
-    <div class="error e8">SITE_OFFLINE</div>
+    <!-- ЯРКИЕ ФОНОВЫЕ НАДПИСИ -->
 
-    <div class="dot d1"></div>
-    <div class="dot d2"></div>
-    <div class="dot d3"></div>
-    <div class="dot d4"></div>
-    <div class="dot d5"></div>
-    <div class="dot d6"></div>
+    <div class="bg-text bg1">
+        СКОРО ОБНОВА
+    </div>
+
+    <div class="bg-text bg2">
+        СКОРО ОБНОВА
+    </div>
+
+    <div class="bg-text bg3">
+        СКОРО ОБНОВА
+    </div>
+
+    <div class="bg-text bg4">
+        FRICH STYLE KZ
+    </div>
+
+    <!-- ПЛАВАЮЩИЕ ЗНАЧКИ -->
+
+    <div class="float-icon icon1">⚙</div>
+    <div class="float-icon icon2">✦</div>
+    <div class="float-icon icon3">⚡</div>
+    <div class="float-icon icon4">◈</div>
+    <div class="float-icon icon5">↻</div>
 
 </div>
 
+<!-- =====================================================
+     ЧАСТИЦЫ
+===================================================== -->
 
-<!-- =========================
-     ГЛАВНЫЙ ЭКРАН
-========================= -->
+<div class="particle" style="left:5%;animation-duration:9s;"></div>
+<div class="particle" style="left:12%;animation-duration:12s;animation-delay:2s;"></div>
+<div class="particle" style="left:20%;animation-duration:8s;animation-delay:1s;"></div>
+<div class="particle" style="left:30%;animation-duration:13s;animation-delay:4s;"></div>
+<div class="particle" style="left:40%;animation-duration:10s;"></div>
+<div class="particle" style="left:50%;animation-duration:14s;animation-delay:3s;"></div>
+<div class="particle" style="left:60%;animation-duration:9s;animation-delay:1s;"></div>
+<div class="particle" style="left:70%;animation-duration:12s;"></div>
+<div class="particle" style="left:80%;animation-duration:8s;animation-delay:2s;"></div>
+<div class="particle" style="left:90%;animation-duration:11s;"></div>
 
-<div class="content">
+<!-- =====================================================
+     ОСНОВА
+===================================================== -->
 
-    <main class="main">
+<main class="container">
 
-        <div class="warning">!</div>
+    <!-- ЛОГО -->
 
-        <h1 class="brand">
-            FRICH <span>STYLE</span> KZ
-        </h1>
+    <div class="logo">
+        FRICH <span>STYLE</span> KZ
+    </div>
 
-        <div class="status">
-            TECHNICAL WORKS
-        </div>
+    <!-- ИКОНКА -->
 
-        <p class="description">
-            Сайт временно закрыт на технические работы
-            до <span class="date">29 сентября</span>.
-            <br><br>
+    <div class="update-icon">
+        <div class="icon-symbol">↻</div>
+    </div>
 
-            Вся информация о закрытии сайта,
-            товарах и дальнейших обновлениях находится
-            в нашем <strong>Telegram-канале</strong>.
-        </p>
+    <!-- СТАТУС -->
+
+    <div class="status">
+        <div class="status-dot"></div>
+        САЙТ ВРЕМЕННО ЗАКРЫТ
+    </div>
+
+    <!-- ГЛАВНЫЙ ТЕКСТ -->
+
+    <h1>
+        ЗАКРЫТО<br>
+        <span>ДО ОБНОВЛЕНИЯ</span>
+    </h1>
+
+    <!-- ОПИСАНИЕ -->
+
+    <p class="description">
+        Мы проводим технические работы, исправляем ошибки
+        и готовим новое обновление FRICH STYLE KZ.
+        Скоро всё снова будет доступно.
+    </p>
+
+    <div class="date">
+        Ориентировочно до <strong>29 сентября</strong>
+    </div>
+
+    <!-- КНОПКИ -->
+
+    <div class="buttons">
 
         <a
-            class="telegram"
+            class="btn telegram"
             href="https://t.me/Frichkz"
             target="_blank"
         >
-
-            <svg viewBox="0 0 24 24">
-                <path d="M21.8 3.2 18.7 20c-.2 1.2-.9 1.5-1.8.9l-5-3.7-2.4 2.3c-.3.3-.5.5-1 .5l.4-5.1 9.3-8.4c.4-.4-.1-.6-.6-.2L6.1 13.6l-4.9-1.5c-1.1-.3-1.1-1.1.2-1.6L20.5 3c.9-.3 1.7.2 1.3.2z"/>
-            </svg>
-
-            Telegram-канал
-
+            ✈️ Telegram-канал
         </a>
 
-        <div class="manager">
-            Связь с менеджером
-            <br>
+        <a
+            class="btn manager"
+            href="https://t.me/urtung"
+            target="_blank"
+        >
+            💬 Связь с менеджером
+        </a>
 
-            <a
-                href="https://t.me/urtung"
-                target="_blank"
-            >
-                @urtung
-            </a>
-        </div>
+    </div>
 
-        <div class="footer">
-            FRICH STYLE KZ · 2026
-        </div>
+    <div class="footer">
+        FRICH STYLE KZ • TECHNICAL UPDATE
+    </div>
 
-    </main>
-
-</div>
+</main>
 
 </body>
 </html>
