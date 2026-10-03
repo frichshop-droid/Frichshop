@@ -13,59 +13,48 @@
     box-sizing: border-box;
 }
 
-:root {
-    --red: #ff1111;
-    --red-light: #ff3838;
-    --black: #030303;
-}
-
 html,
 body {
     width: 100%;
-    height: 100%;
-    overflow: hidden;
+    min-height: 100%;
 }
 
 body {
+    background: #050505;
+    color: #fff;
     font-family: Arial, Helvetica, sans-serif;
-    background: var(--black);
-    color: white;
+    overflow-x: hidden;
 }
 
-/* =====================================================
+/* =========================
    ФОН
-===================================================== */
+========================= */
 
-.background {
+body::before {
+    content: "";
     position: fixed;
     inset: 0;
-    overflow: hidden;
 
     background:
         radial-gradient(
-            circle at 50% 50%,
-            rgba(255, 0, 0, .20),
-            transparent 32%
-        ),
-        radial-gradient(
-            circle at 15% 85%,
-            rgba(255, 0, 0, .12),
+            circle at 20% 20%,
+            rgba(255, 0, 0, .22),
             transparent 30%
         ),
         radial-gradient(
-            circle at 90% 10%,
-            rgba(255, 0, 0, .09),
-            transparent 25%
-        ),
-        #030303;
+            circle at 80% 80%,
+            rgba(150, 0, 0, .16),
+            transparent 30%
+        );
+
+    pointer-events: none;
+    z-index: -5;
 }
 
-/* =====================================================
-   СЕТКА
-===================================================== */
+/* Сетка */
 
 .grid {
-    position: absolute;
+    position: fixed;
 
     width: 200%;
     height: 200%;
@@ -75,455 +64,363 @@ body {
 
     background-image:
         linear-gradient(
-            rgba(255, 0, 0, .045) 1px,
+            rgba(255, 0, 0, .07) 1px,
             transparent 1px
         ),
         linear-gradient(
             90deg,
-            rgba(255, 0, 0, .045) 1px,
+            rgba(255, 0, 0, .07) 1px,
             transparent 1px
         );
 
-    background-size: 65px 65px;
+    background-size: 55px 55px;
 
-    transform: rotate(7deg);
+    transform: rotate(15deg);
 
     animation: gridMove 18s linear infinite;
+
+    pointer-events: none;
+    z-index: -4;
 }
 
 @keyframes gridMove {
+
     0% {
-        transform: rotate(7deg) translateY(0);
+        transform: rotate(15deg) translate(0, 0);
     }
 
     100% {
-        transform: rotate(7deg) translateY(65px);
+        transform: rotate(15deg) translate(55px, 55px);
     }
 }
 
-/* =====================================================
-   КРАСНЫЕ СВЕТОВЫЕ ПЯТНА
-===================================================== */
+/* Красные свечения */
 
-.light {
-    position: absolute;
+.glow {
+    position: fixed;
 
-    width: 400px;
-    height: 400px;
+    width: 380px;
+    height: 380px;
 
     border-radius: 50%;
 
-    background: rgba(255, 0, 0, .10);
+    filter: blur(110px);
 
-    filter: blur(100px);
+    pointer-events: none;
 
-    animation: lightMove 8s ease-in-out infinite;
+    z-index: -3;
 }
 
-.light.one {
-    left: -150px;
-    top: -150px;
+.glow.one {
+    background: rgba(255, 0, 0, .35);
+
+    left: -180px;
+    top: -160px;
+
+    animation: glowOne 6s ease-in-out infinite alternate;
 }
 
-.light.two {
-    right: -150px;
-    bottom: -150px;
+.glow.two {
+    background: rgba(180, 0, 0, .3);
 
-    animation-delay: 3s;
+    right: -180px;
+    bottom: -170px;
+
+    animation: glowTwo 7s ease-in-out infinite alternate;
 }
 
-@keyframes lightMove {
-    0%,
-    100% {
+@keyframes glowOne {
+
+    from {
         transform: scale(1);
-        opacity: .6;
     }
 
-    50% {
-        transform: scale(1.5);
-        opacity: 1;
+    to {
+        transform:
+            translate(100px, 80px)
+            scale(1.25);
     }
 }
 
-/* =====================================================
-   ФОНОВЫЙ ТЕКСТ
-===================================================== */
+@keyframes glowTwo {
+
+    from {
+        transform: scale(1);
+    }
+
+    to {
+        transform:
+            translate(-80px, -70px)
+            scale(1.2);
+    }
+}
+
+/* =========================
+   ФОНОВЫЕ НАДПИСИ
+========================= */
 
 .bg-text {
-    position: absolute;
+    position: fixed;
+
+    z-index: -2;
+
+    font-size: clamp(80px, 15vw, 190px);
+
+    font-weight: 1000;
+
+    color: rgba(255, 255, 255, .018);
 
     white-space: nowrap;
 
     user-select: none;
+
+    pointer-events: none;
+}
+
+.bg-text.one {
+    top: 10%;
+    left: -5%;
+
+    transform: rotate(-8deg);
+}
+
+.bg-text.two {
+    bottom: 8%;
+    right: -10%;
+
+    transform: rotate(8deg);
+}
+
+/* =========================
+   ПЛАВАЮЩИЕ ИКОНКИ
+========================= */
+
+.floating-icon {
+    position: fixed;
+
+    font-size: 28px;
+
+    color: rgba(255, 30, 30, .3);
+
     pointer-events: none;
 
-    font-weight: 1000;
+    user-select: none;
 
-    color: rgba(255, 20, 20, .34);
-
-    text-shadow:
-        0 0 20px rgba(255, 0, 0, .25);
-
-    animation:
-        backgroundFloat 6s ease-in-out infinite,
-        backgroundGlow 2.5s ease-in-out infinite alternate;
+    animation: floating 5s ease-in-out infinite;
 }
 
-/* Верхняя надпись */
-
-.bg1 {
-    top: 7%;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    font-size: clamp(42px, 7vw, 105px);
-
-    letter-spacing: -4px;
+.floating-icon:nth-child(1) {
+    top: 12%;
+    left: 8%;
 }
 
-/* Нижняя надпись */
-
-.bg2 {
-    bottom: 7%;
-    left: 50%;
-
-    transform: translateX(-50%);
-
-    font-size: clamp(42px, 7vw, 105px);
-
-    letter-spacing: -4px;
-
-    color: rgba(255, 20, 20, .25);
-
-    animation-delay: 1.5s;
-}
-
-/* Левая */
-
-.bg3 {
-    top: 45%;
-    left: -3%;
-
-    font-size: clamp(20px, 3vw, 38px);
-
-    letter-spacing: 6px;
-
-    color: rgba(255, 20, 20, .15);
-
-    animation-delay: 2s;
-}
-
-/* Правая */
-
-.bg4 {
-    top: 35%;
-    right: -3%;
-
-    font-size: clamp(16px, 2vw, 27px);
-
-    letter-spacing: 5px;
-
-    color: rgba(255, 255, 255, .07);
-
-    animation-delay: 3s;
-}
-
-@keyframes backgroundFloat {
-
-    0%,
-    100% {
-        margin-top: 0;
-    }
-
-    50% {
-        margin-top: -18px;
-    }
-}
-
-@keyframes backgroundGlow {
-
-    0% {
-        filter: brightness(.75);
-
-        text-shadow:
-            0 0 10px rgba(255, 0, 0, .15);
-    }
-
-    100% {
-        filter: brightness(1.35);
-
-        text-shadow:
-            0 0 25px rgba(255, 0, 0, .5),
-            0 0 60px rgba(255, 0, 0, .18);
-    }
-}
-
-/* =====================================================
-   ПЛАВАЮЩИЕ ЗНАЧКИ
-===================================================== */
-
-.float-icon {
-    position: absolute;
-
-    color: rgba(255, 25, 25, .35);
-
-    font-size: 30px;
-
-    text-shadow:
-        0 0 20px rgba(255, 0, 0, .4);
-
-    animation:
-        iconFloat 4s ease-in-out infinite,
-        iconRotate 7s ease-in-out infinite;
-}
-
-.icon1 {
-    top: 18%;
-    left: 9%;
-}
-
-.icon2 {
-    top: 28%;
+.floating-icon:nth-child(2) {
+    top: 24%;
     right: 10%;
 
     animation-delay: 1s;
 }
 
-.icon3 {
-    bottom: 25%;
-    left: 8%;
+.floating-icon:nth-child(3) {
+    bottom: 24%;
+    left: 7%;
 
     animation-delay: 2s;
 }
 
-.icon4 {
-    bottom: 18%;
+.floating-icon:nth-child(4) {
+    bottom: 13%;
     right: 12%;
 
     animation-delay: 3s;
 }
 
-.icon5 {
-    top: 13%;
-    right: 30%;
+.floating-icon:nth-child(5) {
+    top: 52%;
+    right: 5%;
 
     animation-delay: 1.5s;
 }
 
-@keyframes iconFloat {
+.floating-icon:nth-child(6) {
+    top: 70%;
+    left: 18%;
+
+    animation-delay: 2.5s;
+}
+
+@keyframes floating {
 
     0%,
     100% {
-        transform: translateY(0);
+        transform:
+            translateY(0)
+            rotate(0);
     }
 
     50% {
-        transform: translateY(-25px);
+        transform:
+            translateY(-22px)
+            rotate(180deg);
     }
 }
 
-@keyframes iconRotate {
-
-    0%,
-    100% {
-        rotate: 0deg;
-    }
-
-    50% {
-        rotate: 15deg;
-    }
-}
-
-/* =====================================================
+/* =========================
    ЧАСТИЦЫ
-===================================================== */
+========================= */
 
 .particle {
-    position: absolute;
+    position: fixed;
 
     width: 3px;
     height: 3px;
 
+    background: #fff;
+
     border-radius: 50%;
 
-    background: #ff1717;
+    opacity: .35;
 
-    box-shadow:
-        0 0 12px #ff1717;
+    pointer-events: none;
 
-    animation: particleMove linear infinite;
+    animation: particle linear infinite;
 }
 
-@keyframes particleMove {
-
-    0% {
-        transform: translateY(110vh);
-        opacity: 0;
-    }
-
-    15% {
-        opacity: .8;
-    }
-
-    85% {
-        opacity: .8;
-    }
-
-    100% {
-        transform: translateY(-10vh);
-        opacity: 0;
-    }
-}
-
-/* =====================================================
-   ОСНОВНОЙ КОНТЕНТ
-===================================================== */
-
-.container {
-    position: relative;
-    z-index: 10;
-
-    width: min(900px, 92%);
-
-    min-height: 100vh;
-
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-
-    align-items: center;
-    justify-content: center;
-
-    text-align: center;
-
-    animation: containerAppear 1s ease forwards;
-}
-
-@keyframes containerAppear {
+@keyframes particle {
 
     from {
-        opacity: 0;
-        transform: translateY(30px) scale(.96);
+        transform: translateY(110vh);
     }
 
     to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
+        transform: translateY(-20vh);
     }
 }
 
-/* =====================================================
-   ЛОГО
-===================================================== */
+/* =========================
+   ОСНОВНОЙ БЛОК
+========================= */
+
+.wrapper {
+    position: relative;
+
+    z-index: 5;
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 16px;
+}
+
+.content {
+    width: 100%;
+
+    max-width: 820px;
+
+    text-align: center;
+}
+
+/* =========================
+   AIST SHOP
+========================= */
 
 .logo {
-    font-size: clamp(28px, 5vw, 56px);
+    font-size: clamp(50px, 10vw, 90px);
 
     font-weight: 1000;
 
-    letter-spacing: -3px;
+    line-height: .9;
 
-    margin-bottom: 28px;
+    letter-spacing: -5px;
 
-    animation: logoPulse 3s ease-in-out infinite;
+    margin-bottom: 18px;
+
+    user-select: none;
+
+    filter:
+        drop-shadow(
+            0 5px 0 rgba(0,0,0,.5)
+        )
+        drop-shadow(
+            0 0 20px rgba(255,0,0,.15)
+        );
 }
 
-.logo span {
-    color: var(--red);
+.logo .aist {
+    background:
+        linear-gradient(
+            90deg,
+            #00a83b 0%,
+            #00c94d 32%,
+            #fff 50%,
+            #fff 66%,
+            #ff3030 100%
+        );
 
-    text-shadow:
-        0 0 25px rgba(255, 0, 0, .7);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
 }
 
-@keyframes logoPulse {
+.logo .shop {
+    background:
+        linear-gradient(
+            90deg,
+            #fff 0%,
+            #fff 48%,
+            #ff3030 75%,
+            #d40000 100%
+        );
 
-    0%,
-    100% {
-        transform: scale(1);
-    }
+    -webkit-background-clip: text;
+    background-clip: text;
 
-    50% {
-        transform: scale(1.025);
-    }
+    color: transparent;
 }
 
-/* =====================================================
+/* =========================
    ИКОНКА ОБНОВЛЕНИЯ
-===================================================== */
+========================= */
 
 .update-icon {
-    position: relative;
+    width: 72px;
+    height: 72px;
 
-    width: 125px;
-    height: 125px;
-
-    border-radius: 36px;
+    margin: 0 auto 14px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
 
+    border-radius: 20px;
+
+    border:
+        1px solid rgba(255, 0, 0, .45);
+
     background:
-        linear-gradient(
-            145deg,
-            #ff3838,
-            #a00000
-        );
+        rgba(255, 0, 0, .08);
 
     box-shadow:
-        0 0 35px rgba(255, 0, 0, .5),
-        0 0 90px rgba(255, 0, 0, .2);
+        0 0 25px rgba(255, 0, 0, .15),
+        inset 0 0 20px rgba(255, 255, 255, .03);
+
+    font-size: 38px;
 
     animation:
-        iconUpDown 3s ease-in-out infinite,
-        iconGlow 2s ease-in-out infinite;
+        updateRotate 4s linear infinite;
 }
 
-.update-icon::before {
-    content: "";
-
-    position: absolute;
-
-    inset: -9px;
-
-    border-radius: 44px;
-
-    border: 2px solid rgba(255, 0, 0, .5);
-
-    animation: ring 2s linear infinite;
-}
-
-.update-icon::after {
-    content: "";
-
-    position: absolute;
-
-    inset: -22px;
-
-    border-radius: 55px;
-
-    border: 1px solid rgba(255, 0, 0, .25);
-
-    animation:
-        ring 3s linear infinite reverse;
-}
-
-.icon-symbol {
-    font-size: 62px;
-
-    text-shadow:
-        0 0 20px rgba(255, 255, 255, .5);
-
-    animation:
-        rotateUpdate 2.5s linear infinite;
-}
-
-@keyframes rotateUpdate {
+@keyframes updateRotate {
 
     from {
-        transform: rotate(0deg);
+        transform: rotate(0);
     }
 
     to {
@@ -531,193 +428,154 @@ body {
     }
 }
 
-@keyframes iconUpDown {
-
-    0%,
-    100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-10px);
-    }
-}
-
-@keyframes iconGlow {
-
-    0%,
-    100% {
-        box-shadow:
-            0 0 30px rgba(255, 0, 0, .4);
-    }
-
-    50% {
-        box-shadow:
-            0 0 75px rgba(255, 0, 0, .75);
-    }
-}
-
-@keyframes ring {
-
-    from {
-        transform: scale(.8);
-        opacity: 1;
-    }
-
-    to {
-        transform: scale(1.2);
-        opacity: 0;
-    }
-}
-
-/* =====================================================
+/* =========================
    СТАТУС
-===================================================== */
+========================= */
 
 .status {
-    margin-top: 34px;
+    display: inline-flex;
 
-    display: flex;
     align-items: center;
 
-    gap: 9px;
+    gap: 8px;
 
-    padding: 10px 18px;
+    padding: 8px 14px;
+
+    margin-bottom: 13px;
 
     border-radius: 50px;
 
-    background: rgba(255, 0, 0, .12);
+    background:
+        rgba(255, 0, 0, .07);
 
-    border: 1px solid rgba(255, 0, 0, .45);
+    border:
+        1px solid rgba(255, 0, 0, .3);
 
-    color: #ff4545;
+    color: #ff5757;
 
-    font-size: 12px;
+    font-size: 11px;
 
     font-weight: 900;
 
-    letter-spacing: 1.5px;
-
-    box-shadow:
-        0 0 25px rgba(255, 0, 0, .15);
-
-    animation: statusPulse 2s infinite;
+    letter-spacing: 1px;
 }
 
 .status-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
 
     border-radius: 50%;
 
-    background: #ff1717;
+    background: #ff2020;
 
     box-shadow:
-        0 0 15px red;
+        0 0 10px #ff2020;
 
-    animation: blink .8s infinite;
+    animation: blink 1.3s infinite;
 }
 
 @keyframes blink {
 
     50% {
-        opacity: .2;
+        opacity: .25;
     }
 }
 
-@keyframes statusPulse {
-
-    0%,
-    100% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.04);
-    }
-}
-
-/* =====================================================
-   ГЛАВНЫЙ ТЕКСТ
-===================================================== */
+/* =========================
+   ЗАГОЛОВОК
+========================= */
 
 h1 {
-    margin-top: 20px;
+    font-size: clamp(32px, 7vw, 64px);
 
-    font-size: clamp(38px, 8vw, 82px);
-
-    line-height: .9;
+    line-height: .95;
 
     font-weight: 1000;
 
-    letter-spacing: -4px;
+    letter-spacing: -2px;
+
+    margin-bottom: 15px;
+
+    background:
+        linear-gradient(
+            180deg,
+            #fff 0%,
+            #fff 25%,
+            #ff5757 60%,
+            #c00000 100%
+        );
+
+    -webkit-background-clip: text;
+    background-clip: text;
+
+    color: transparent;
 
     text-shadow:
-        0 0 30px rgba(255, 0, 0, .15);
-
-    animation:
-        titleGlow 2.5s ease-in-out infinite alternate;
+        0 5px 0 rgba(80,0,0,.5),
+        0 10px 25px rgba(255,0,0,.15);
 }
 
-h1 span {
-    color: var(--red);
-
-    text-shadow:
-        0 0 25px rgba(255, 0, 0, .75),
-        0 0 60px rgba(255, 0, 0, .3);
-}
-
-@keyframes titleGlow {
-
-    from {
-        filter: brightness(.9);
-    }
-
-    to {
-        filter: brightness(1.15);
-    }
-}
-
-/* =====================================================
+/* =========================
    ОПИСАНИЕ
-===================================================== */
+========================= */
 
 .description {
-    max-width: 650px;
+    max-width: 690px;
 
-    margin-top: 23px;
+    margin: 0 auto 15px;
 
-    color: #aaa;
+    color: rgba(255,255,255,.68);
 
-    font-size: 16px;
+    font-size: 15px;
 
-    line-height: 1.6;
+    line-height: 1.5;
 }
+
+.description b {
+    color: #fff;
+}
+
+/* =========================
+   ДАТА
+========================= */
 
 .date {
-    margin-top: 18px;
+    display: inline-block;
 
-    color: #666;
+    padding: 8px 15px;
 
-    font-size: 13px;
+    margin-bottom: 17px;
+
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(0, 150, 60, .12),
+            rgba(255,255,255,.04),
+            rgba(255,0,0,.12)
+        );
+
+    border:
+        1px solid rgba(255,255,255,.1);
+
+    font-size: 12px;
+
+    font-weight: 900;
+
+    letter-spacing: 1px;
 }
 
-.date strong {
-    color: white;
-}
-
-/* =====================================================
+/* =========================
    КНОПКИ
-===================================================== */
+========================= */
 
 .buttons {
     display: flex;
 
     justify-content: center;
 
-    gap: 14px;
-
-    margin-top: 32px;
+    gap: 10px;
 
     flex-wrap: wrap;
 }
@@ -725,71 +583,40 @@ h1 span {
 .btn {
     position: relative;
 
-    min-width: 220px;
+    min-width: 190px;
 
-    padding: 17px 25px;
+    padding: 13px 18px;
 
-    border-radius: 15px;
+    border-radius: 11px;
 
     text-decoration: none;
 
-    color: white;
+    color: #fff;
 
-    font-size: 14px;
+    font-size: 13px;
 
     font-weight: 900;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border:
+        1px solid rgba(255,255,255,.13);
 
-    gap: 10px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.08),
+            rgba(255,255,255,.02)
+        );
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.07);
+
+    transition: .25s ease;
 
     overflow: hidden;
-
-    transition:
-        transform .25s ease,
-        box-shadow .25s ease;
 }
 
-.btn:hover {
-    transform: translateY(-6px) scale(1.02);
-}
-
-/* Telegram */
-
-.telegram {
-    background: #ff1717;
-
-    box-shadow:
-        0 10px 40px rgba(255, 0, 0, .3);
-
-    animation:
-        buttonGlow 2s infinite;
-}
-
-.telegram:hover {
-    box-shadow:
-        0 15px 60px rgba(255, 0, 0, .55);
-}
-
-/* Менеджер */
-
-.manager {
-    background: rgba(255, 255, 255, .06);
-
-    border: 1px solid rgba(255, 255, 255, .15);
-}
-
-.manager:hover {
-    background: rgba(255, 0, 0, .12);
-
-    border-color: rgba(255, 0, 0, .5);
-}
-
-/* Блик */
-
-.btn::after {
+.btn::before {
     content: "";
 
     position: absolute;
@@ -797,118 +624,145 @@ h1 span {
     top: 0;
     left: -120%;
 
-    width: 70%;
+    width: 80%;
     height: 100%;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            rgba(255, 255, 255, .2),
+            rgba(255,255,255,.2),
             transparent
         );
 
     transform: skewX(-20deg);
 
-    animation:
-        buttonShine 4s infinite;
+    transition: .5s;
 }
 
-@keyframes buttonGlow {
-
-    0%,
-    100% {
-        box-shadow:
-            0 10px 35px rgba(255, 0, 0, .25);
-    }
-
-    50% {
-        box-shadow:
-            0 10px 55px rgba(255, 0, 0, .5);
-    }
+.btn:hover::before {
+    left: 140%;
 }
 
-@keyframes buttonShine {
+.btn:hover {
+    transform: translateY(-3px);
 
-    0%,
-    60% {
-        left: -120%;
-    }
+    border-color:
+        rgba(255,40,40,.55);
 
-    80%,
-    100% {
-        left: 140%;
-    }
+    box-shadow:
+        0 12px 35px rgba(255,0,0,.18);
 }
 
-/* =====================================================
-   FOOTER
-===================================================== */
-
-.footer {
-    margin-top: 27px;
-
-    color: #444;
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
+.btn.telegram {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,160,60,.14),
+            rgba(255,255,255,.03)
+        );
 }
 
-/* =====================================================
-   ТЕЛЕФОН
-===================================================== */
+.btn.manager {
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,0,0,.13),
+            rgba(255,255,255,.03)
+        );
+}
+
+/* =========================
+   НИЖНИЙ ТЕКСТ
+========================= */
+
+.bottom {
+    margin-top: 16px;
+
+    color: rgba(255,255,255,.3);
+
+    font-size: 11px;
+}
+
+/* =========================
+   МОБИЛЬНАЯ ВЕРСИЯ
+========================= */
 
 @media (max-width: 600px) {
 
-    .container {
-        width: 92%;
+    .wrapper {
+        padding: 22px 13px;
     }
 
     .logo {
-        margin-bottom: 20px;
+        font-size: 56px;
+
+        letter-spacing: -4px;
+
+        margin-bottom: 13px;
     }
 
     .update-icon {
-        width: 105px;
-        height: 105px;
-    }
+        width: 64px;
+        height: 64px;
 
-    .icon-symbol {
-        font-size: 50px;
+        font-size: 32px;
+
+        margin-bottom: 12px;
     }
 
     .status {
-        margin-top: 30px;
+        font-size: 10px;
+
+        padding: 7px 12px;
+
+        margin-bottom: 11px;
+    }
+
+    h1 {
+        font-size: 34px;
+
+        margin-bottom: 12px;
     }
 
     .description {
-        max-width: 350px;
+        font-size: 13px;
 
-        font-size: 14px;
+        line-height: 1.45;
+
+        margin-bottom: 12px;
+    }
+
+    .date {
+        font-size: 10px;
+
+        padding: 7px 12px;
+
+        margin-bottom: 13px;
     }
 
     .buttons {
-        width: 100%;
+        display: flex;
 
-        flex-direction: column;
+        flex-wrap: nowrap;
+
+        gap: 7px;
+
+        width: 100%;
     }
 
     .btn {
-        width: 100%;
+        width: 50%;
+
+        min-width: 0;
+
+        padding: 12px 6px;
+
+        font-size: 10px;
     }
 
-    .bg1,
-    .bg2 {
-        font-size: 40px;
-    }
-
-    .bg3 {
-        left: -20%;
-    }
-
-    .bg4 {
-        right: -20%;
+    .bottom {
+        margin-top: 12px;
     }
 }
 </style>
@@ -916,133 +770,147 @@ h1 span {
 
 <body>
 
-<!-- =====================================================
-     ФОН
-===================================================== -->
+<!-- ФОН -->
+<div class="grid"></div>
 
-<div class="background">
+<div class="glow one"></div>
+<div class="glow two"></div>
 
-    <div class="grid"></div>
-
-    <div class="light one"></div>
-    <div class="light two"></div>
-
-    <!-- ФОНОВЫЕ НАДПИСИ -->
-
-    <div class="bg-text bg1">
-        СКОРО ОБНОВА
-    </div>
-
-    <div class="bg-text bg2">
-        СКОРО ОБНОВА
-    </div>
-
-    <div class="bg-text bg3">
-        СКОРО ОБНОВА
-    </div>
-
-    <div class="bg-text bg4">
-        AIST SHOP
-    </div>
-
-    <!-- ПЛАВАЮЩИЕ ЗНАЧКИ -->
-
-    <div class="float-icon icon1">⚙</div>
-    <div class="float-icon icon2">✦</div>
-    <div class="float-icon icon3">⚡</div>
-    <div class="float-icon icon4">◈</div>
-    <div class="float-icon icon5">↻</div>
-
+<!-- ФОНОВЫЕ НАДПИСИ -->
+<div class="bg-text one">
+    СКОРО ОБНОВА
 </div>
 
-<!-- =====================================================
-     ЧАСТИЦЫ
-===================================================== -->
+<div class="bg-text two">
+    AIST SHOP
+</div>
 
+<!-- ПЛАВАЮЩИЕ ИКОНКИ -->
+<div class="floating-icon">⚙</div>
+<div class="floating-icon">✦</div>
+<div class="floating-icon">⚡</div>
+<div class="floating-icon">◈</div>
+<div class="floating-icon">↻</div>
+<div class="floating-icon">✧</div>
+
+<!-- ЧАСТИЦЫ -->
 <div class="particle" style="left:5%;animation-duration:9s;"></div>
-<div class="particle" style="left:12%;animation-duration:12s;animation-delay:2s;"></div>
-<div class="particle" style="left:20%;animation-duration:8s;animation-delay:1s;"></div>
-<div class="particle" style="left:30%;animation-duration:13s;animation-delay:4s;"></div>
-<div class="particle" style="left:40%;animation-duration:10s;"></div>
-<div class="particle" style="left:50%;animation-duration:14s;animation-delay:3s;"></div>
-<div class="particle" style="left:60%;animation-duration:9s;animation-delay:1s;"></div>
-<div class="particle" style="left:70%;animation-duration:12s;"></div>
-<div class="particle" style="left:80%;animation-duration:8s;animation-delay:2s;"></div>
-<div class="particle" style="left:90%;animation-duration:11s;"></div>
+<div class="particle" style="left:13%;animation-duration:12s;"></div>
+<div class="particle" style="left:21%;animation-duration:15s;"></div>
+<div class="particle" style="left:30%;animation-duration:10s;"></div>
+<div class="particle" style="left:39%;animation-duration:14s;"></div>
+<div class="particle" style="left:48%;animation-duration:11s;"></div>
+<div class="particle" style="left:57%;animation-duration:16s;"></div>
+<div class="particle" style="left:66%;animation-duration:13s;"></div>
+<div class="particle" style="left:75%;animation-duration:10s;"></div>
+<div class="particle" style="left:84%;animation-duration:14s;"></div>
+<div class="particle" style="left:93%;animation-duration:11s;"></div>
 
-<!-- =====================================================
-     ОСНОВНОЙ КОНТЕНТ
-===================================================== -->
 
-<main class="container">
+<!-- ОСНОВА -->
+<div class="wrapper">
 
-    <!-- ЛОГО -->
+    <main class="content">
 
-    <div class="logo">
-        AIST <span>SHOP</span>
-    </div>
+        <!-- Иконка обновления -->
+        <div class="update-icon">
+            ↻
+        </div>
 
-    <!-- ИКОНКА -->
+        <!-- ЛОГОТИП -->
+        <div class="logo">
 
-    <div class="update-icon">
-        <div class="icon-symbol">↻</div>
-    </div>
+            <span class="aist">
+                AIST
+            </span>
 
-    <!-- СТАТУС -->
+            <span class="shop">
+                SHOP
+            </span>
 
-    <div class="status">
-        <div class="status-dot"></div>
-        САЙТ ВРЕМЕННО ЗАКРЫТ
-    </div>
+        </div>
 
-    <!-- ГЛАВНЫЙ ТЕКСТ -->
+        <!-- СТАТУС -->
+        <div class="status">
 
-    <h1>
-        ЗАКРЫТО<br>
-        <span>ДО ОБНОВЛЕНИЯ</span>
-    </h1>
+            <span class="status-dot"></span>
 
-    <!-- ОПИСАНИЕ -->
+            САЙТ ВРЕМЕННО ЗАКРЫТ
 
-    <p class="description">
-        Мы проводим технические работы, исправляем ошибки
-        и готовим новое обновление AIST SHOP.
-        Скоро всё снова будет доступно.
-    </p>
+        </div>
 
-    <div class="date">
-        Ориентировочно до <strong>29 сентября</strong>
-    </div>
+        <!-- ЗАГОЛОВОК -->
+        <h1>
 
-    <!-- КНОПКИ -->
+            ЗАКРЫТО НА<br>
 
-    <div class="buttons">
+            ОБНОВЛЕНИЕ
 
-        <a
-            class="btn telegram"
-            href="https://t.me/Frichkz"
-            target="_blank"
-        >
-            ✈️ Telegram-канал
-        </a>
+        </h1>
 
-        <a
-            class="btn manager"
-            href="https://t.me/urtung"
-            target="_blank"
-        >
-            💬 Связь с менеджером
-        </a>
+        <!-- ОПИСАНИЕ -->
+        <p class="description">
 
-    </div>
+            Мы извиняемся за долгое отсутствие и прекращение работы
+            сайта и самого магазина. Спасибо каждому, кто оставался
+            с нами и ждал возвращения.
 
-    <!-- FOOTER -->
+            <br><br>
 
-    <div class="footer">
-        AIST SHOP • TECHNICAL UPDATE
-    </div>
+            Сейчас мы готовим для вас
+            <b>крупнейшее обновление AIST SHOP</b> —
+            новое открытие, обновлённый сайт, новые возможности
+            и улучшения.
 
-</main>
+            <br><br>
+
+            <b>Все данные и база магазина сохраняются.</b>
+            После завершения обновления магазин снова будет доступен.
+
+        </p>
+
+        <!-- ДАТА -->
+        <div class="date">
+
+            ОРИЕНТИРОВОЧНО ДО 6 ОКТЯБРЯ
+
+        </div>
+
+        <!-- КНОПКИ -->
+        <div class="buttons">
+
+            <!-- TELEGRAM КАНАЛ -->
+            <a
+                href="https://t.me/Aistkz"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn telegram"
+            >
+                ✈ Telegram-канал
+            </a>
+
+            <!-- МЕНЕДЖЕР -->
+            <a
+                href="https://t.me/ShopaistMananger"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn manager"
+            >
+                👤 Связаться с менеджером
+            </a>
+
+        </div>
+
+        <!-- НИЖНИЙ ТЕКСТ -->
+        <div class="bottom">
+
+            AIST SHOP © 2026 · Скоро возвращаемся
+
+        </div>
+
+    </main>
+
+</div>
 
 </body>
 </html>
