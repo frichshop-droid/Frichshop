@@ -1,887 +1,598 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KRAPINN RUSSIA — Начни свою историю</title>
-    <!-- Шрифт Unbounded -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&display=swap" rel="stylesheet">
-    
-    <style>
-        :root {
-            --red-main: #ff003c;
-            --red-glow: #ff2a5f;
-            --green-online: #00ff66;
-            --bg-black: #050204;
-            --card-bg: rgba(20, 5, 10, 0.75);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080204">
+<title>KRAPINN RUSSIA — Обновление</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Unbounded', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-        body {
-            background-color: var(--bg-black);
-            color: #ffffff;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
+<style>
+:root {
+    --red: #ff1744;
+    --dark-red: #9e0026;
+    --bg: #070205;
+}
 
-        /* КАНВАС ДЛЯ ФОНОВЫХ ЧАСТИЦ */
-        #bg-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 1;
-            pointer-events: none;
-        }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-        /* ---------------------------------------------------- */
-        /* ПРЕМИАЛЬНАЯ AAA-ЗАГРУЗКА */
-        /* ---------------------------------------------------- */
-        #loader-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, #110206 0%, #030002 100%);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 99999;
-            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1), transform 1s cubic-bezier(0.4, 0, 0.2, 1), filter 1s ease;
-        }
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    background: var(--bg);
+    color: white;
+    font-family: 'Inter', Arial, sans-serif;
+}
 
-        #loader-screen.fade-out {
-            opacity: 0;
-            filter: blur(20px);
-            transform: scale(1.05);
-            pointer-events: none;
-        }
+canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
 
-        .cyber-loader-container {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
+#particles {
+    z-index: 0;
+}
 
-        /* ТРЁХМЕРНАЯ КИБЕР-СФЕРА */
-        .cyber-orb {
-            position: relative;
-            width: 130px;
-            height: 130px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 35px;
-        }
+.scanlines {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: .13;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent 0px,
+        transparent 3px,
+        #ff1744 4px
+    );
+    animation: scan 8s linear infinite;
+}
 
-        .orb-ring {
-            position: absolute;
-            border-radius: 50%;
-            border: 2px solid transparent;
-        }
+@keyframes scan {
+    from { transform: translateY(-20px); }
+    to { transform: translateY(20px); }
+}
 
-        .orb-ring-1 {
-            width: 100%;
-            height: 100%;
-            border-top-color: var(--red-main);
-            border-bottom-color: var(--red-main);
-            animation: orbSpin1 2s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-            filter: drop-shadow(0 0 10px var(--red-main));
-        }
+.red-light {
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    z-index: 0;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, #ff174414 0%, transparent 70%);
+    animation: glow 3s ease-in-out infinite alternate;
+}
 
-        .orb-ring-2 {
-            width: 80%;
-            height: 80%;
-            border-left-color: #ffffff;
-            border-right-color: rgba(255, 255, 255, 0.3);
-            animation: orbSpin2 1.4s linear infinite;
-        }
+@keyframes glow {
+    from { opacity: .45; transform: translate(-50%, -50%) scale(.8); }
+    to { opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+}
 
-        .orb-ring-3 {
-            width: 60%;
-            height: 60%;
-            border: 1px dashed var(--red-glow);
-            animation: orbSpin1 3s linear infinite reverse;
-        }
+.page {
+    position: relative;
+    z-index: 2;
+    width: min(760px, 100%);
+    min-height: 100vh;
+    margin: auto;
+    padding: 32px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
 
-        .orb-center-pulse {
-            width: 18px;
-            height: 18px;
-            background: #ffffff;
-            border-radius: 50%;
-            box-shadow: 0 0 20px #ffffff, 0 0 40px var(--red-main);
-            animation: orbPulse 1s ease-in-out infinite alternate;
-        }
+.top-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 11px 17px;
+    border: 1px solid #ff174450;
+    border-radius: 50px;
+    background: #ff17440b;
+    color: #ff738e;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    animation: fadeIn .8s ease both;
+}
 
-        @keyframes orbSpin1 {
-            0% { transform: rotate(0deg) rotateX(0deg); }
-            100% { transform: rotate(360deg) rotateX(360deg); }
-        }
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 0 15px var(--red);
+    animation: blink .8s ease-in-out infinite alternate;
+}
 
-        @keyframes orbSpin2 {
-            0% { transform: rotate(360deg); }
-            100% { transform: rotate(0deg); }
-        }
+@keyframes blink {
+    from { opacity: .3; }
+    to { opacity: 1; }
+}
 
-        @keyframes orbPulse {
-            0% { transform: scale(0.6); opacity: 0.5; }
-            100% { transform: scale(1.2); opacity: 1; }
-        }
+.brand {
+    position: relative;
+    margin-top: 35px;
+    font-size: clamp(30px, 7vw, 61px);
+    font-weight: 900;
+    letter-spacing: -2px;
+    line-height: 1.15;
+    color: white;
+    text-shadow: 0 0 30px #ff174438;
+    animation: brandIn 1s cubic-bezier(.2,.8,.2,1) both;
+}
 
-        .loader-brand {
-            font-size: 16px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            color: #ffffff;
-            text-shadow: 0 0 20px var(--red-main);
-            margin-bottom: 8px;
-        }
+.brand span {
+    display: block;
+    color: var(--red);
+    text-shadow: 0 0 35px #ff174466;
+}
 
-        .loader-status-text {
-            font-size: 10px;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: uppercase;
-            height: 16px;
-            margin-bottom: 25px;
-            text-align: center;
-        }
+@keyframes brandIn {
+    from { opacity: 0; transform: translateY(25px) scale(.96); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
 
-        .smooth-bar-bg {
-            width: 260px;
-            height: 4px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-        }
+.divider {
+    width: min(350px, 80%);
+    height: 2px;
+    margin: 25px auto;
+    background: linear-gradient(90deg, transparent, var(--red), white, var(--red), transparent);
+    box-shadow: 0 0 20px #ff174466;
+    animation: divider 2s ease-in-out infinite alternate;
+}
 
-        .smooth-bar-fill {
-            height: 100%;
-            width: 0%;
-            background: linear-gradient(90deg, var(--red-dark), var(--red-main), #ffffff);
-            box-shadow: 0 0 15px var(--red-main);
-            border-radius: 10px;
-            transition: width 0.05s linear;
-        }
+@keyframes divider {
+    from { opacity: .4; transform: scaleX(.75); }
+    to { opacity: 1; transform: scaleX(1); }
+}
 
-        .loader-num-display {
-            margin-top: 12px;
-            font-size: 12px;
-            font-weight: 900;
-            color: var(--red-main);
-            letter-spacing: 1px;
-        }
+.headline {
+    font-size: clamp(17px, 4vw, 26px);
+    font-weight: 900;
+    line-height: 1.4;
+    letter-spacing: .5px;
+    animation: fadeIn 1s .2s both;
+}
 
-        /* ---------------------------------------------------- */
-        /* ОСНОВНОЙ КОНТЕНТ */
-        /* ---------------------------------------------------- */
-        .wrapper {
-            position: relative;
-            z-index: 2;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px 80px;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 1s ease, transform 1s ease;
-        }
+.headline .red {
+    color: var(--red);
+}
 
-        .wrapper.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.description {
+    max-width: 570px;
+    margin-top: 17px;
+    color: #b9a9af;
+    font-size: 13px;
+    line-height: 2;
+    animation: fadeIn 1s .4s both;
+}
 
-        .green-badge {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            background: rgba(0, 255, 102, 0.08);
-            border: 1px solid rgba(0, 255, 102, 0.4);
-            border-radius: 50px;
-            padding: 10px 22px;
-            margin: 0 auto 30px;
-            width: fit-content;
-            box-shadow: 0 0 20px rgba(0, 255, 102, 0.2);
-        }
+.system-card {
+    width: 100%;
+    max-width: 530px;
+    margin-top: 28px;
+    padding: 22px;
+    border: 1px solid #ff17442b;
+    border-radius: 18px;
+    background: linear-gradient(140deg, #1b080fdf, #0d0509ed);
+    box-shadow: 0 15px 60px #00000060, inset 0 1px #ffffff09;
+    animation: cardIn .8s .5s both;
+}
 
-        .green-dot {
-            width: 9px;
-            height: 9px;
-            background-color: var(--green-online);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--green-online);
-            animation: dotGlow 1.8s ease-in-out infinite alternate;
-        }
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(25px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-        .green-badge-text {
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--green-online);
-            text-transform: uppercase;
-        }
+.card-label {
+    color: #ff6b86;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+}
 
-        @keyframes dotGlow {
-            0% { opacity: 0.4; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1.2); box-shadow: 0 0 15px var(--green-online); }
-        }
+.task {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 0;
+    text-align: left;
+    border-bottom: 1px solid #ffffff0c;
+}
 
-        .hero-title {
-            font-size: clamp(24px, 5vw, 42px);
-            font-weight: 900;
-            text-align: center;
-            text-transform: uppercase;
-            line-height: 1.25;
-            margin-bottom: 20px;
-            background: linear-gradient(180deg, #ffffff 30%, var(--red-main) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+.task:last-child {
+    border-bottom: none;
+}
 
-        .hero-description {
-            font-size: 13px;
-            line-height: 1.8;
-            color: #d1c4c8;
-            text-align: center;
-            max-width: 780px;
-            margin: 0 auto 40px;
-            font-weight: 600;
-        }
+.task-icon {
+    display: grid;
+    place-items: center;
+    width: 39px;
+    height: 39px;
+    flex-shrink: 0;
+    border: 1px solid #ff17442c;
+    border-radius: 12px;
+    background: #ff174410;
+    font-size: 18px;
+}
 
-        .animated-card {
-            background: var(--card-bg);
-            border: 1px solid rgba(255, 0, 60, 0.3);
-            border-radius: 24px;
-            padding: 30px;
-            margin-bottom: 35px;
-            backdrop-filter: blur(15px);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
-            opacity: 0;
-            transform: translateY(40px);
-            transition: all 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
-        }
+.task-text {
+    flex: 1;
+}
 
-        .animated-card.in-view {
-            opacity: 1;
-            transform: translateY(0);
-        }
+.task-title {
+    font-size: 12px;
+    font-weight: 800;
+    margin-bottom: 5px;
+}
 
-        .card-title {
-            font-size: 18px;
-            font-weight: 900;
-            color: #fff;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-transform: uppercase;
-        }
+.task-desc {
+    color: #94838a;
+    font-size: 10px;
+    line-height: 1.6;
+}
 
-        .card-text {
-            font-size: 12px;
-            line-height: 1.8;
-            color: #cfc2c6;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
+.task-status {
+    color: #ff607e;
+    font-size: 9px;
+    font-weight: 900;
+    letter-spacing: .5px;
+    white-space: nowrap;
+}
 
-        .photo-frame {
-            width: 100%;
-            height: 380px;
-            border-radius: 18px;
-            overflow: hidden;
-            border: 2px solid rgba(255, 0, 60, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.9);
-            position: relative;
-            background: #120408;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), border-color 0.4s ease, box-shadow 0.4s ease;
-        }
+.loading-section {
+    width: 100%;
+    max-width: 530px;
+    margin-top: 25px;
+    text-align: left;
+    animation: fadeIn 1s .8s both;
+}
 
-        .photo-frame:hover, .photo-frame:active {
-            transform: scale(1.02);
-            border-color: var(--red-main);
-            box-shadow: 0 15px 40px rgba(255, 0, 60, 0.4);
-        }
+.loading-info {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
 
-        .photo-frame img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.6s ease;
-        }
+.loading-info span:first-child {
+    color: #bba8af;
+}
 
-        .photo-frame:hover img {
-            transform: scale(1.05);
-        }
+#percent {
+    color: var(--red);
+}
 
-        .promo-card {
-            background: linear-gradient(135deg, rgba(255, 0, 60, 0.2), rgba(10, 2, 5, 0.9));
-            border: 2px dashed var(--red-main);
-            border-radius: 20px;
-            padding: 25px;
-            text-align: center;
-            margin: 20px 0;
-        }
+.progress-track {
+    width: 100%;
+    height: 5px;
+    border-radius: 20px;
+    overflow: hidden;
+    background: #ffffff10;
+}
 
-        .promo-code-btn {
-            display: inline-block;
-            font-size: 28px;
-            font-weight: 900;
-            color: #ffffff;
-            background: var(--red-main);
-            padding: 10px 30px;
-            border-radius: 12px;
-            margin: 15px 0;
-            box-shadow: 0 0 25px var(--red-main);
-            cursor: pointer;
-            transition: transform 0.2s ease;
-        }
+.progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--dark-red), var(--red), #ffb0c0);
+    box-shadow: 0 0 18px #ff174477;
+    animation: progressGlow 1.2s infinite alternate;
+}
 
-        .promo-code-btn:active {
-            transform: scale(0.95);
-        }
+@keyframes progressGlow {
+    from { filter: brightness(.8); }
+    to { filter: brightness(1.4); }
+}
 
-        .bonus-list {
-            list-style: none;
-            text-align: left;
-            display: inline-block;
-            margin-top: 10px;
-        }
+.loading-caption {
+    margin-top: 10px;
+    color: #78656d;
+    font-size: 10px;
+}
 
-        .bonus-list li {
-            font-size: 12px;
-            font-weight: 800;
-            margin: 8px 0;
-            color: #fff;
-        }
+.telegram-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 350px;
+    min-height: 54px;
+    margin-top: 28px;
+    padding: 15px 20px;
+    border: 1px solid #48baff55;
+    border-radius: 14px;
+    background: linear-gradient(110deg, #168bd4, #07528f);
+    box-shadow: 0 8px 35px #168bd422;
+    color: white;
+    text-decoration: none;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: .6px;
+    transition: transform .25s, box-shadow .25s;
+    animation: fadeIn 1s 1s both;
+}
 
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
-            margin-top: 25px;
-        }
+.telegram-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px #168bd455;
+}
 
-        .btn-red {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-            background: linear-gradient(90deg, #ff003c, #b3002a);
-            color: #fff;
-            font-size: 13px;
-            font-weight: 900;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 50px;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 10px 30px rgba(255, 0, 60, 0.5);
-            transition: all 0.3s ease;
-        }
+.telegram-btn:active {
+    transform: scale(.98);
+}
 
-        .btn-red:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(255, 0, 60, 0.8);
-        }
+.footer {
+    margin-top: 32px;
+    color: #66535b;
+    font-size: 9px;
+    line-height: 2;
+    letter-spacing: 1px;
+    animation: fadeIn 1s 1.2s both;
+}
 
-        .btn-telegram {
-            background: linear-gradient(90deg, #0088cc, #005580);
-            box-shadow: 0 10px 30px rgba(0, 136, 204, 0.4);
-        }
+.footer strong {
+    color: #a28b94;
+}
 
-        .admin-secret-trigger {
-            position: relative;
-            z-index: 10;
-            width: 8px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 50%;
-            margin: 40px auto 10px;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
 
-        .admin-secret-trigger:hover {
-            background: var(--red-main);
-            box-shadow: 0 0 10px var(--red-main);
-        }
+@media (max-width: 480px) {
+    .page {
+        padding: 28px 15px;
+    }
 
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            z-index: 100000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
+    .system-card {
+        padding: 17px;
+    }
 
-        .modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+    .task-status {
+        font-size: 8px;
+    }
 
-        .admin-box {
-            background: #14050a;
-            border: 2px solid var(--red-main);
-            border-radius: 20px;
-            padding: 30px;
-            width: 90%;
-            max-width: 450px;
-            box-shadow: 0 0 50px rgba(255, 0, 60, 0.5);
-        }
+    .description {
+        font-size: 12px;
+    }
 
-        .admin-input {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 0, 60, 0.4);
-            border-radius: 10px;
-            color: #fff;
-            margin-bottom: 15px;
-            font-size: 12px;
-        }
-
-        .admin-setting-item {
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            text-align: left;
-        }
-
-        .admin-setting-item label {
-            font-size: 11px;
-            font-weight: 800;
-            display: block;
-            margin-bottom: 8px;
-            color: #fff;
-        }
-
-        #download-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(5, 2, 4, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 10000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.4s ease;
-        }
-
-        #download-modal.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-
-        @media (max-width: 600px) {
-            .wrapper { padding: 25px 15px 60px; }
-            .animated-card { padding: 20px; }
-            .photo-frame { height: 240px; }
-        }
-    </style>
+    .task-title {
+        font-size: 11px;
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- ФОНОВЫЕ ЧАСТИЦЫ -->
-    <canvas id="bg-canvas"></canvas>
+<canvas id="particles"></canvas>
+<div class="scanlines"></div>
+<div class="red-light"></div>
 
-    <!-- ИННОВАЦИОННАЯ КИБЕР-ЗАГРУЗКА (6.5 СЕКУНД) -->
-    <div id="loader-screen">
-        <div class="cyber-loader-container">
-            <div class="cyber-orb">
-                <div class="orb-ring orb-ring-1"></div>
-                <div class="orb-ring orb-ring-2"></div>
-                <div class="orb-ring orb-ring-3"></div>
-                <div class="orb-center-pulse"></div>
-            </div>
+<main class="page">
 
-            <div class="loader-brand">KRAPINN RUSSIA</div>
-            <div class="loader-status-text" id="loader-status">ПОДКЛЮЧЕНИЕ К ИГРОВОЙ СЕТИ...</div>
-
-            <div class="smooth-bar-bg">
-                <div class="smooth-bar-fill" id="loader-fill"></div>
-            </div>
-            
-            <div class="loader-num-display" id="loader-num">0%</div>
-        </div>
+    <div class="top-status">
+        <span class="status-dot"></span>
+        SYSTEM UPDATE IN PROGRESS
     </div>
 
-    <!-- ОСНОВНОЙ КОНТЕНТ СЕКЦИЙ -->
-    <div class="wrapper" id="main-content">
+    <h1 class="brand">
+        KRAPINN
+        <span>RUSSIA</span>
+    </h1>
 
-        <div class="green-badge">
-            <div class="green-dot"></div>
-            <span class="green-badge-text">СЕРВЕР АКТИВЕН / ОНЛАЙН</span>
+    <div class="divider"></div>
+
+    <h2 class="headline">
+        САЙТ ВРЕМЕННО <span class="red">НЕДОСТУПЕН</span>
+    </h2>
+
+    <p class="description">
+        Мы готовим масштабное обновление проекта. Сейчас меняется дизайн,
+        обновляются кнопки и разделы, а также добавляется информация о
+        новой версии APK. Скоро сайт вернётся в обновлённом виде.
+        Спасибо, что остаётесь с KRAPINN RUSSIA.
+    </p>
+
+    <section class="system-card">
+
+        <div class="card-label">
+            // СТАТУС ТЕХНИЧЕСКИХ РАБОТ
         </div>
 
-        <header>
-            <h1 class="hero-title">🎮 KRAPINN RUSSIA — Начни свою историю!</h1>
-            <p class="hero-description">
-                Добро пожаловать в KRAPINN RUSSIA — многопользовательскую онлайн-игру в стиле GTA, где ты можешь построить собственную историю, выбрать свой путь и стать настоящей легендой виртуального мира!
-            </p>
-        </header>
-
-        <!-- СЕКЦИЯ 1 -->
-        <div class="animated-card">
-            <div class="card-title">🚘 Огромный открытый мир</div>
-            <div class="card-text">
-                Исследуй города, покупай автомобили, обзаводись недвижимостью, зарабатывай деньги и развивай своего персонажа.
+        <div class="task">
+            <div class="task-icon">🎨</div>
+            <div class="task-text">
+                <div class="task-title">Обновление дизайна</div>
+                <div class="task-desc">Новый интерфейс, эффекты и анимации</div>
             </div>
-            <div class="photo-frame" id="frame-1">
-                <img id="img-1" src="https://disk.yandex.ru/i/RQerH7Pv_1H9MA" alt="Игровой мир" onerror="this.onerror=null; this.src='https://picsum.photos/800/450?random=1';">
-            </div>
+            <div class="task-status">В РАБОТЕ</div>
         </div>
 
-        <!-- СЕКЦИЯ 2 -->
-        <div class="animated-card">
-            <div class="card-title">⚖️ Выбирай свой путь</div>
-            <div class="card-text">
-                Хочешь защищать закон? Вступай в государственные организации: МВД, ГИБДД, ФСБ и другие структуры. Предпочитаешь криминальную жизнь? Собирай команду, участвуй в разборках и прокладывай путь к вершине криминального мира!
+        <div class="task">
+            <div class="task-icon">📦</div>
+            <div class="task-text">
+                <div class="task-title">Новая версия APK</div>
+                <div class="task-desc">Обновление информации о скачивании игры</div>
             </div>
-            <div class="photo-frame" id="frame-2">
-                <img id="img-2" src="https://disk.yandex.ru/i/wIrLTffGwr7mTg" alt="Организации и фракции" onerror="this.onerror=null; this.src='https://picsum.photos/800/450?random=2';">
-            </div>
+            <div class="task-status">В РАБОТЕ</div>
         </div>
 
-        <!-- СЕКЦИЯ 3 -->
-        <div class="animated-card">
-            <div class="card-title">💰 Бонус для новичков!</div>
-            <div class="card-text">
-                Начни игру с приятными подарками и получи мощное преимущество прямо на старте!
+        <div class="task">
+            <div class="task-icon">🔗</div>
+            <div class="task-text">
+                <div class="task-title">Проверка кнопок и ссылок</div>
+                <div class="task-desc">Исправление переходов и ошибок сайта</div>
             </div>
-
-            <div class="promo-card">
-                <div style="font-size: 11px; color: #fff; font-weight: 800;">🎁 НАШ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД:</div>
-                <div class="promo-code-btn" onclick="copyPromo()" id="promo-btn">#Фарка</div>
-                <div style="font-size: 10px; color: #aaa; margin-top: -5px;">(Нажми, чтобы скопировать)</div>
-                
-                <ul class="bonus-list">
-                    <li>💎 +1 000 BC</li>
-                    <li>💵 +20 000 000 игровой валюты</li>
-                </ul>
-            </div>
-
-            <div class="photo-frame" id="frame-3">
-                <img id="img-3" src="https://disk.yandex.ru/i/e_IcowaQ4en62g" alt="Бонусы и наборы" onerror="this.onerror=null; this.src='https://picsum.photos/800/450?random=3';">
-            </div>
+            <div class="task-status">В РАБОТЕ</div>
         </div>
 
-        <!-- СЕКЦИЯ СКАЧИВАНИЯ И ТЕЛЕГРАМА -->
-        <div class="animated-card" style="text-align: center;">
-            <div class="card-title" style="justify-content: center; color: var(--red-main);">🔥 KRAPINN RUSSIA</div>
-            <div class="card-text">
-                Твоя история, твои правила, твой путь к успеху! Скачивай игру, заходи на сервер и докажи всем, на что ты способен!
+        <div class="task">
+            <div class="task-icon">⚙️</div>
+            <div class="task-text">
+                <div class="task-title">Подготовка новых функций</div>
+                <div class="task-desc">Дополнительные изменения и улучшения</div>
             </div>
-
-            <div class="btn-group">
-                <button class="btn-red" onclick="startAPKDownload()">
-                    <span>🚀 СКАЧАТЬ ИГРУ (APK)</span>
-                </button>
-
-                <a href="https://t.me/lame_mobile" target="_blank" class="btn-red btn-telegram">
-                    <span>📱 НАШ TELEGRAM КАНАЛ</span>
-                </a>
-            </div>
+            <div class="task-status">В РАБОТЕ</div>
         </div>
 
-        <!-- КНОПКА СВЯЗИ СО СПЕЦ. АДМИНИСТРАТОРОМ -->
-        <div class="animated-card" style="text-align: center; background: linear-gradient(180deg, rgba(20,5,10,0.8), rgba(40,0,10,0.9));">
-            <div class="card-title" style="justify-content: center;">🛠 Нужна помощь с игрой?</div>
-            <div class="card-text">
-                Возникла проблема, баг или хочешь задать вопрос напрямую руководству?
-            </div>
+    </section>
 
-            <div class="btn-group">
-                <a href="https://t.me/farich10?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%AF%20%D1%81%20%D1%81%D0%B0%D0%B9%D1%82%D0%B0%20KRAPINN%20RUSSIA.%20%D0%A3%20%D0%BC%D0%B5%D0%BD%D1%8F%20%D1%81%D0%BB%D1%83%D1%87%D0%B8%D0%BB%D0%B0%D1%81%D1%8C%20%D0%BF%D1%80%D0%BE%D0%B1%D0%BB%D0%B5%D0%BC%D0%B0%20%2F%20%D1%85%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%B4%D0%B0%D1%82%D1%8C%20%D0%B2%D0%BE%D0%BF%D1%80%D0%BE%D1%81" target="_blank" class="btn-red" style="background: linear-gradient(90deg, #ff003c, #80001d);">
-                    <span>💬 НАПИСАТЬ СПЕЦ. АДМИНИСТРАТОРУ</span>
-                </a>
-            </div>
+    <section class="loading-section">
+        <div class="loading-info">
+            <span id="loading-message">ПОДГОТОВКА ОБНОВЛЕНИЯ...</span>
+            <span id="percent">ЗАГРУЗКА</span>
         </div>
 
-        <div class="admin-secret-trigger" onclick="openAdminAuth()" title="Admin"></div>
-
-    </div>
-
-    <!-- АВТОРИЗАЦИЯ АДМИНА -->
-    <div class="modal-overlay" id="admin-auth-modal">
-        <div class="admin-box" style="text-align: center;">
-            <div style="font-size: 14px; font-weight: 900; margin-bottom: 20px; color: var(--red-main);">🔐 АДМИН ПАНЕЛЬ</div>
-            <input type="text" id="admin-login" class="admin-input" placeholder="Логин">
-            <input type="password" id="admin-pass" class="admin-input" placeholder="Пароль">
-            <button class="btn-red" onclick="checkAdminAuth()" style="padding: 12px; font-size: 11px;">ВОЙТИ</button>
-            <button class="btn-red" onclick="closeModals()" style="padding: 10px; font-size: 10px; background: #333; margin-top: 10px;">ОТМЕНА</button>
+        <div class="progress-track">
+            <div class="progress-fill" id="progress"></div>
         </div>
-    </div>
 
-    <!-- ПАНЕЛЬ УПРАВЛЕНИЯ КАРТИНКАМИ И РАЗМЕРОМ -->
-    <div class="modal-overlay" id="admin-panel-modal">
-        <div class="admin-box" style="max-height: 85vh; overflow-y: auto;">
-            <div style="font-size: 14px; font-weight: 900; margin-bottom: 20px; color: var(--red-main); text-align: center;">⚙️ НАСТРОЙКИ ФОТОГРАФИЙ</div>
-            
-            <div class="admin-setting-item">
-                <label>📏 Высота всех фото (px):</label>
-                <input type="range" id="frame-height-slider" min="150" max="600" value="380" style="width: 100%; cursor: pointer;" oninput="updateFrameHeight(this.value)">
-                <div style="text-align: right; font-size: 10px; color: #aaa;" id="height-val">380px</div>
-            </div>
-
-            <div class="admin-setting-item">
-                <label>🖼 Фотография #1 (Открытый мир):</label>
-                <input type="file" accept="image/*" class="admin-input" onchange="uploadImage(event, 'img-1')">
-            </div>
-
-            <div class="admin-setting-item">
-                <label>🖼 Фотография #2 (Путь/Фракции):</label>
-                <input type="file" accept="image/*" class="admin-input" onchange="uploadImage(event, 'img-2')">
-            </div>
-
-            <div class="admin-setting-item">
-                <label>🖼 Фотография #3 (Бонусы):</label>
-                <input type="file" accept="image/*" class="admin-input" onchange="uploadImage(event, 'img-3')">
-            </div>
-
-            <button class="btn-red" onclick="closeModals()" style="padding: 12px; font-size: 11px;">СОХРАНИТЬ И ЗАКРЫТЬ</button>
+        <div class="loading-caption">
+            Мы работаем над обновлением. Точная дата открытия пока не объявлена.
         </div>
-    </div>
+    </section>
 
-    <!-- ОВЕРЛЕЙ СКАЧИВАНИЯ APK -->
-    <div id="download-modal">
-        <div class="admin-box" style="text-align: center;">
-            <div style="font-size: 40px; margin-bottom: 10px;">📦</div>
-            <div style="font-size: 14px; font-weight: 900; color: #fff; margin-bottom: 10px;">СКАЧИВАНИЕ KRAPINN APK</div>
-            <div style="font-size: 10px; color: #aaa; margin-bottom: 20px;" id="modal-status">Подключение...</div>
-            
-            <div class="smooth-bar-bg" style="width: 100%; margin-bottom: 15px;">
-                <div class="smooth-bar-fill" id="apk-fill" style="width: 0%;"></div>
-            </div>
-            
-            <div style="font-size: 12px; font-weight: 800; color: var(--red-main);" id="apk-percent">0%</div>
-        </div>
-    </div>
+    <a
+        class="telegram-btn"
+        href="https://t.me/lame_mobile"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+        <span>✈️</span>
+        СЛЕДИТЬ ЗА НОВОСТЯМИ В TELEGRAM
+    </a>
 
-    <script>
-        // 1. ФОНОВЫЕ ЧАСТИЦЫ
-        const canvas = document.getElementById('bg-canvas');
-        const ctx = canvas.getContext('2d');
+    <footer class="footer">
+        <strong>KRAPINN RUSSIA</strong><br>
+        ОБНОВЛЕНИЕ ПРОЕКТА · ТЕХНИЧЕСКИЕ РАБОТЫ
+    </footer>
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        resizeCanvas();
-        window.addEventListener('resize', resizeCanvas);
+</main>
 
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * canvas.width;
-                this.y = canvas.height + Math.random() * 80;
-                this.size = Math.random() * 3 + 1;
-                this.speedY = Math.random() * 1.2 + 0.4;
-                this.alpha = Math.random() * 0.5 + 0.2;
-            }
-            update() {
-                this.y -= this.speedY;
-                if (this.y < -10) this.reset();
-            }
-            draw() {
-                ctx.fillStyle = `rgba(255, 0, 60, ${this.alpha})`;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
+<script>
+/* АНИМИРОВАННЫЕ ЧАСТИЦЫ */
 
-        const particles = Array.from({ length: 45 }, () => new Particle());
-        function animateCanvas() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(p => { p.update(); p.draw(); });
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
 
-        // 2. AAA-АНИМИРОВАННАЯ ЗАГРУЗКА И ДИНАМИКА ТЕКСТА (6.5 СЕКУНД)
-        const loaderScreen = document.getElementById('loader-screen');
-        const loaderFill = document.getElementById('loader-fill');
-        const loaderNum = document.getElementById('loader-num');
-        const loaderStatus = document.getElementById('loader-status');
-        const mainContent = document.getElementById('main-content');
+let width = 0;
+let height = 0;
+let particles = [];
 
-        const DURATION = 6500;
-        const START_TIME = Date.now();
+function resize() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-        const loaderInterval = setInterval(() => {
-            const elapsed = Date.now() - START_TIME;
-            const progress = Math.min(100, Math.floor((elapsed / DURATION) * 100));
+    width = window.innerWidth;
+    height = window.innerHeight;
 
-            loaderFill.style.width = progress + '%';
-            loaderNum.textContent = progress + '%';
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = width + "px";
+    canvas.style.height = height + "px";
 
-            // Динамический статус
-            if (progress < 25) {
-                loaderStatus.textContent = "ИНИЦИАЛИЗАЦИЯ ИГРОВОГО ЯДРА...";
-            } else if (progress < 55) {
-                loaderStatus.textContent = "ПОДКЛЮЧЕНИЕ К СЕРВЕРАМ KRAPINN...";
-            } else if (progress < 85) {
-                loaderStatus.textContent = "СИНХРОНИЗАЦИЯ ИГРОВЫХ РЕСУРСОВ...";
-            } else {
-                loaderStatus.textContent = "ГОТОВО К СТАРТУ...";
-            }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-            if (progress >= 100) {
-                clearInterval(loaderInterval);
-                loaderScreen.classList.add('fade-out');
-                mainContent.classList.add('visible');
-                setTimeout(() => {
-                    checkScrollAnimations();
-                }, 400);
-            }
-        }, 30);
+    const count = width < 600 ? 45 : 85;
 
-        // 3. СКРОЛЛ АНИМАЦИИ
-        const animatedCards = document.querySelectorAll('.animated-card');
-        function checkScrollAnimations() {
-            const triggerBottom = window.innerHeight * 0.9;
-            animatedCards.forEach(card => {
-                if (card.getBoundingClientRect().top < triggerBottom) {
-                    card.classList.add('in-view');
-                }
-            });
-        }
-        window.addEventListener('scroll', checkScrollAnimations);
+    particles = Array.from({ length: count }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        size: Math.random() * 2 + .4,
+        speed: Math.random() * .7 + .15,
+        drift: (Math.random() - .5) * .5,
+        opacity: Math.random() * .65 + .15
+    }));
+}
 
-        // 4. СОХРАНЕНИЕ КАРТИНОК
-        window.addEventListener('DOMContentLoaded', () => {
-            ['img-1', 'img-2', 'img-3'].forEach(id => {
-                const savedImg = localStorage.getItem('krapinn_img_' + id);
-                if (savedImg) {
-                    document.getElementById(id).src = savedImg;
-                }
-            });
+function drawParticles() {
+    ctx.clearRect(0, 0, width, height);
 
-            const savedHeight = localStorage.getItem('krapinn_frame_height');
-            if (savedHeight) {
-                updateFrameHeight(savedHeight, false);
-                document.getElementById('frame-height-slider').value = savedHeight;
-            }
-        });
+    for (const p of particles) {
+        p.y -= p.speed;
+        p.x += p.drift;
 
-        function uploadImage(event, targetImgId) {
-            const file = event.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const result = e.target.result;
-                    document.getElementById(targetImgId).src = result;
-                    localStorage.setItem('krapinn_img_' + targetImgId, result);
-                };
-                reader.readAsDataURL(file);
-            }
+        if (p.y < -10) {
+            p.y = height + 10;
+            p.x = Math.random() * width;
         }
 
-        function updateFrameHeight(val, save = true) {
-            document.querySelectorAll('.photo-frame').forEach(frame => {
-                frame.style.height = val + 'px';
-            });
-            document.getElementById('height-val').textContent = val + 'px';
-            if (save) {
-                localStorage.setItem('krapinn_frame_height', val);
-            }
-        }
+        if (p.x < -10) p.x = width + 10;
+        if (p.x > width + 10) p.x = -10;
 
-        // 5. АДМИН-ПАНЕЛЬ
-        function openAdminAuth() {
-            document.getElementById('admin-auth-modal').classList.add('active');
-        }
+        ctx.beginPath();
+        ctx.fillStyle = `rgba(255, 23, 68, ${p.opacity})`;
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = "#ff1744";
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+    }
 
-        function checkAdminAuth() {
-            const login = document.getElementById('admin-login').value;
-            const pass = document.getElementById('admin-pass').value;
+    ctx.shadowBlur = 0;
+    requestAnimationFrame(drawParticles);
+}
 
-            if (login === 'Admin' && pass === 'Aaa007!') {
-                closeModals();
-                document.getElementById('admin-panel-modal').classList.add('active');
-            } else {
-                alert('Неверный логин или пароль!');
-            }
-        }
+resize();
+window.addEventListener("resize", resize);
+drawParticles();
 
-        function closeModals() {
-            document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active'));
-        }
+/* АНИМАЦИЯ ИНДИКАТОРА.
+   Это декоративная анимация, а не реальный процент обновления. */
 
-        function copyPromo() {
-            navigator.clipboard.writeText("#Фарка");
-            const btn = document.getElementById('promo-btn');
-            btn.textContent = "СКОПИРОВАНО!";
-            setTimeout(() => btn.textContent = "#Фарка", 2000);
-        }
+const progress = document.getElementById("progress");
+const percent = document.getElementById("percent");
+const message = document.getElementById("loading-message");
 
-        function startAPKDownload() {
-            const modal = document.getElementById('download-modal');
-            const apkFill = document.getElementById('apk-fill');
-            const apkPercent = document.getElementById('apk-percent');
-            const modalStatus = document.getElementById('modal-status');
+const messages = [
+    "ПОДГОТОВКА ОБНОВЛЕНИЯ...",
+    "ОБНОВЛЕНИЕ ИНТЕРФЕЙСА...",
+    "ПРОВЕРКА КОМПОНЕНТОВ...",
+    "НАСТРОЙКА НОВОГО APK...",
+    "KRAPINN RUSSIA ОБНОВЛЯЕТСЯ..."
+];
 
-            modal.classList.add('active');
-            let progress = 0;
-            const apkInterval = setInterval(() => {
-                progress += Math.floor(Math.random() * 8) + 3;
-                if (progress > 100) progress = 100;
+let value = 0;
+let messageIndex = 0;
 
-                apkFill.style.width = progress + '%';
-                apkPercent.textContent = progress + '%';
+function animateProgress() {
+    value += Math.random() * 2.5 + .3;
 
-                if (progress < 50) modalStatus.textContent = "Подключение...";
-                else modalStatus.textContent = "Загрузка KRAPINN_RUSSIA.apk...";
+    if (value >= 100) {
+        value = 8;
+        messageIndex = (messageIndex + 1) % messages.length;
+        message.textContent = messages[messageIndex];
+    }
 
-                if (progress >= 100) {
-                    clearInterval(apkInterval);
-                    setTimeout(() => {
-                        modal.classList.remove('active');
-                        window.location.href = "https://t.me/lame_mobile/297";
-                    }, 500);
-                }
-            }, 100);
-        }
-    </script>
+    progress.style.width = value + "%";
+    percent.textContent = "ОБНОВЛЕНИЕ";
+
+    setTimeout(animateProgress, 180);
+}
+
+animateProgress();
+</script>
+
 </body>
 </html>
-
