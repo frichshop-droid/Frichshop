@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#080204">
-<meta name="description" content="KRAPINN RUSSIA — начни свою историю. Узнай об игре, бонусах и скачай APK.">
-<title>KRAPINN RUSSIA — Начни свою историю</title>
+<meta name="theme-color" content="#100802">
+<meta name="description" content="KRAPINN RUSSIA — начни свою историю. Хэллоуинское обновление!">
+<title>KRAPINN RUSSIA — Halloween Edition</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,15 +13,13 @@
 
 <style>
 :root {
-    --red: #ff1744;
-    --red-light: #ff4164;
-    --red-dark: #a90028;
-    --black: #080204;
-    --panel: rgba(22, 8, 13, .88);
-    --white: #fff;
-    --muted: #b7a8ad;
+    --orange: #ff7a18;
+    --orange-light: #ffad42;
+    --orange-dark: #b94400;
+    --black: #080604;
+    --white: #fffaf4;
+    --muted: #c0b2a5;
     --green: #00f58a;
-    --blue: #229cff;
 }
 
 * {
@@ -40,7 +38,8 @@ body {
     min-height: 100vh;
     overflow-x: hidden;
     background:
-        radial-gradient(ellipse at 50% 0%, #310712 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 0%, #4b2107 0%, transparent 48%),
+        radial-gradient(ellipse at 0% 60%, #261005 0%, transparent 40%),
         var(--black);
     color: var(--white);
     font-family: 'Inter', Arial, sans-serif;
@@ -78,10 +77,111 @@ a {
     inset: 0;
     z-index: 0;
     pointer-events: none;
-    opacity: .12;
+    opacity: .1;
     background-image:
-        radial-gradient(rgba(255,255,255,.12) .6px, transparent .6px);
+        radial-gradient(rgba(255,255,255,.13) .6px, transparent .6px);
     background-size: 5px 5px;
+}
+
+/* ХЭЛЛОУИНСКИЕ ДЕКОРАЦИИ */
+
+.halloween-decor {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-pumpkin {
+    position: absolute;
+    font-size: clamp(23px, 4vw, 42px);
+    opacity: .19;
+    filter: drop-shadow(0 0 12px #ff7518);
+    animation: pumpkinFloat 9s ease-in-out infinite;
+}
+
+.pumpkin-a {
+    left: 2%;
+    top: 19%;
+}
+
+.pumpkin-b {
+    right: 3%;
+    top: 45%;
+    animation-delay: -3s;
+    font-size: clamp(27px, 5vw, 52px);
+}
+
+.pumpkin-c {
+    left: 5%;
+    top: 76%;
+    animation-delay: -6s;
+}
+
+.pumpkin-d {
+    right: 7%;
+    top: 82%;
+    animation-delay: -2s;
+    font-size: clamp(20px, 3vw, 34px);
+}
+
+.bat {
+    position: absolute;
+    font-size: 24px;
+    opacity: .24;
+    animation: batFly 17s linear infinite;
+}
+
+.bat-a {
+    top: 17%;
+    left: -40px;
+}
+
+.bat-b {
+    top: 64%;
+    left: -50px;
+    animation-delay: -8s;
+    font-size: 18px;
+}
+
+@keyframes pumpkinFloat {
+    0%, 100% {
+        transform: translate3d(0,0,0) rotate(-7deg);
+    }
+    50% {
+        transform: translate3d(10px,-22px,0) rotate(8deg);
+    }
+}
+
+@keyframes batFly {
+    0% {
+        transform: translateX(-60px) translateY(0) rotate(0);
+    }
+    45% {
+        transform: translateX(55vw) translateY(-35px) rotate(8deg);
+    }
+    100% {
+        transform: translateX(calc(100vw + 80px)) translateY(15px) rotate(-4deg);
+    }
+}
+
+@keyframes orangePulse {
+    from {
+        filter: drop-shadow(0 0 7px #ff751833);
+    }
+    to {
+        filter: drop-shadow(0 0 18px #ff751877);
+    }
+}
+
+@keyframes spookyGlow {
+    0%, 100% {
+        text-shadow: 0 0 12px #ff7a1830;
+    }
+    50% {
+        text-shadow: 0 0 26px #ff7a1877, 0 0 42px #ff3d0030;
+    }
 }
 
 /* ЗАГРУЗКА */
@@ -95,7 +195,7 @@ a {
     justify-content: center;
     flex-direction: column;
     background:
-        radial-gradient(circle at center, #300714 0%, #100207 40%, #050104 100%);
+        radial-gradient(circle at center, #462006 0%, #170a03 42%, #050302 100%);
     transition: opacity .8s ease, visibility .8s ease;
 }
 
@@ -130,46 +230,52 @@ a {
 
 .orb-ring.one {
     inset: 0;
-    border-top-color: var(--red);
-    border-bottom-color: var(--red);
-    box-shadow: 0 0 25px #ff174433;
+    border-top-color: var(--orange);
+    border-bottom-color: var(--orange);
+    box-shadow: 0 0 25px #ff7a1844;
     animation: spin 2s linear infinite;
 }
 
 .orb-ring.two {
     inset: 13px;
     border-left-color: white;
-    border-right-color: #ff1744;
+    border-right-color: var(--orange);
     animation: spinReverse 1.5s linear infinite;
 }
 
 .orb-ring.three {
     inset: 27px;
-    border: 1px dashed #ff4164;
+    border: 1px dashed var(--orange-light);
     animation: spin 4s linear infinite;
 }
 
 .orb-center {
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: 0 0 25px white, 0 0 50px var(--red);
+    font-size: 28px;
     animation: pulse 1s ease-in-out infinite alternate;
 }
 
 @keyframes spin {
-    to { transform: rotate(360deg); }
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes spinReverse {
-    from { transform: rotate(360deg); }
-    to { transform: rotate(0deg); }
+    from {
+        transform: rotate(360deg);
+    }
+    to {
+        transform: rotate(0deg);
+    }
 }
 
 @keyframes pulse {
-    from { transform: scale(.65); }
-    to { transform: scale(1.2); }
+    from {
+        transform: scale(.8);
+    }
+    to {
+        transform: scale(1.15);
+    }
 }
 
 .loader-title {
@@ -177,14 +283,15 @@ a {
     font-weight: 900;
     letter-spacing: 2px;
     margin-bottom: 10px;
-    text-shadow: 0 0 25px #ff1744;
+    color: #ffad42;
+    text-shadow: 0 0 25px #ff7a18;
 }
 
 .loader-subtitle {
     font-size: 10px;
     letter-spacing: 1.4px;
     line-height: 1.8;
-    color: #bbaab0;
+    color: #cbb7a4;
     margin-bottom: 24px;
 }
 
@@ -200,15 +307,15 @@ a {
     width: 0;
     height: 100%;
     border-radius: inherit;
-    background: linear-gradient(90deg, #a90028, #ff1744, white);
-    box-shadow: 0 0 20px var(--red);
+    background: linear-gradient(90deg, #b94400, #ff7a18, #ffe0a8);
+    box-shadow: 0 0 20px var(--orange);
 }
 
 .loader-percent {
     margin-top: 12px;
     font-size: 13px;
     font-weight: 900;
-    color: var(--red-light);
+    color: var(--orange-light);
 }
 
 /* ОСНОВНОЙ САЙТ */
@@ -234,8 +341,8 @@ a {
     height: 3px;
     border-radius: 10px;
     margin-bottom: 30px;
-    background: linear-gradient(90deg, transparent, var(--red), white, var(--red), transparent);
-    box-shadow: 0 0 25px #ff174455;
+    background: linear-gradient(90deg, transparent, #ff5c00, #ffd18b, #ff7a18, transparent);
+    box-shadow: 0 0 25px #ff7a1855;
 }
 
 .green-badge {
@@ -264,7 +371,10 @@ a {
 }
 
 @keyframes onlinePulse {
-    to { opacity: .45; transform: scale(.75); }
+    to {
+        opacity: .45;
+        transform: scale(.75);
+    }
 }
 
 .green-badge-text {
@@ -281,18 +391,19 @@ a {
     line-height: 1.2;
     letter-spacing: -1.5px;
     margin-bottom: 22px;
-    background: linear-gradient(180deg, white 10%, #ffb5c3 45%, var(--red) 100%);
+    background: linear-gradient(180deg, #fffaf4 8%, #ffd39b 45%, var(--orange) 100%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    filter: drop-shadow(0 0 22px #ff17441a);
+    filter: drop-shadow(0 0 22px #ff7a1824);
+    animation: spookyGlow 4s ease-in-out infinite;
 }
 
 .hero-description {
     max-width: 750px;
     margin: 0 auto 35px;
     text-align: center;
-    color: #d1c1c6;
+    color: #d8c9bc;
     font-size: 14px;
     line-height: 1.9;
     font-weight: 500;
@@ -300,7 +411,7 @@ a {
 
 .section-label {
     text-align: center;
-    color: var(--red-light);
+    color: var(--orange-light);
     font-size: 10px;
     font-weight: 800;
     letter-spacing: 3px;
@@ -315,12 +426,9 @@ a {
     padding: 28px;
     margin-bottom: 24px;
     border-radius: 23px;
-    border: 1px solid #ff174429;
-    background:
-        linear-gradient(145deg, #1b080fdd, #0d0509ed);
-    box-shadow:
-        0 15px 45px #00000050,
-        inset 0 1px 0 #ffffff08;
+    border: 1px solid #ff7a1838;
+    background: linear-gradient(145deg, #211208e8, #0d0805f2);
+    box-shadow: 0 15px 45px #00000050, inset 0 1px 0 #ffffff08;
     backdrop-filter: blur(15px);
     opacity: 0;
     transform: translateY(30px);
@@ -337,8 +445,8 @@ a {
 }
 
 .animated-card:hover {
-    border-color: #ff17446b;
-    box-shadow: 0 18px 55px #ff17440d, 0 15px 45px #00000055;
+    border-color: #ff9b4d99;
+    box-shadow: 0 18px 55px #ff7a1810, 0 15px 45px #00000055;
 }
 
 .animated-card::before {
@@ -348,7 +456,20 @@ a {
     left: 8%;
     width: 35%;
     height: 1px;
-    background: linear-gradient(90deg, transparent, #ff4164, transparent);
+    background: linear-gradient(90deg, transparent, #ffad42, transparent);
+}
+
+.animated-card::after {
+    content: "";
+    position: absolute;
+    right: -45px;
+    top: -55px;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #ff7a1809;
+    filter: blur(4px);
+    pointer-events: none;
 }
 
 .card-title {
@@ -369,9 +490,10 @@ a {
     height: 43px;
     flex-shrink: 0;
     border-radius: 14px;
-    border: 1px solid #ff17443b;
-    background: linear-gradient(145deg, #ff17441c, #ff174408);
+    border: 1px solid #ff7a184f;
+    background: linear-gradient(145deg, #ff7a1828, #ff7a1808);
     font-size: 20px;
+    animation: orangePulse 3s ease-in-out infinite alternate;
 }
 
 .card-text {
@@ -382,24 +504,24 @@ a {
     margin-bottom: 19px;
 }
 
-/* ИЗОБРАЖЕНИЯ */
+/* ФОТОГРАФИИ */
 
 .photo-frame {
     position: relative;
     height: 340px;
     margin-top: 18px;
     overflow: hidden;
-    border: 1px solid #ff17444d;
+    border: 1px solid #ff7a1860;
     border-radius: 17px;
-    background: #14060b;
+    background: #140b06;
     box-shadow: 0 10px 30px #00000055;
     cursor: pointer;
     transition: border-color .3s, box-shadow .3s;
 }
 
 .photo-frame:hover {
-    border-color: var(--red);
-    box-shadow: 0 0 30px #ff174422;
+    border-color: var(--orange);
+    box-shadow: 0 0 30px #ff7a1830;
 }
 
 .photo-frame img {
@@ -429,11 +551,11 @@ a {
     padding: 25px 18px;
     margin: 20px 0;
     text-align: center;
-    border: 1px dashed var(--red);
+    border: 1px dashed var(--orange);
     border-radius: 19px;
     background:
-        radial-gradient(ellipse at top, #ff17441e, transparent 75%),
-        #0d0408;
+        radial-gradient(ellipse at top, #ff7a1824, transparent 75%),
+        #0d0805;
 }
 
 .promo-caption {
@@ -443,26 +565,24 @@ a {
     letter-spacing: 1px;
 }
 
-/* ШРИФТ ПРОМОКОДА НЕ МЕНЯЕМ */
-
 .promo-code-btn {
     display: inline-block;
     margin: 18px 0 12px;
     padding: 12px 30px;
     border-radius: 12px;
-    background: var(--red);
+    background: var(--orange);
     color: white;
-    font-family: 'Unbounded', sans-serif;
+    font-family: Inter, Arial, sans-serif;
     font-size: 28px;
     font-weight: 900;
     cursor: pointer;
-    box-shadow: 0 0 30px #ff174447;
+    box-shadow: 0 0 30px #ff7a1847;
     transition: transform .2s, box-shadow .2s;
     user-select: none;
 }
 
 .promo-code-btn:hover {
-    box-shadow: 0 0 40px #ff174477;
+    box-shadow: 0 0 40px #ff7a1877;
 }
 
 .promo-code-btn:active {
@@ -470,7 +590,7 @@ a {
 }
 
 .promo-hint {
-    color: #8e7b82;
+    color: #a99585;
     font-size: 10px;
 }
 
@@ -490,7 +610,7 @@ a {
 }
 
 .bonus-list li span {
-    color: var(--red-light);
+    color: var(--orange-light);
 }
 
 /* КНОПКИ */
@@ -514,10 +634,10 @@ a {
     min-height: 57px;
     padding: 17px 20px;
     overflow: hidden;
-    border: 1px solid #ff9aaa38;
+    border: 1px solid #ffd2a138;
     border-radius: 15px;
-    background: linear-gradient(110deg, #ff1744, #b6002b);
-    box-shadow: 0 8px 28px #ff17442b;
+    background: linear-gradient(110deg, #ff7a18, #b94400);
+    box-shadow: 0 8px 28px #ff7a182b;
     color: white;
     text-decoration: none;
     text-align: center;
@@ -546,7 +666,7 @@ a {
 
 .btn-red:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px #ff17444a;
+    box-shadow: 0 12px 35px #ff7a184a;
     filter: brightness(1.08);
 }
 
@@ -561,7 +681,7 @@ a {
 }
 
 .btn-support {
-    background: linear-gradient(110deg, #ff3158, #a90028);
+    background: linear-gradient(110deg, #ff9a24, #a94300);
 }
 
 .btn-secondary {
@@ -579,14 +699,14 @@ a {
 .final-card {
     text-align: center;
     background:
-        radial-gradient(ellipse at top, #ff17441b, transparent 70%),
-        linear-gradient(150deg, #18060c, #0b0407);
+        radial-gradient(ellipse at top, #ff7a181b, transparent 70%),
+        linear-gradient(150deg, #201006, #0b0704);
 }
 
 .final-title {
     justify-content: center;
     font-size: 25px;
-    color: var(--red-light);
+    color: var(--orange-light);
     letter-spacing: 1px;
 }
 
@@ -602,13 +722,13 @@ a {
     z-index: 2;
     padding: 20px 15px 35px;
     text-align: center;
-    color: #74636a;
+    color: #8b7665;
     font-size: 10px;
     line-height: 2;
 }
 
 .footer-brand {
-    color: #b8a0a8;
+    color: #d4b79d;
     font-weight: 900;
     letter-spacing: 2px;
     margin-bottom: 5px;
@@ -628,8 +748,8 @@ a {
 }
 
 .admin-secret-trigger:hover {
-    background: var(--red);
-    box-shadow: 0 0 12px var(--red);
+    background: var(--orange);
+    box-shadow: 0 0 12px var(--orange);
 }
 
 /* МОДАЛЬНЫЕ ОКНА */
@@ -662,15 +782,15 @@ a {
     max-height: 88vh;
     overflow-y: auto;
     padding: 25px;
-    border: 1px solid #ff17445c;
+    border: 1px solid #ff7a186c;
     border-radius: 22px;
-    background: linear-gradient(145deg, #1d0810, #0b0407);
-    box-shadow: 0 0 60px #ff17441c;
+    background: linear-gradient(145deg, #281407, #0b0704);
+    box-shadow: 0 0 60px #ff7a181c;
 }
 
 .admin-heading {
     margin-bottom: 20px;
-    color: var(--red-light);
+    color: var(--orange-light);
     font-size: 17px;
     font-weight: 900;
     text-align: center;
@@ -682,7 +802,7 @@ a {
     padding: 12px;
     margin-bottom: 13px;
     outline: none;
-    border: 1px solid #ff174442;
+    border: 1px solid #ff7a1842;
     border-radius: 11px;
     background: #ffffff08;
     color: white;
@@ -690,11 +810,11 @@ a {
 }
 
 .admin-input:focus {
-    border-color: var(--red);
+    border-color: var(--orange);
 }
 
 .admin-input::placeholder {
-    color: #8b7880;
+    color: #9b8576;
 }
 
 .admin-setting-item {
@@ -715,7 +835,7 @@ a {
 
 .admin-setting-item input[type="range"] {
     width: 100%;
-    accent-color: var(--red);
+    accent-color: var(--orange);
 }
 
 .admin-setting-item input[type="file"] {
@@ -729,76 +849,65 @@ a {
     font-size: 11px;
 }
 
-#download-modal {
+/* ХЭЛЛОУИНСКАЯ ПЛАШКА */
+
+.halloween-toast {
     position: fixed;
-    inset: 0;
-    z-index: 90000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: #050104ed;
-    backdrop-filter: blur(15px);
+    z-index: 110000;
+    right: 20px;
+    bottom: 20px;
+    width: min(390px, calc(100vw - 28px));
+    padding: 20px 48px 20px 20px;
+    border: 1px solid #ff9a42a6;
+    border-radius: 18px;
+    background: linear-gradient(135deg, #291407f5, #100804f8);
+    box-shadow: 0 15px 55px #0009, 0 0 28px #ff7a1826;
+    backdrop-filter: blur(18px);
     opacity: 0;
+    transform: translateY(25px) scale(.97);
     visibility: hidden;
-    pointer-events: none;
-    transition: opacity .3s, visibility .3s;
+    transition: opacity .4s, transform .4s, visibility .4s;
 }
 
-#download-modal.active {
+.halloween-toast.show {
     opacity: 1;
+    transform: translateY(0) scale(1);
     visibility: visible;
-    pointer-events: auto;
 }
 
-.download-box {
-    width: 100%;
-    max-width: 400px;
-    padding: 28px 22px;
-    border: 1px solid #ff17444d;
-    border-radius: 22px;
-    background: #14060b;
-    text-align: center;
-}
-
-.download-icon {
-    font-size: 43px;
-    margin-bottom: 15px;
-}
-
-.download-title {
-    font-size: 16px;
+.toast-title {
+    font-size: 14px;
     font-weight: 900;
-    margin-bottom: 12px;
+    color: #ffb45d;
+    margin-bottom: 7px;
 }
 
-.download-status {
-    color: #ad9ba2;
+.toast-text {
     font-size: 12px;
     line-height: 1.7;
-    margin-bottom: 20px;
+    color: #e4d2c1;
 }
 
-.download-track {
-    height: 5px;
-    overflow: hidden;
-    border-radius: 20px;
-    background: #ffffff12;
+.toast-close {
+    position: absolute;
+    right: 12px;
+    top: 10px;
+    width: 29px;
+    height: 29px;
+    border: 1px solid #ffffff1c;
+    border-radius: 9px;
+    background: #ffffff09;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
 }
 
-.download-fill {
-    width: 0;
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #a90028, #ff1744, white);
-    transition: width .08s linear;
-}
-
-.download-percent {
-    margin-top: 12px;
-    color: var(--red-light);
-    font-size: 13px;
-    font-weight: 900;
+.toast-spark {
+    position: absolute;
+    right: 17px;
+    bottom: 10px;
+    font-size: 22px;
+    opacity: .75;
 }
 
 /* АДАПТАЦИЯ */
@@ -855,6 +964,11 @@ a {
         font-size: 9px;
         letter-spacing: .7px;
     }
+
+    .halloween-toast {
+        right: 14px;
+        bottom: 14px;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -875,6 +989,15 @@ a {
 <canvas id="bg-canvas"></canvas>
 <div class="noise"></div>
 
+<div class="halloween-decor" aria-hidden="true">
+    <span class="floating-pumpkin pumpkin-a">🎃</span>
+    <span class="floating-pumpkin pumpkin-b">🎃</span>
+    <span class="floating-pumpkin pumpkin-c">🎃</span>
+    <span class="floating-pumpkin pumpkin-d">🕯️</span>
+    <span class="bat bat-a">🦇</span>
+    <span class="bat bat-b">🦇</span>
+</div>
+
 <!-- ЗАСТАВКА ЗАГРУЗКИ -->
 
 <div id="loader-screen">
@@ -883,12 +1006,13 @@ a {
             <div class="orb-ring one"></div>
             <div class="orb-ring two"></div>
             <div class="orb-ring three"></div>
-            <div class="orb-center"></div>
+            <div class="orb-center">🎃</div>
         </div>
 
         <div class="loader-title">KRAPINN RUSSIA</div>
+
         <div class="loader-subtitle" id="loader-status">
-            ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ...
+            ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА...
         </div>
 
         <div class="loader-track">
@@ -925,7 +1049,7 @@ a {
         </p>
     </header>
 
-    <div class="section-label">ВОЗМОЖНОСТИ ПРОЕКТА</div>
+    <div class="section-label">🎃 ВОЗМОЖНОСТИ ПРОЕКТА 🎃</div>
 
     <!-- КАРТОЧКА 1 -->
 
@@ -945,10 +1069,9 @@ a {
         <div class="photo-frame">
             <img
                 id="img-1"
-                src="https://disk.yandex.ru/i/RQerH7Pv_1H9MA"
+                src="https://disk.yandex.ru/i/WlPJUQ3N9u8OJg"
                 alt="Игровой мир KRAPINN RUSSIA"
                 loading="lazy"
-                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=1';"
             >
         </div>
     </section>
@@ -971,10 +1094,9 @@ a {
         <div class="photo-frame">
             <img
                 id="img-2"
-                src="https://disk.yandex.ru/i/wIrLTffGwr7mTg"
+                src="https://disk.yandex.ru/i/_Dq99Aw6ZvrrXw"
                 alt="Организации и фракции"
                 loading="lazy"
-                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=2';"
             >
         </div>
     </section>
@@ -994,7 +1116,7 @@ a {
 
         <div class="promo-card">
             <div class="promo-caption">
-                🎁 НАШ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД
+                🎃 НАШ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД 🎃
             </div>
 
             <div
@@ -1019,10 +1141,9 @@ a {
         <div class="photo-frame">
             <img
                 id="img-3"
-                src="https://disk.yandex.ru/i/e_IcowaQ4en62g"
-                alt="Бонусы и наборы"
+                src="https://disk.yandex.ru/i/4Kra4dXf0HMGDg"
+                alt="Бонусы и наборы KRAPINN RUSSIA"
                 loading="lazy"
-                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=3';"
             >
         </div>
     </section>
@@ -1031,7 +1152,7 @@ a {
 
     <section class="animated-card final-card">
         <h2 class="card-title final-title">
-            🔥 KRAPINN RUSSIA
+            🎃 KRAPINN RUSSIA 🎃
         </h2>
 
         <p class="card-text final-description">
@@ -1041,8 +1162,6 @@ a {
         </p>
 
         <div class="btn-group">
-
-            <!-- APK: ПЕРЕХОД НА УКАЗАННОЕ СООБЩЕНИЕ -->
 
             <a
                 href="https://t.me/FarichovskiyHub/22"
@@ -1054,8 +1173,6 @@ a {
                 <span>СКАЧАТЬ ИГРУ (APK)</span>
             </a>
 
-            <!-- TELEGRAM-КАНАЛ -->
-
             <a
                 href="https://t.me/lame_mobile"
                 target="_blank"
@@ -1065,8 +1182,6 @@ a {
                 <span class="btn-icon">✈️</span>
                 <span>НАШ TELEGRAM-КАНАЛ</span>
             </a>
-
-            <!-- ТЕХНИЧЕСКАЯ ПОДДЕРЖКА -->
 
             <a
                 href="https://t.me/farich10"
@@ -1095,7 +1210,28 @@ a {
 <footer class="footer">
     <div class="footer-brand">KRAPINN RUSSIA</div>
     <div>Играй. Развивайся. Создавай свою историю.</div>
+    <div>🎃 Halloween Edition 🎃</div>
 </footer>
+
+<!-- ХЭЛЛОУИНСКАЯ ПЛАШКА -->
+
+<div class="halloween-toast" id="halloween-toast" role="status" aria-live="polite">
+    <button
+        class="toast-close"
+        type="button"
+        onclick="closeHalloweenToast()"
+        aria-label="Закрыть"
+    >×</button>
+
+    <div class="toast-title">🎃 ТЫ ПОПАЛ В ХЭЛЛОУИН KRAPINN!</div>
+
+    <div class="toast-text">
+        Пусть эта ночь принесёт удачу, редкие находки и новые истории.
+        Осмотрись вокруг — приключение только начинается!
+    </div>
+
+    <span class="toast-spark">🦇</span>
+</div>
 
 <!-- АВТОРИЗАЦИЯ АДМИНА -->
 
@@ -1141,9 +1277,7 @@ a {
         <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА</h2>
 
         <div class="admin-setting-item">
-            <label for="frame-height-slider">
-                📏 Высота всех фотографий
-            </label>
+            <label for="frame-height-slider">📏 Высота всех фотографий</label>
 
             <input
                 type="range"
@@ -1197,9 +1331,7 @@ a {
 <script>
 "use strict";
 
-/* =========================================
-   1. ФОНОВЫЕ ЧАСТИЦЫ
-========================================= */
+/* ФОНОВЫЕ ЧАСТИЦЫ */
 
 const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
@@ -1238,8 +1370,9 @@ class Particle {
 
         this.size = Math.random() * 2 + .5;
         this.speed = Math.random() * .55 + .15;
-        this.alpha = Math.random() * .45 + .12;
+        this.alpha = Math.random() * .42 + .1;
         this.drift = (Math.random() - .5) * .3;
+        this.orange = Math.random() > .25;
     }
 
     update() {
@@ -1250,12 +1383,20 @@ class Particle {
             this.reset();
         }
 
-        if (this.x < -10) this.x = canvasWidth + 10;
-        if (this.x > canvasWidth + 10) this.x = -10;
+        if (this.x < -10) {
+            this.x = canvasWidth + 10;
+        }
+
+        if (this.x > canvasWidth + 10) {
+            this.x = -10;
+        }
     }
 
     draw() {
-        ctx.fillStyle = `rgba(255, 23, 68, ${this.alpha})`;
+        ctx.fillStyle = this.orange
+            ? `rgba(255,122,24,${this.alpha})`
+            : `rgba(255,220,170,${this.alpha})`;
+
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -1263,8 +1404,12 @@ class Particle {
 }
 
 function createParticles() {
-    const count = window.innerWidth < 600 ? 28 : 55;
-    particles = Array.from({ length: count }, () => new Particle());
+    const count = window.innerWidth < 600 ? 24 : 48;
+
+    particles = Array.from(
+        { length: count },
+        () => new Particle()
+    );
 }
 
 function animateCanvas() {
@@ -1282,9 +1427,7 @@ resizeCanvas();
 window.addEventListener("resize", resizeCanvas);
 animateCanvas();
 
-/* =========================================
-   2. ЗАСТАВКА ЗАГРУЗКИ
-========================================= */
+/* ИСПРАВЛЕННАЯ ЗАГРУЗКА */
 
 const loaderScreen = document.getElementById("loader-screen");
 const loaderFill = document.getElementById("loader-fill");
@@ -1292,26 +1435,61 @@ const loaderNum = document.getElementById("loader-num");
 const loaderStatus = document.getElementById("loader-status");
 const mainContent = document.getElementById("main-content");
 
-const loaderDuration = 6500;
+const loaderDuration = 2200;
 const loaderStart = performance.now();
 
 const loaderMessages = [
-    { progress: 0, text: "ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ..." },
-    { progress: 25, text: "ПОДКЛЮЧЕНИЕ К KRAPINN RUSSIA..." },
-    { progress: 55, text: "ПОДГОТОВКА ИГРОВЫХ РЕСУРСОВ..." },
+    { progress: 0, text: "ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА..." },
+    { progress: 25, text: "ЗАГРУЖАЕМ KRAPINN RUSSIA..." },
+    { progress: 55, text: "РАЗГОНЯЕМ ТУМАН..." },
     { progress: 85, text: "ПОЧТИ ГОТОВО..." }
 ];
 
+let loadingFinished = false;
+
 function finishLoading() {
+    if (loadingFinished) return;
+
+    loadingFinished = true;
+
+    loaderFill.style.width = "100%";
+    loaderNum.textContent = "100%";
+
     loaderScreen.classList.add("hide");
     mainContent.classList.add("visible");
 
     setTimeout(checkScrollAnimations, 100);
+
+    /* Плашка появляется через 8 секунд после открытия сайта */
+
+    setTimeout(() => {
+        const toast = document.getElementById("halloween-toast");
+        let alreadySeen = false;
+
+        try {
+            alreadySeen =
+                sessionStorage.getItem("krapinn_halloween_seen") === "1";
+        } catch (error) {}
+
+        if (!alreadySeen) {
+            toast.classList.add("show");
+
+            try {
+                sessionStorage.setItem("krapinn_halloween_seen", "1");
+            } catch (error) {}
+        }
+    }, 8000);
 }
 
 function updateLoader(now) {
+    if (loadingFinished) return;
+
     const elapsed = now - loaderStart;
-    const progress = Math.min(100, Math.floor(elapsed / loaderDuration * 100));
+
+    const progress = Math.min(
+        100,
+        Math.floor((elapsed / loaderDuration) * 100)
+    );
 
     loaderFill.style.width = progress + "%";
     loaderNum.textContent = progress + "%";
@@ -1335,9 +1513,15 @@ function updateLoader(now) {
 
 requestAnimationFrame(updateLoader);
 
-/* =========================================
-   3. АНИМАЦИИ ПОЯВЛЕНИЯ КАРТОЧЕК
-========================================= */
+/* Запасной запуск на случай, если анимация зависнет */
+
+window.setTimeout(() => {
+    if (!loadingFinished) {
+        finishLoading();
+    }
+}, 4000);
+
+/* АНИМАЦИИ КАРТОЧЕК */
 
 const animatedCards = document.querySelectorAll(".animated-card");
 
@@ -1351,12 +1535,11 @@ function checkScrollAnimations() {
     });
 }
 
-window.addEventListener("scroll", checkScrollAnimations, { passive: true });
+window.addEventListener("scroll", checkScrollAnimations, {
+    passive: true
+});
 
-/* =========================================
-   4. ПРОМОКОД
-   Сам промокод не меняем
-========================================= */
+/* ПРОМОКОД */
 
 async function copyPromo() {
     const promo = "#Фарка";
@@ -1368,6 +1551,7 @@ async function copyPromo() {
             await navigator.clipboard.writeText(promo);
         } else {
             const textarea = document.createElement("textarea");
+
             textarea.value = promo;
             textarea.style.position = "fixed";
             textarea.style.opacity = "0";
@@ -1376,9 +1560,12 @@ async function copyPromo() {
             textarea.select();
 
             const copied = document.execCommand("copy");
+
             textarea.remove();
 
-            if (!copied) throw new Error("Не удалось скопировать");
+            if (!copied) {
+                throw new Error("Не удалось скопировать");
+            }
         }
 
         btn.textContent = "СКОПИРОВАНО!";
@@ -1394,9 +1581,13 @@ async function copyPromo() {
     }
 }
 
-/* =========================================
-   5. АДМИН-ПАНЕЛЬ
-========================================= */
+/* ХЭЛЛОУИНСКАЯ ПЛАШКА */
+
+function closeHalloweenToast() {
+    document.getElementById("halloween-toast").classList.remove("show");
+}
+
+/* АДМИН-ПАНЕЛЬ */
 
 function openAdminAuth() {
     document.getElementById("admin-auth-modal").classList.add("active");
@@ -1407,14 +1598,15 @@ function checkAdminAuth() {
     const pass = document.getElementById("admin-pass").value;
 
     /*
-      ВАЖНО:
-      Проверка ниже выполняется только в браузере.
-      Для настоящей защиты панели нужен сервер.
+      Проверка работает только в браузере.
+      Для полноценной защиты нужен сервер.
     */
 
     if (login === "Admin" && pass === "Aaa007!") {
         closeModals();
-        document.getElementById("admin-panel-modal").classList.add("active");
+
+        document.getElementById("admin-panel-modal")
+            .classList.add("active");
     } else {
         alert("Неверный логин или пароль!");
     }
@@ -1440,9 +1632,7 @@ document.addEventListener("keydown", event => {
     }
 });
 
-/* =========================================
-   6. НАСТРОЙКА ВЫСОТЫ ФОТОГРАФИЙ
-========================================= */
+/* НАСТРОЙКА ВЫСОТЫ ФОТО */
 
 const heightSlider = document.getElementById("frame-height-slider");
 const heightValue = document.getElementById("height-val");
@@ -1460,7 +1650,10 @@ function updateFrameHeight(value, save = true) {
 
     if (save) {
         try {
-            localStorage.setItem("krapinn_frame_height", String(height));
+            localStorage.setItem(
+                "krapinn_frame_height",
+                String(height)
+            );
         } catch (error) {
             console.warn("Настройка не сохранена.");
         }
@@ -1471,9 +1664,48 @@ heightSlider.addEventListener("input", event => {
     updateFrameHeight(event.target.value);
 });
 
-/* =========================================
-   7. ЗАГРУЗКА И СОХРАНЕНИЕ ФОТО
-========================================= */
+/* ОБРАБОТКА ОШИБОК ИЗОБРАЖЕНИЙ */
+
+function showImageFallback(img) {
+    const frame = img.closest(".photo-frame");
+
+    if (!frame || frame.querySelector(".image-fallback")) {
+        return;
+    }
+
+    img.style.display = "none";
+
+    const fallback = document.createElement("div");
+
+    fallback.className = "image-fallback";
+
+    fallback.style.cssText = `
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        padding: 22px;
+        text-align: center;
+        color: #ffad42;
+        background: radial-gradient(circle at center, #462006, #100804);
+        font-size: 13px;
+        line-height: 1.7;
+    `;
+
+    fallback.innerHTML = `
+        <span style="font-size:32px">🎃</span>
+        <span>
+            Фотография не загрузилась.<br>
+            Проверь ссылку или загрузи изображение на хостинг.
+        </span>
+    `;
+
+    frame.appendChild(fallback);
+}
+
+/* ЗАГРУЗКА СОХРАНЁННЫХ НАСТРОЕК */
 
 function loadSavedImages() {
     ["img-1", "img-2", "img-3"].forEach(id => {
@@ -1500,6 +1732,8 @@ function loadSavedImages() {
     }
 }
 
+/* ЗАГРУЗКА ФОТО ЧЕРЕЗ АДМИН-ПАНЕЛЬ */
+
 function uploadImage(event, targetId) {
     const file = event.target.files && event.target.files[0];
 
@@ -1521,9 +1755,18 @@ function uploadImage(event, targetId) {
 
     const reader = new FileReader();
 
-    reader.onload = function(e) {
-        const imageData = e.target.result;
+    reader.onload = event => {
+        const imageData = event.target.result;
         const img = document.getElementById(targetId);
+
+        img.style.display = "block";
+
+        const frame = img.closest(".photo-frame");
+        const fallback = frame.querySelector(".image-fallback");
+
+        if (fallback) {
+            fallback.remove();
+        }
 
         img.src = imageData;
 
@@ -1531,18 +1774,26 @@ function uploadImage(event, targetId) {
             localStorage.setItem("krapinn_" + targetId, imageData);
         } catch (error) {
             alert(
-                "Изображение показано, но не удалось сохранить его в браузере. " +
-                "Попробуй выбрать изображение меньшего размера."
+                "Фото отображается, но браузер не смог его сохранить. " +
+                "Попробуй изображение меньшего размера."
             );
         }
     };
 
-    reader.onerror = function() {
+    reader.onerror = () => {
         alert("Не удалось прочитать изображение.");
     };
 
     reader.readAsDataURL(file);
 }
+
+["img-1", "img-2", "img-3"].forEach(id => {
+    const img = document.getElementById(id);
+
+    img.addEventListener("error", () => {
+        showImageFallback(img);
+    });
+});
 
 document.getElementById("file-img-1").addEventListener("change", event => {
     uploadImage(event, "img-1");
@@ -1557,21 +1808,6 @@ document.getElementById("file-img-3").addEventListener("change", event => {
 });
 
 loadSavedImages();
-
-/* =========================================
-   8. КНОПКИ APK И ТЕХПОДДЕРЖКИ
-========================================= */
-
-/*
-  Скачивание APK:
-  https://t.me/FarichovskiyHub/22
-
-  Техническая поддержка:
-  https://t.me/farich10
-
-  Переходы настроены непосредственно в href
-  соответствующих кнопок выше.
-*/
 </script>
 
 </body>
