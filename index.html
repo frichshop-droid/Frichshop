@@ -4,382 +4,867 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#080204">
-<title>KRAPINN RUSSIA — Обновление</title>
+<meta name="description" content="KRAPINN RUSSIA — начни свою историю. Узнай об игре, бонусах и скачай APK.">
+<title>KRAPINN RUSSIA — Начни свою историю</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
     --red: #ff1744;
-    --dark-red: #9e0026;
-    --bg: #070205;
+    --red-light: #ff4164;
+    --red-dark: #a90028;
+    --black: #080204;
+    --panel: rgba(22, 8, 13, .88);
+    --white: #fff;
+    --muted: #b7a8ad;
+    --green: #00f58a;
+    --blue: #229cff;
 }
 
 * {
+    box-sizing: border-box;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 20px;
 }
 
 body {
     min-height: 100vh;
     overflow-x: hidden;
-    overflow-y: auto;
-    background: var(--bg);
-    color: white;
+    background:
+        radial-gradient(ellipse at 50% 0%, #310712 0%, transparent 50%),
+        var(--black);
+    color: var(--white);
     font-family: 'Inter', Arial, sans-serif;
 }
 
-canvas {
+button,
+input {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    color: inherit;
+}
+
+a {
+    color: inherit;
+}
+
+#bg-canvas {
     position: fixed;
     inset: 0;
     width: 100%;
     height: 100%;
+    z-index: 0;
     pointer-events: none;
 }
 
-#particles {
-    z-index: 0;
-}
-
-.scanlines {
+.noise {
     position: fixed;
     inset: 0;
-    z-index: 1;
-    pointer-events: none;
-    opacity: .13;
-    background: repeating-linear-gradient(
-        to bottom,
-        transparent 0px,
-        transparent 3px,
-        #ff1744 4px
-    );
-    animation: scan 8s linear infinite;
-}
-
-@keyframes scan {
-    from { transform: translateY(-20px); }
-    to { transform: translateY(20px); }
-}
-
-.red-light {
-    position: fixed;
-    width: 500px;
-    height: 500px;
-    top: 50%;
-    left: 50%;
     z-index: 0;
     pointer-events: none;
-    transform: translate(-50%, -50%);
-    background: radial-gradient(circle, #ff174414 0%, transparent 70%);
-    animation: glow 3s ease-in-out infinite alternate;
+    opacity: .12;
+    background-image:
+        radial-gradient(rgba(255,255,255,.12) .6px, transparent .6px);
+    background-size: 5px 5px;
 }
 
-@keyframes glow {
-    from { opacity: .45; transform: translate(-50%, -50%) scale(.8); }
-    to { opacity: 1; transform: translate(-50%, -50%) scale(1.25); }
+/* ЗАГРУЗКА */
+
+#loader-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at center, #300714 0%, #100207 40%, #050104 100%);
+    transition: opacity .8s ease, visibility .8s ease;
 }
 
-.page {
-    position: relative;
-    z-index: 2;
-    width: min(760px, 100%);
-    min-height: 100vh;
-    margin: auto;
-    padding: 32px 20px;
+#loader-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.loader-content {
+    width: min(340px, 88vw);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
     text-align: center;
 }
 
-.top-status {
-    display: inline-flex;
+.orb {
+    width: 115px;
+    height: 115px;
+    position: relative;
+    display: grid;
+    place-items: center;
+    margin-bottom: 32px;
+}
+
+.orb-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid transparent;
+}
+
+.orb-ring.one {
+    inset: 0;
+    border-top-color: var(--red);
+    border-bottom-color: var(--red);
+    box-shadow: 0 0 25px #ff174433;
+    animation: spin 2s linear infinite;
+}
+
+.orb-ring.two {
+    inset: 13px;
+    border-left-color: white;
+    border-right-color: #ff1744;
+    animation: spinReverse 1.5s linear infinite;
+}
+
+.orb-ring.three {
+    inset: 27px;
+    border: 1px dashed #ff4164;
+    animation: spin 4s linear infinite;
+}
+
+.orb-center {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 0 25px white, 0 0 50px var(--red);
+    animation: pulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes spinReverse {
+    from { transform: rotate(360deg); }
+    to { transform: rotate(0deg); }
+}
+
+@keyframes pulse {
+    from { transform: scale(.65); }
+    to { transform: scale(1.2); }
+}
+
+.loader-title {
+    font-size: 21px;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    text-shadow: 0 0 25px #ff1744;
+}
+
+.loader-subtitle {
+    font-size: 10px;
+    letter-spacing: 1.4px;
+    line-height: 1.8;
+    color: #bbaab0;
+    margin-bottom: 24px;
+}
+
+.loader-track {
+    width: 100%;
+    height: 5px;
+    overflow: hidden;
+    border-radius: 50px;
+    background: #ffffff12;
+}
+
+.loader-progress {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #a90028, #ff1744, white);
+    box-shadow: 0 0 20px var(--red);
+}
+
+.loader-percent {
+    margin-top: 12px;
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--red-light);
+}
+
+/* ОСНОВНОЙ САЙТ */
+
+.wrapper {
+    position: relative;
+    z-index: 2;
+    width: min(900px, 100%);
+    margin: 0 auto;
+    padding: 35px 20px 65px;
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .8s ease, transform .8s ease;
+}
+
+.wrapper.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.top-line {
+    width: 100%;
+    height: 3px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    background: linear-gradient(90deg, transparent, var(--red), white, var(--red), transparent);
+    box-shadow: 0 0 25px #ff174455;
+}
+
+.green-badge {
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
-    padding: 11px 17px;
-    border: 1px solid #ff174450;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto 25px;
+    padding: 10px 18px;
+    border: 1px solid #00f58a55;
     border-radius: 50px;
-    background: #ff17440b;
-    color: #ff738e;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    animation: fadeIn .8s ease both;
+    background: #00f58a0b;
+    box-shadow: 0 0 25px #00f58a0b;
 }
 
-.status-dot {
+.green-dot {
     width: 8px;
     height: 8px;
+    flex-shrink: 0;
     border-radius: 50%;
-    background: var(--red);
-    box-shadow: 0 0 15px var(--red);
-    animation: blink .8s ease-in-out infinite alternate;
+    background: var(--green);
+    box-shadow: 0 0 12px var(--green);
+    animation: onlinePulse 1.4s infinite alternate;
 }
 
-@keyframes blink {
-    from { opacity: .3; }
-    to { opacity: 1; }
+@keyframes onlinePulse {
+    to { opacity: .45; transform: scale(.75); }
 }
 
-.brand {
-    position: relative;
-    margin-top: 35px;
-    font-size: clamp(30px, 7vw, 61px);
-    font-weight: 900;
-    letter-spacing: -2px;
-    line-height: 1.15;
-    color: white;
-    text-shadow: 0 0 30px #ff174438;
-    animation: brandIn 1s cubic-bezier(.2,.8,.2,1) both;
-}
-
-.brand span {
-    display: block;
-    color: var(--red);
-    text-shadow: 0 0 35px #ff174466;
-}
-
-@keyframes brandIn {
-    from { opacity: 0; transform: translateY(25px) scale(.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
-}
-
-.divider {
-    width: min(350px, 80%);
-    height: 2px;
-    margin: 25px auto;
-    background: linear-gradient(90deg, transparent, var(--red), white, var(--red), transparent);
-    box-shadow: 0 0 20px #ff174466;
-    animation: divider 2s ease-in-out infinite alternate;
-}
-
-@keyframes divider {
-    from { opacity: .4; transform: scaleX(.75); }
-    to { opacity: 1; transform: scaleX(1); }
-}
-
-.headline {
-    font-size: clamp(17px, 4vw, 26px);
-    font-weight: 900;
-    line-height: 1.4;
-    letter-spacing: .5px;
-    animation: fadeIn 1s .2s both;
-}
-
-.headline .red {
-    color: var(--red);
-}
-
-.description {
-    max-width: 570px;
-    margin-top: 17px;
-    color: #b9a9af;
-    font-size: 13px;
-    line-height: 2;
-    animation: fadeIn 1s .4s both;
-}
-
-.system-card {
-    width: 100%;
-    max-width: 530px;
-    margin-top: 28px;
-    padding: 22px;
-    border: 1px solid #ff17442b;
-    border-radius: 18px;
-    background: linear-gradient(140deg, #1b080fdf, #0d0509ed);
-    box-shadow: 0 15px 60px #00000060, inset 0 1px #ffffff09;
-    animation: cardIn .8s .5s both;
-}
-
-@keyframes cardIn {
-    from { opacity: 0; transform: translateY(25px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.card-label {
-    color: #ff6b86;
+.green-badge-text {
     font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 2px;
-    margin-bottom: 18px;
+    font-weight: 800;
+    letter-spacing: 1.3px;
+    color: var(--green);
 }
 
-.task {
+.hero-title {
+    text-align: center;
+    font-size: clamp(28px, 5vw, 47px);
+    font-weight: 900;
+    line-height: 1.2;
+    letter-spacing: -1.5px;
+    margin-bottom: 22px;
+    background: linear-gradient(180deg, white 10%, #ffb5c3 45%, var(--red) 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    filter: drop-shadow(0 0 22px #ff17441a);
+}
+
+.hero-description {
+    max-width: 750px;
+    margin: 0 auto 35px;
+    text-align: center;
+    color: #d1c1c6;
+    font-size: 14px;
+    line-height: 1.9;
+    font-weight: 500;
+}
+
+.section-label {
+    text-align: center;
+    color: var(--red-light);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 3px;
+    margin-bottom: 25px;
+}
+
+/* КАРТОЧКИ */
+
+.animated-card {
+    position: relative;
+    overflow: hidden;
+    padding: 28px;
+    margin-bottom: 24px;
+    border-radius: 23px;
+    border: 1px solid #ff174429;
+    background:
+        linear-gradient(145deg, #1b080fdd, #0d0509ed);
+    box-shadow:
+        0 15px 45px #00000050,
+        inset 0 1px 0 #ffffff08;
+    backdrop-filter: blur(15px);
+    opacity: 0;
+    transform: translateY(30px);
+    transition:
+        opacity .65s ease,
+        transform .65s ease,
+        border-color .3s ease,
+        box-shadow .3s ease;
+}
+
+.animated-card.in-view {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animated-card:hover {
+    border-color: #ff17446b;
+    box-shadow: 0 18px 55px #ff17440d, 0 15px 45px #00000055;
+}
+
+.animated-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 8%;
+    width: 35%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #ff4164, transparent);
+}
+
+.card-title {
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 13px 0;
-    text-align: left;
-    border-bottom: 1px solid #ffffff0c;
+    margin-bottom: 15px;
+    font-size: 19px;
+    font-weight: 800;
+    line-height: 1.4;
+    letter-spacing: -.3px;
 }
 
-.task:last-child {
-    border-bottom: none;
-}
-
-.task-icon {
+.card-title .icon {
     display: grid;
     place-items: center;
-    width: 39px;
-    height: 39px;
+    width: 43px;
+    height: 43px;
     flex-shrink: 0;
-    border: 1px solid #ff17442c;
-    border-radius: 12px;
-    background: #ff174410;
-    font-size: 18px;
+    border-radius: 14px;
+    border: 1px solid #ff17443b;
+    background: linear-gradient(145deg, #ff17441c, #ff174408);
+    font-size: 20px;
 }
 
-.task-text {
-    flex: 1;
+.card-text {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.9;
+    font-weight: 500;
+    margin-bottom: 19px;
 }
 
-.task-title {
-    font-size: 12px;
-    font-weight: 800;
-    margin-bottom: 5px;
+/* ИЗОБРАЖЕНИЯ */
+
+.photo-frame {
+    position: relative;
+    height: 340px;
+    margin-top: 18px;
+    overflow: hidden;
+    border: 1px solid #ff17444d;
+    border-radius: 17px;
+    background: #14060b;
+    box-shadow: 0 10px 30px #00000055;
+    cursor: pointer;
+    transition: border-color .3s, box-shadow .3s;
 }
 
-.task-desc {
-    color: #94838a;
-    font-size: 10px;
-    line-height: 1.6;
+.photo-frame:hover {
+    border-color: var(--red);
+    box-shadow: 0 0 30px #ff174422;
 }
 
-.task-status {
-    color: #ff607e;
-    font-size: 9px;
-    font-weight: 900;
-    letter-spacing: .5px;
-    white-space: nowrap;
-}
-
-.loading-section {
+.photo-frame img {
+    display: block;
     width: 100%;
-    max-width: 530px;
-    margin-top: 25px;
-    text-align: left;
-    animation: fadeIn 1s .8s both;
+    height: 100%;
+    object-fit: cover;
+    transition: transform .5s ease;
 }
 
-.loading-info {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
-    font-size: 10px;
+.photo-frame:hover img {
+    transform: scale(1.035);
+}
+
+.photo-frame::after {
+    content: "";
+    position: absolute;
+    inset: 55% 0 0;
+    pointer-events: none;
+    background: linear-gradient(transparent, #08020450);
+}
+
+/* ПРОМОКОД */
+
+.promo-card {
+    position: relative;
+    padding: 25px 18px;
+    margin: 20px 0;
+    text-align: center;
+    border: 1px dashed var(--red);
+    border-radius: 19px;
+    background:
+        radial-gradient(ellipse at top, #ff17441e, transparent 75%),
+        #0d0408;
+}
+
+.promo-caption {
+    font-size: 11px;
+    color: #e6d8dc;
     font-weight: 800;
     letter-spacing: 1px;
 }
 
-.loading-info span:first-child {
-    color: #bba8af;
+/* ШРИФТ ПРОМОКОДА НЕ МЕНЯЕМ */
+
+.promo-code-btn {
+    display: inline-block;
+    margin: 18px 0 12px;
+    padding: 12px 30px;
+    border-radius: 12px;
+    background: var(--red);
+    color: white;
+    font-family: 'Unbounded', sans-serif;
+    font-size: 28px;
+    font-weight: 900;
+    cursor: pointer;
+    box-shadow: 0 0 30px #ff174447;
+    transition: transform .2s, box-shadow .2s;
+    user-select: none;
 }
 
-#percent {
-    color: var(--red);
+.promo-code-btn:hover {
+    box-shadow: 0 0 40px #ff174477;
 }
 
-.progress-track {
-    width: 100%;
-    height: 5px;
-    border-radius: 20px;
-    overflow: hidden;
-    background: #ffffff10;
+.promo-code-btn:active {
+    transform: scale(.95);
 }
 
-.progress-fill {
-    width: 0%;
-    height: 100%;
-    border-radius: inherit;
-    background: linear-gradient(90deg, var(--dark-red), var(--red), #ffb0c0);
-    box-shadow: 0 0 18px #ff174477;
-    animation: progressGlow 1.2s infinite alternate;
-}
-
-@keyframes progressGlow {
-    from { filter: brightness(.8); }
-    to { filter: brightness(1.4); }
-}
-
-.loading-caption {
-    margin-top: 10px;
-    color: #78656d;
+.promo-hint {
+    color: #8e7b82;
     font-size: 10px;
 }
 
-.telegram-btn {
-    display: inline-flex;
+.bonus-list {
+    display: grid;
+    gap: 10px;
+    margin: 20px auto 0;
+    width: fit-content;
+    list-style: none;
+    text-align: left;
+}
+
+.bonus-list li {
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.bonus-list li span {
+    color: var(--red-light);
+}
+
+/* КНОПКИ */
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 13px;
+    margin-top: 25px;
+}
+
+.btn-red {
+    position: relative;
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
-    max-width: 350px;
-    min-height: 54px;
-    margin-top: 28px;
-    padding: 15px 20px;
-    border: 1px solid #48baff55;
-    border-radius: 14px;
-    background: linear-gradient(110deg, #168bd4, #07528f);
-    box-shadow: 0 8px 35px #168bd422;
+    max-width: 420px;
+    min-height: 57px;
+    padding: 17px 20px;
+    overflow: hidden;
+    border: 1px solid #ff9aaa38;
+    border-radius: 15px;
+    background: linear-gradient(110deg, #ff1744, #b6002b);
+    box-shadow: 0 8px 28px #ff17442b;
     color: white;
     text-decoration: none;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: .6px;
-    transition: transform .25s, box-shadow .25s;
-    animation: fadeIn 1s 1s both;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .5px;
+    cursor: pointer;
+    transition: transform .25s, box-shadow .25s, filter .25s;
 }
 
-.telegram-btn:hover {
+.btn-red::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -120%;
+    width: 70%;
+    height: 100%;
+    transform: skewX(-25deg);
+    background: linear-gradient(90deg, transparent, #ffffff20, transparent);
+    transition: left .6s ease;
+}
+
+.btn-red:hover::before {
+    left: 150%;
+}
+
+.btn-red:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 40px #168bd455;
+    box-shadow: 0 12px 35px #ff17444a;
+    filter: brightness(1.08);
 }
 
-.telegram-btn:active {
+.btn-red:active {
     transform: scale(.98);
 }
 
-.footer {
-    margin-top: 32px;
-    color: #66535b;
-    font-size: 9px;
-    line-height: 2;
+.btn-telegram {
+    border-color: #48baff50;
+    background: linear-gradient(110deg, #168bd4, #07528f);
+    box-shadow: 0 8px 28px #168bd425;
+}
+
+.btn-support {
+    background: linear-gradient(110deg, #ff3158, #a90028);
+}
+
+.btn-secondary {
+    background: linear-gradient(110deg, #292027, #171015);
+    border-color: #ffffff19;
+    box-shadow: none;
+}
+
+.btn-icon {
+    font-size: 19px;
+}
+
+/* ФИНАЛЬНЫЙ БЛОК */
+
+.final-card {
+    text-align: center;
+    background:
+        radial-gradient(ellipse at top, #ff17441b, transparent 70%),
+        linear-gradient(150deg, #18060c, #0b0407);
+}
+
+.final-title {
+    justify-content: center;
+    font-size: 25px;
+    color: var(--red-light);
     letter-spacing: 1px;
-    animation: fadeIn 1s 1.2s both;
 }
 
-.footer strong {
-    color: #a28b94;
+.final-description {
+    max-width: 550px;
+    margin: 0 auto;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* ПОДВАЛ */
+
+.footer {
+    position: relative;
+    z-index: 2;
+    padding: 20px 15px 35px;
+    text-align: center;
+    color: #74636a;
+    font-size: 10px;
+    line-height: 2;
 }
 
-@media (max-width: 480px) {
-    .page {
-        padding: 28px 15px;
+.footer-brand {
+    color: #b8a0a8;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 5px;
+}
+
+/* СЕКРЕТНАЯ КНОПКА */
+
+.admin-secret-trigger {
+    position: relative;
+    z-index: 10;
+    width: 9px;
+    height: 9px;
+    margin: 30px auto 0;
+    border-radius: 50%;
+    background: #ffffff0c;
+    cursor: pointer;
+}
+
+.admin-secret-trigger:hover {
+    background: var(--red);
+    box-shadow: 0 0 12px var(--red);
+}
+
+/* МОДАЛЬНЫЕ ОКНА */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: #000000d9;
+    backdrop-filter: blur(15px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .25s, visibility .25s;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.admin-box {
+    width: 100%;
+    max-width: 440px;
+    max-height: 88vh;
+    overflow-y: auto;
+    padding: 25px;
+    border: 1px solid #ff17445c;
+    border-radius: 22px;
+    background: linear-gradient(145deg, #1d0810, #0b0407);
+    box-shadow: 0 0 60px #ff17441c;
+}
+
+.admin-heading {
+    margin-bottom: 20px;
+    color: var(--red-light);
+    font-size: 17px;
+    font-weight: 900;
+    text-align: center;
+}
+
+.admin-input {
+    width: 100%;
+    min-height: 45px;
+    padding: 12px;
+    margin-bottom: 13px;
+    outline: none;
+    border: 1px solid #ff174442;
+    border-radius: 11px;
+    background: #ffffff08;
+    color: white;
+    font-size: 13px;
+}
+
+.admin-input:focus {
+    border-color: var(--red);
+}
+
+.admin-input::placeholder {
+    color: #8b7880;
+}
+
+.admin-setting-item {
+    padding: 15px;
+    margin-bottom: 13px;
+    border: 1px solid #ffffff12;
+    border-radius: 13px;
+    background: #ffffff05;
+}
+
+.admin-setting-item label {
+    display: block;
+    margin-bottom: 10px;
+    color: #e8dce0;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.admin-setting-item input[type="range"] {
+    width: 100%;
+    accent-color: var(--red);
+}
+
+.admin-setting-item input[type="file"] {
+    font-size: 11px;
+}
+
+#height-val {
+    margin-top: 8px;
+    text-align: right;
+    color: #bcaab1;
+    font-size: 11px;
+}
+
+#download-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 90000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: #050104ed;
+    backdrop-filter: blur(15px);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity .3s, visibility .3s;
+}
+
+#download-modal.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.download-box {
+    width: 100%;
+    max-width: 400px;
+    padding: 28px 22px;
+    border: 1px solid #ff17444d;
+    border-radius: 22px;
+    background: #14060b;
+    text-align: center;
+}
+
+.download-icon {
+    font-size: 43px;
+    margin-bottom: 15px;
+}
+
+.download-title {
+    font-size: 16px;
+    font-weight: 900;
+    margin-bottom: 12px;
+}
+
+.download-status {
+    color: #ad9ba2;
+    font-size: 12px;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.download-track {
+    height: 5px;
+    overflow: hidden;
+    border-radius: 20px;
+    background: #ffffff12;
+}
+
+.download-fill {
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, #a90028, #ff1744, white);
+    transition: width .08s linear;
+}
+
+.download-percent {
+    margin-top: 12px;
+    color: var(--red-light);
+    font-size: 13px;
+    font-weight: 900;
+}
+
+/* АДАПТАЦИЯ */
+
+@media (max-width: 600px) {
+    .wrapper {
+        padding: 22px 14px 45px;
     }
 
-    .system-card {
-        padding: 17px;
+    .hero-title {
+        font-size: clamp(26px, 8vw, 38px);
+        letter-spacing: -.8px;
     }
 
-    .task-status {
-        font-size: 8px;
+    .hero-description {
+        font-size: 13px;
     }
 
-    .description {
+    .animated-card {
+        padding: 19px;
+        border-radius: 19px;
+    }
+
+    .card-title {
+        font-size: 16px;
+    }
+
+    .card-title .icon {
+        width: 39px;
+        height: 39px;
+    }
+
+    .card-text {
         font-size: 12px;
     }
 
-    .task-title {
+    .photo-frame {
+        height: 230px;
+        border-radius: 13px;
+    }
+
+    .promo-code-btn {
+        font-size: 26px;
+        padding: 12px 25px;
+    }
+
+    .btn-red {
+        min-height: 54px;
+        padding: 15px;
         font-size: 11px;
+    }
+
+    .green-badge-text {
+        font-size: 9px;
+        letter-spacing: .7px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
     }
 }
 </style>
@@ -387,211 +872,706 @@ canvas {
 
 <body>
 
-<canvas id="particles"></canvas>
-<div class="scanlines"></div>
-<div class="red-light"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
 
-<main class="page">
+<!-- ЗАСТАВКА ЗАГРУЗКИ -->
 
-    <div class="top-status">
-        <span class="status-dot"></span>
-        SYSTEM UPDATE IN PROGRESS
+<div id="loader-screen">
+    <div class="loader-content">
+        <div class="orb">
+            <div class="orb-ring one"></div>
+            <div class="orb-ring two"></div>
+            <div class="orb-ring three"></div>
+            <div class="orb-center"></div>
+        </div>
+
+        <div class="loader-title">KRAPINN RUSSIA</div>
+        <div class="loader-subtitle" id="loader-status">
+            ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ...
+        </div>
+
+        <div class="loader-track">
+            <div class="loader-progress" id="loader-fill"></div>
+        </div>
+
+        <div class="loader-percent" id="loader-num">0%</div>
+    </div>
+</div>
+
+<!-- ОСНОВНОЙ САЙТ -->
+
+<main class="wrapper" id="main-content">
+
+    <div class="top-line"></div>
+
+    <div class="green-badge">
+        <span class="green-dot"></span>
+        <span class="green-badge-text">СЕРВЕР АКТИВЕН / ОНЛАЙН</span>
     </div>
 
-    <h1 class="brand">
-        KRAPINN
-        <span>RUSSIA</span>
-    </h1>
+    <header>
+        <h1 class="hero-title">
+            KRAPINN RUSSIA
+            <br>
+            Начни свою историю!
+        </h1>
 
-    <div class="divider"></div>
+        <p class="hero-description">
+            Добро пожаловать в KRAPINN RUSSIA — многопользовательскую
+            онлайн-игру в стиле GTA, где ты можешь построить собственную
+            историю, выбрать свой путь и стать настоящей легендой
+            виртуального мира!
+        </p>
+    </header>
 
-    <h2 class="headline">
-        САЙТ ВРЕМЕННО <span class="red">НЕДОСТУПЕН</span>
-    </h2>
+    <div class="section-label">ВОЗМОЖНОСТИ ПРОЕКТА</div>
 
-    <p class="description">
-        Мы готовим масштабное обновление проекта. Сейчас меняется дизайн,
-        обновляются кнопки и разделы, а также добавляется информация о
-        новой версии APK. Скоро сайт вернётся в обновлённом виде.
-        Спасибо, что остаётесь с KRAPINN RUSSIA.
-    </p>
+    <!-- КАРТОЧКА 1 -->
 
-    <section class="system-card">
+    <section class="animated-card">
+        <h2 class="card-title">
+            <span class="icon">🚘</span>
+            Огромный открытый мир
+        </h2>
 
-        <div class="card-label">
-            // СТАТУС ТЕХНИЧЕСКИХ РАБОТ
-        </div>
+        <p class="card-text">
+            Исследуй города, покупай автомобили, обзаводись недвижимостью,
+            зарабатывай деньги и развивай своего персонажа.
+            Твой путь начинается с нуля — и только от тебя зависит,
+            кем ты станешь в этом мире.
+        </p>
 
-        <div class="task">
-            <div class="task-icon">🎨</div>
-            <div class="task-text">
-                <div class="task-title">Обновление дизайна</div>
-                <div class="task-desc">Новый интерфейс, эффекты и анимации</div>
-            </div>
-            <div class="task-status">В РАБОТЕ</div>
-        </div>
-
-        <div class="task">
-            <div class="task-icon">📦</div>
-            <div class="task-text">
-                <div class="task-title">Новая версия APK</div>
-                <div class="task-desc">Обновление информации о скачивании игры</div>
-            </div>
-            <div class="task-status">В РАБОТЕ</div>
-        </div>
-
-        <div class="task">
-            <div class="task-icon">🔗</div>
-            <div class="task-text">
-                <div class="task-title">Проверка кнопок и ссылок</div>
-                <div class="task-desc">Исправление переходов и ошибок сайта</div>
-            </div>
-            <div class="task-status">В РАБОТЕ</div>
-        </div>
-
-        <div class="task">
-            <div class="task-icon">⚙️</div>
-            <div class="task-text">
-                <div class="task-title">Подготовка новых функций</div>
-                <div class="task-desc">Дополнительные изменения и улучшения</div>
-            </div>
-            <div class="task-status">В РАБОТЕ</div>
-        </div>
-
-    </section>
-
-    <section class="loading-section">
-        <div class="loading-info">
-            <span id="loading-message">ПОДГОТОВКА ОБНОВЛЕНИЯ...</span>
-            <span id="percent">ЗАГРУЗКА</span>
-        </div>
-
-        <div class="progress-track">
-            <div class="progress-fill" id="progress"></div>
-        </div>
-
-        <div class="loading-caption">
-            Мы работаем над обновлением. Точная дата открытия пока не объявлена.
+        <div class="photo-frame">
+            <img
+                id="img-1"
+                src="https://disk.yandex.ru/i/RQerH7Pv_1H9MA"
+                alt="Игровой мир KRAPINN RUSSIA"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=1';"
+            >
         </div>
     </section>
 
-    <a
-        class="telegram-btn"
-        href="https://t.me/lame_mobile"
-        target="_blank"
-        rel="noopener noreferrer"
-    >
-        <span>✈️</span>
-        СЛЕДИТЬ ЗА НОВОСТЯМИ В TELEGRAM
-    </a>
+    <!-- КАРТОЧКА 2 -->
 
-    <footer class="footer">
-        <strong>KRAPINN RUSSIA</strong><br>
-        ОБНОВЛЕНИЕ ПРОЕКТА · ТЕХНИЧЕСКИЕ РАБОТЫ
-    </footer>
+    <section class="animated-card">
+        <h2 class="card-title">
+            <span class="icon">⚖️</span>
+            Выбирай свой путь
+        </h2>
+
+        <p class="card-text">
+            Хочешь защищать закон? Вступай в государственные организации:
+            МВД, ГИБДД, ФСБ и другие структуры. Предпочитаешь криминальную
+            жизнь? Собирай команду, участвуй в игровых конфликтах и
+            прокладывай путь к вершине криминального мира!
+        </p>
+
+        <div class="photo-frame">
+            <img
+                id="img-2"
+                src="https://disk.yandex.ru/i/wIrLTffGwr7mTg"
+                alt="Организации и фракции"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=2';"
+            >
+        </div>
+    </section>
+
+    <!-- КАРТОЧКА 3: ПРОМОКОД -->
+
+    <section class="animated-card">
+        <h2 class="card-title">
+            <span class="icon">🎁</span>
+            Бонус для новичков
+        </h2>
+
+        <p class="card-text">
+            Начни игру с приятными подарками и получи бонусы на старте.
+            Используй промокод и забирай свои награды!
+        </p>
+
+        <div class="promo-card">
+            <div class="promo-caption">
+                🎁 НАШ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД
+            </div>
+
+            <div
+                class="promo-code-btn"
+                id="promo-btn"
+                role="button"
+                tabindex="0"
+                onclick="copyPromo()"
+                onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyPromo();}"
+            >#Фарка</div>
+
+            <div class="promo-hint" id="promo-hint">
+                Нажми на промокод, чтобы скопировать
+            </div>
+
+            <ul class="bonus-list">
+                <li>💎 <span>+1 000 BC</span></li>
+                <li>💵 <span>+20 000 000</span> игровой валюты</li>
+            </ul>
+        </div>
+
+        <div class="photo-frame">
+            <img
+                id="img-3"
+                src="https://disk.yandex.ru/i/e_IcowaQ4en62g"
+                alt="Бонусы и наборы"
+                loading="lazy"
+                onerror="this.onerror=null;this.src='https://picsum.photos/800/450?random=3';"
+            >
+        </div>
+    </section>
+
+    <!-- СКАЧИВАНИЕ И TELEGRAM -->
+
+    <section class="animated-card final-card">
+        <h2 class="card-title final-title">
+            🔥 KRAPINN RUSSIA
+        </h2>
+
+        <p class="card-text final-description">
+            Твоя история, твои правила, твой путь к успеху!
+            Присоединяйся к проекту, знакомься с игроками и начинай
+            собственное приключение.
+        </p>
+
+        <div class="btn-group">
+
+            <!-- APK: ПЕРЕХОД НА УКАЗАННОЕ СООБЩЕНИЕ -->
+
+            <a
+                href="https://t.me/FarichovskiyHub/22"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-red"
+            >
+                <span class="btn-icon">📦</span>
+                <span>СКАЧАТЬ ИГРУ (APK)</span>
+            </a>
+
+            <!-- TELEGRAM-КАНАЛ -->
+
+            <a
+                href="https://t.me/lame_mobile"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-red btn-telegram"
+            >
+                <span class="btn-icon">✈️</span>
+                <span>НАШ TELEGRAM-КАНАЛ</span>
+            </a>
+
+            <!-- ТЕХНИЧЕСКАЯ ПОДДЕРЖКА -->
+
+            <a
+                href="https://t.me/farich10"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-red btn-support"
+            >
+                <span class="btn-icon">🛠️</span>
+                <span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
+            </a>
+
+        </div>
+    </section>
+
+    <!-- СКРЫТЫЙ ВХОД В АДМИН-ПАНЕЛЬ -->
+
+    <div
+        class="admin-secret-trigger"
+        onclick="openAdminAuth()"
+        title="Admin"
+        aria-label="Открыть вход в панель управления"
+    ></div>
 
 </main>
 
-<script>
-/* АНИМИРОВАННЫЕ ЧАСТИЦЫ */
+<footer class="footer">
+    <div class="footer-brand">KRAPINN RUSSIA</div>
+    <div>Играй. Развивайся. Создавай свою историю.</div>
+</footer>
 
-const canvas = document.getElementById("particles");
+<!-- АВТОРИЗАЦИЯ АДМИНА -->
+
+<div class="modal-overlay" id="admin-auth-modal">
+    <div class="admin-box">
+        <h2 class="admin-heading">🔐 ПАНЕЛЬ УПРАВЛЕНИЯ</h2>
+
+        <input
+            type="text"
+            id="admin-login"
+            class="admin-input"
+            placeholder="Логин"
+            autocomplete="username"
+        >
+
+        <input
+            type="password"
+            id="admin-pass"
+            class="admin-input"
+            placeholder="Пароль"
+            autocomplete="current-password"
+        >
+
+        <button
+            type="button"
+            class="btn-red"
+            onclick="checkAdminAuth()"
+        >ВОЙТИ</button>
+
+        <button
+            type="button"
+            class="btn-red btn-secondary"
+            style="margin-top:10px"
+            onclick="closeModals()"
+        >ОТМЕНА</button>
+    </div>
+</div>
+
+<!-- АДМИН-ПАНЕЛЬ -->
+
+<div class="modal-overlay" id="admin-panel-modal">
+    <div class="admin-box">
+        <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА</h2>
+
+        <div class="admin-setting-item">
+            <label for="frame-height-slider">
+                📏 Высота всех фотографий
+            </label>
+
+            <input
+                type="range"
+                id="frame-height-slider"
+                min="150"
+                max="600"
+                value="340"
+            >
+
+            <div id="height-val">340px</div>
+        </div>
+
+        <div class="admin-setting-item">
+            <label for="file-img-1">🖼 Фото №1 — игровой мир</label>
+            <input
+                type="file"
+                id="file-img-1"
+                accept="image/*"
+                class="admin-input"
+            >
+        </div>
+
+        <div class="admin-setting-item">
+            <label for="file-img-2">🖼 Фото №2 — организации</label>
+            <input
+                type="file"
+                id="file-img-2"
+                accept="image/*"
+                class="admin-input"
+            >
+        </div>
+
+        <div class="admin-setting-item">
+            <label for="file-img-3">🖼 Фото №3 — бонусы</label>
+            <input
+                type="file"
+                id="file-img-3"
+                accept="image/*"
+                class="admin-input"
+            >
+        </div>
+
+        <button
+            type="button"
+            class="btn-red"
+            onclick="closeModals()"
+        >СОХРАНИТЬ И ЗАКРЫТЬ</button>
+    </div>
+</div>
+
+<script>
+"use strict";
+
+/* =========================================
+   1. ФОНОВЫЕ ЧАСТИЦЫ
+========================================= */
+
+const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
 
-let width = 0;
-let height = 0;
 let particles = [];
+let canvasWidth = 0;
+let canvasHeight = 0;
 
-function resize() {
+function resizeCanvas() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    width = window.innerWidth;
-    height = window.innerHeight;
+    canvasWidth = window.innerWidth;
+    canvasHeight = window.innerHeight;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
+    canvas.width = canvasWidth * dpr;
+    canvas.height = canvasHeight * dpr;
+
+    canvas.style.width = canvasWidth + "px";
+    canvas.style.height = canvasHeight + "px";
 
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    const count = width < 600 ? 45 : 85;
-
-    particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 2 + .4,
-        speed: Math.random() * .7 + .15,
-        drift: (Math.random() - .5) * .5,
-        opacity: Math.random() * .65 + .15
-    }));
+    createParticles();
 }
 
-function drawParticles() {
-    ctx.clearRect(0, 0, width, height);
+class Particle {
+    constructor() {
+        this.reset(true);
+    }
 
-    for (const p of particles) {
-        p.y -= p.speed;
-        p.x += p.drift;
+    reset(initial = false) {
+        this.x = Math.random() * canvasWidth;
+        this.y = initial
+            ? Math.random() * canvasHeight
+            : canvasHeight + 10;
 
-        if (p.y < -10) {
-            p.y = height + 10;
-            p.x = Math.random() * width;
+        this.size = Math.random() * 2 + .5;
+        this.speed = Math.random() * .55 + .15;
+        this.alpha = Math.random() * .45 + .12;
+        this.drift = (Math.random() - .5) * .3;
+    }
+
+    update() {
+        this.y -= this.speed;
+        this.x += this.drift;
+
+        if (this.y < -10) {
+            this.reset();
         }
 
-        if (p.x < -10) p.x = width + 10;
-        if (p.x > width + 10) p.x = -10;
+        if (this.x < -10) this.x = canvasWidth + 10;
+        if (this.x > canvasWidth + 10) this.x = -10;
+    }
 
+    draw() {
+        ctx.fillStyle = `rgba(255, 23, 68, ${this.alpha})`;
         ctx.beginPath();
-        ctx.fillStyle = `rgba(255, 23, 68, ${p.opacity})`;
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = "#ff1744";
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
     }
-
-    ctx.shadowBlur = 0;
-    requestAnimationFrame(drawParticles);
 }
 
-resize();
-window.addEventListener("resize", resize);
-drawParticles();
+function createParticles() {
+    const count = window.innerWidth < 600 ? 28 : 55;
+    particles = Array.from({ length: count }, () => new Particle());
+}
 
-/* АНИМАЦИЯ ИНДИКАТОРА.
-   Это декоративная анимация, а не реальный процент обновления. */
+function animateCanvas() {
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
-const progress = document.getElementById("progress");
-const percent = document.getElementById("percent");
-const message = document.getElementById("loading-message");
-
-const messages = [
-    "ПОДГОТОВКА ОБНОВЛЕНИЯ...",
-    "ОБНОВЛЕНИЕ ИНТЕРФЕЙСА...",
-    "ПРОВЕРКА КОМПОНЕНТОВ...",
-    "НАСТРОЙКА НОВОГО APK...",
-    "KRAPINN RUSSIA ОБНОВЛЯЕТСЯ..."
-];
-
-let value = 0;
-let messageIndex = 0;
-
-function animateProgress() {
-    value += Math.random() * 2.5 + .3;
-
-    if (value >= 100) {
-        value = 8;
-        messageIndex = (messageIndex + 1) % messages.length;
-        message.textContent = messages[messageIndex];
+    for (const particle of particles) {
+        particle.update();
+        particle.draw();
     }
 
-    progress.style.width = value + "%";
-    percent.textContent = "ОБНОВЛЕНИЕ";
-
-    setTimeout(animateProgress, 180);
+    requestAnimationFrame(animateCanvas);
 }
 
-animateProgress();
+resizeCanvas();
+window.addEventListener("resize", resizeCanvas);
+animateCanvas();
+
+/* =========================================
+   2. ЗАСТАВКА ЗАГРУЗКИ
+========================================= */
+
+const loaderScreen = document.getElementById("loader-screen");
+const loaderFill = document.getElementById("loader-fill");
+const loaderNum = document.getElementById("loader-num");
+const loaderStatus = document.getElementById("loader-status");
+const mainContent = document.getElementById("main-content");
+
+const loaderDuration = 6500;
+const loaderStart = performance.now();
+
+const loaderMessages = [
+    { progress: 0, text: "ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ..." },
+    { progress: 25, text: "ПОДКЛЮЧЕНИЕ К KRAPINN RUSSIA..." },
+    { progress: 55, text: "ПОДГОТОВКА ИГРОВЫХ РЕСУРСОВ..." },
+    { progress: 85, text: "ПОЧТИ ГОТОВО..." }
+];
+
+function finishLoading() {
+    loaderScreen.classList.add("hide");
+    mainContent.classList.add("visible");
+
+    setTimeout(checkScrollAnimations, 100);
+}
+
+function updateLoader(now) {
+    const elapsed = now - loaderStart;
+    const progress = Math.min(100, Math.floor(elapsed / loaderDuration * 100));
+
+    loaderFill.style.width = progress + "%";
+    loaderNum.textContent = progress + "%";
+
+    let currentMessage = loaderMessages[0];
+
+    for (const message of loaderMessages) {
+        if (progress >= message.progress) {
+            currentMessage = message;
+        }
+    }
+
+    loaderStatus.textContent = currentMessage.text;
+
+    if (progress < 100) {
+        requestAnimationFrame(updateLoader);
+    } else {
+        finishLoading();
+    }
+}
+
+requestAnimationFrame(updateLoader);
+
+/* =========================================
+   3. АНИМАЦИИ ПОЯВЛЕНИЯ КАРТОЧЕК
+========================================= */
+
+const animatedCards = document.querySelectorAll(".animated-card");
+
+function checkScrollAnimations() {
+    const trigger = window.innerHeight * .92;
+
+    animatedCards.forEach(card => {
+        if (card.getBoundingClientRect().top < trigger) {
+            card.classList.add("in-view");
+        }
+    });
+}
+
+window.addEventListener("scroll", checkScrollAnimations, { passive: true });
+
+/* =========================================
+   4. ПРОМОКОД
+   Сам промокод не меняем
+========================================= */
+
+async function copyPromo() {
+    const promo = "#Фарка";
+    const btn = document.getElementById("promo-btn");
+    const hint = document.getElementById("promo-hint");
+
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(promo);
+        } else {
+            const textarea = document.createElement("textarea");
+            textarea.value = promo;
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+
+            document.body.appendChild(textarea);
+            textarea.select();
+
+            const copied = document.execCommand("copy");
+            textarea.remove();
+
+            if (!copied) throw new Error("Не удалось скопировать");
+        }
+
+        btn.textContent = "СКОПИРОВАНО!";
+        hint.textContent = "Промокод скопирован в буфер обмена";
+
+        setTimeout(() => {
+            btn.textContent = "#Фарка";
+            hint.textContent = "Нажми на промокод, чтобы скопировать";
+        }, 1800);
+
+    } catch (error) {
+        hint.textContent = "Промокод: #Фарка";
+    }
+}
+
+/* =========================================
+   5. АДМИН-ПАНЕЛЬ
+========================================= */
+
+function openAdminAuth() {
+    document.getElementById("admin-auth-modal").classList.add("active");
+}
+
+function checkAdminAuth() {
+    const login = document.getElementById("admin-login").value;
+    const pass = document.getElementById("admin-pass").value;
+
+    /*
+      ВАЖНО:
+      Проверка ниже выполняется только в браузере.
+      Для настоящей защиты панели нужен сервер.
+    */
+
+    if (login === "Admin" && pass === "Aaa007!") {
+        closeModals();
+        document.getElementById("admin-panel-modal").classList.add("active");
+    } else {
+        alert("Неверный логин или пароль!");
+    }
+}
+
+function closeModals() {
+    document.querySelectorAll(".modal-overlay").forEach(modal => {
+        modal.classList.remove("active");
+    });
+}
+
+document.querySelectorAll(".modal-overlay").forEach(modal => {
+    modal.addEventListener("click", event => {
+        if (event.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+});
+
+document.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+        closeModals();
+    }
+});
+
+/* =========================================
+   6. НАСТРОЙКА ВЫСОТЫ ФОТОГРАФИЙ
+========================================= */
+
+const heightSlider = document.getElementById("frame-height-slider");
+const heightValue = document.getElementById("height-val");
+
+function updateFrameHeight(value, save = true) {
+    const height = Number(value);
+
+    if (!Number.isFinite(height)) return;
+
+    document.querySelectorAll(".photo-frame").forEach(frame => {
+        frame.style.height = height + "px";
+    });
+
+    heightValue.textContent = height + "px";
+
+    if (save) {
+        try {
+            localStorage.setItem("krapinn_frame_height", String(height));
+        } catch (error) {
+            console.warn("Настройка не сохранена.");
+        }
+    }
+}
+
+heightSlider.addEventListener("input", event => {
+    updateFrameHeight(event.target.value);
+});
+
+/* =========================================
+   7. ЗАГРУЗКА И СОХРАНЕНИЕ ФОТО
+========================================= */
+
+function loadSavedImages() {
+    ["img-1", "img-2", "img-3"].forEach(id => {
+        try {
+            const saved = localStorage.getItem("krapinn_" + id);
+
+            if (saved) {
+                document.getElementById(id).src = saved;
+            }
+        } catch (error) {
+            console.warn("Не удалось загрузить сохранённое фото.");
+        }
+    });
+
+    try {
+        const savedHeight = localStorage.getItem("krapinn_frame_height");
+
+        if (savedHeight) {
+            heightSlider.value = savedHeight;
+            updateFrameHeight(savedHeight, false);
+        }
+    } catch (error) {
+        console.warn("Не удалось загрузить настройки.");
+    }
+}
+
+function uploadImage(event, targetId) {
+    const file = event.target.files && event.target.files[0];
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+        alert("Выбери файл изображения.");
+        event.target.value = "";
+        return;
+    }
+
+    const maxSize = 2 * 1024 * 1024;
+
+    if (file.size > maxSize) {
+        alert("Размер изображения должен быть не больше 2 МБ.");
+        event.target.value = "";
+        return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const imageData = e.target.result;
+        const img = document.getElementById(targetId);
+
+        img.src = imageData;
+
+        try {
+            localStorage.setItem("krapinn_" + targetId, imageData);
+        } catch (error) {
+            alert(
+                "Изображение показано, но не удалось сохранить его в браузере. " +
+                "Попробуй выбрать изображение меньшего размера."
+            );
+        }
+    };
+
+    reader.onerror = function() {
+        alert("Не удалось прочитать изображение.");
+    };
+
+    reader.readAsDataURL(file);
+}
+
+document.getElementById("file-img-1").addEventListener("change", event => {
+    uploadImage(event, "img-1");
+});
+
+document.getElementById("file-img-2").addEventListener("change", event => {
+    uploadImage(event, "img-2");
+});
+
+document.getElementById("file-img-3").addEventListener("change", event => {
+    uploadImage(event, "img-3");
+});
+
+loadSavedImages();
+
+/* =========================================
+   8. КНОПКИ APK И ТЕХПОДДЕРЖКИ
+========================================= */
+
+/*
+  Скачивание APK:
+  https://t.me/FarichovskiyHub/22
+
+  Техническая поддержка:
+  https://t.me/farich10
+
+  Переходы настроены непосредственно в href
+  соответствующих кнопок выше.
+*/
 </script>
 
 </body>
