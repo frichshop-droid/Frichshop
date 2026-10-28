@@ -3,1419 +3,1907 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#090303">
-<title>KRAPINN RUSSIA — Технические работы</title>
+<meta name="theme-color" content="#100306">
+<meta name="description" content="HORIZON RUSSIA — начни свою историю. Halloween Edition.">
+<title>HORIZON RUSSIA — Halloween Edition</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 :root {
-    --red: #ff202d;
-    --red2: #b50016;
-    --red3: #ff5964;
-    --black: #090303;
-    --panel: rgba(22, 7, 9, .82);
-    --white: #fff5f5;
-    --muted: #ad9195;
-    --line: rgba(255, 32, 45, .2);
+ --red:#ff1838;
+ --red-light:#ff5369;
+ --red-dark:#8f001b;
+ --red-deep:#39000c;
+ --black:#070306;
+ --panel:rgba(23,5,11,.91);
+ --white:#fff5f7;
+ --muted:#c8aeb5;
+ --green:#00f58a;
+ --blue:#229cff;
 }
 
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+ box-sizing:border-box;
+ margin:0;
+ padding:0;
+ -webkit-tap-highlight-color:transparent;
 }
 
 html {
-    scroll-behavior: smooth;
-    background: var(--black);
+ scroll-behavior:smooth;
+ scroll-padding-top:20px;
 }
 
 body {
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-    color: var(--white);
-    background:
-        radial-gradient(ellipse at 50% 30%, rgba(125, 0, 12, .2), transparent 55%),
-        radial-gradient(ellipse at 0% 100%, rgba(255, 20, 40, .08), transparent 35%),
-        #090303;
-    font-family: 'Manrope', sans-serif;
+ min-height:100vh;
+ overflow-x:hidden;
+ background:
+  radial-gradient(ellipse at 50% 0%,#600819 0%,transparent 48%),
+  radial-gradient(ellipse at 0% 55%,#30040e 0%,transparent 42%),
+  radial-gradient(ellipse at 100% 90%,#27020b 0%,transparent 40%),
+  var(--black);
+ color:var(--white);
+ font-family:Inter,Arial,sans-serif;
 }
 
 body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    opacity: .14;
-    background-image:
-        linear-gradient(rgba(255, 40, 55, .08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 40, 55, .08) 1px, transparent 1px);
-    background-size: 55px 55px;
-    mask-image: linear-gradient(to bottom, black, transparent 85%);
-}
-
-#particles {
-    position: fixed;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 1;
-}
-
-.ambient {
-    position: fixed;
-    width: 450px;
-    height: 450px;
-    border-radius: 50%;
-    background: rgba(255, 0, 25, .09);
-    filter: blur(110px);
-    pointer-events: none;
-    z-index: 0;
-    animation: ambientMove 12s ease-in-out infinite alternate;
-}
-
-.ambient.a {
-    top: -180px;
-    left: -160px;
-}
-
-.ambient.b {
-    right: -200px;
-    bottom: -160px;
-    animation-delay: -6s;
-}
-
-.page {
-    width: 100%;
-    max-width: 1100px;
-    padding: 28px 22px 20px;
-    margin: auto;
-    position: relative;
-    z-index: 2;
-}
-
-/* HEADER */
-
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    margin-bottom: 45px;
-    animation: slideDown .9s ease both;
-}
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-}
-
-.brand-logo {
-    width: 48px;
-    height: 48px;
-    border: 1px solid rgba(255, 32, 45, .55);
-    background: linear-gradient(145deg, #ff2636, #7b0010);
-    border-radius: 15px;
-    display: grid;
-    place-items: center;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 19px;
-    font-weight: 900;
-    color: white;
-    box-shadow: 0 0 28px rgba(255, 32, 45, .24);
-    animation: logoPulse 3s ease-in-out infinite;
-}
-
-.brand-name {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 14px;
-    font-weight: 900;
-    letter-spacing: 1.5px;
-}
-
-.brand-caption {
-    margin-top: 5px;
-    color: #8f7478;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 2.5px;
-}
+ content:"";
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+ background:linear-gradient(115deg,transparent 35%,#ff183805 50%,transparent 65%);
+ background-size:200% 100%;
+ animation:backgroundSweep 12s linear infinite;
+}
+
+button,input {
+ font:inherit;
+}
+
+button,a {
+ -webkit-tap-highlight-color:transparent;
+}
+
+button {
+ color:inherit;
+}
+
+a {
+ color:inherit;
+}
+
+::selection {
+ background:var(--red);
+ color:white;
+}
+
+#bg-canvas {
+ position:fixed;
+ inset:0;
+ width:100%;
+ height:100%;
+ z-index:0;
+ pointer-events:none;
+}
+
+.noise {
+ position:fixed;
+ inset:0;
+ z-index:0;
+ pointer-events:none;
+ opacity:.07;
+ background-image:radial-gradient(rgba(255,255,255,.15) .6px,transparent .6px);
+ background-size:5px 5px;
+}
+
+.halloween-decor {
+ position:fixed;
+ inset:0;
+ z-index:1;
+ pointer-events:none;
+ overflow:hidden;
+}
+
+.floating-pumpkin {
+ position:absolute;
+ font-size:clamp(25px,4vw,48px);
+ opacity:.22;
+ filter:drop-shadow(0 0 15px #ff1838);
+ animation:pumpkinFloat 8s ease-in-out infinite;
+}
+
+.pumpkin-a {left:2%;top:18%}
+.pumpkin-b {right:3%;top:43%;animation-delay:-3s;font-size:clamp(30px,5vw,56px)}
+.pumpkin-c {left:5%;top:76%;animation-delay:-5s}
+.pumpkin-d {right:7%;top:82%;animation-delay:-2s;font-size:clamp(22px,3vw,38px)}
+
+.bat {
+ position:absolute;
+ font-size:25px;
+ opacity:.28;
+ animation:batFly 19s linear infinite;
+}
+
+.bat-a {top:16%;left:-50px}
+.bat-b {top:64%;left:-50px;animation-delay:-9s;font-size:19px}
+
+@keyframes pumpkinFloat {
+ 0%,100% {transform:translate3d(0,0,0) rotate(-7deg)}
+ 50% {transform:translate3d(12px,-24px,0) rotate(8deg)}
+}
+
+@keyframes batFly {
+ 0% {transform:translateX(-60px) translateY(0)}
+ 45% {transform:translateX(55vw) translateY(-35px) rotate(8deg)}
+ 100% {transform:translateX(calc(100vw + 80px)) translateY(15px) rotate(-4deg)}
+}
+
+@keyframes backgroundSweep {
+ 0% {background-position:200% 0}
+ 100% {background-position:-200% 0}
+}
+
+@keyframes redPulse {
+ 0%,100% {filter:drop-shadow(0 0 8px #ff183829)}
+ 50% {filter:drop-shadow(0 0 25px #ff18388c)}
+}
+
+@keyframes titleGlow {
+ 0%,100% {text-shadow:0 0 15px #ff18382b}
+ 50% {text-shadow:0 0 30px #ff183880,0 0 60px #ff001e30}
+}
+
+@keyframes spin {
+ to {transform:rotate(360deg)}
+}
+
+@keyframes spinReverse {
+ from {transform:rotate(360deg)}
+ to {transform:rotate(0deg)}
+}
+
+@keyframes pulse {
+ from {transform:scale(.8)}
+ to {transform:scale(1.15)}
+}
+
+@keyframes onlinePulse {
+ to {opacity:.4;transform:scale(.75)}
+}
+
+@keyframes borderGlow {
+ 0%,100% {border-color:#ff18382e}
+ 50% {border-color:#ff1838a1}
+}
+
+@keyframes shine {
+ 0% {transform:translateX(-160%) skewX(-25deg)}
+ 100% {transform:translateX(240%) skewX(-25deg)}
+}
+
+@keyframes iconFloat {
+ 0%,100% {transform:translateY(0) rotate(0)}
+ 50% {transform:translateY(-4px) rotate(-4deg)}
+}
+
+/* =========================
+   ЗАГРУЗКА
+========================= */
+
+#loader-screen {
+ position:fixed;
+ inset:0;
+ z-index:99999;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ flex-direction:column;
+ background:
+  radial-gradient(circle at center,#4a0616 0%,#19030a 42%,#050204 100%);
+ transition:opacity .8s ease,visibility .8s ease;
+}
+
+#loader-screen.hide {
+ opacity:0;
+ visibility:hidden;
+ pointer-events:none;
+}
+
+.loader-content {
+ width:min(340px,88vw);
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ text-align:center;
+}
+
+.orb {
+ width:120px;
+ height:120px;
+ position:relative;
+ display:grid;
+ place-items:center;
+ margin-bottom:32px;
+}
+
+.orb-ring {
+ position:absolute;
+ border-radius:50%;
+ border:2px solid transparent;
+}
+
+.orb-ring.one {
+ inset:0;
+ border-top-color:var(--red);
+ border-bottom-color:var(--red);
+ box-shadow:0 0 30px #ff18384a;
+ animation:spin 2s linear infinite;
+}
+
+.orb-ring.two {
+ inset:13px;
+ border-left-color:white;
+ border-right-color:var(--red-light);
+ animation:spinReverse 1.5s linear infinite;
+}
+
+.orb-ring.three {
+ inset:27px;
+ border:1px dashed var(--red-light);
+ animation:spin 4s linear infinite;
+}
+
+.orb-center {
+ font-size:32px;
+ filter:drop-shadow(0 0 15px #ff1838);
+ animation:pulse 1s ease-in-out infinite alternate;
+}
 
-.status {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    border: 1px solid var(--line);
-    background: rgba(255, 32, 45, .055);
-    padding: 11px 15px;
-    border-radius: 50px;
-    color: #ff6973;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1px;
-}
-
-.status-dot {
-    width: 7px;
-    height: 7px;
-    flex-shrink: 0;
-    background: var(--red);
-    border-radius: 50%;
-    box-shadow: 0 0 13px var(--red);
-    animation: dotBlink 1.4s infinite;
-}
-
-/* HERO */
-
-.hero {
-    position: relative;
-    text-align: center;
-    padding: 32px 0 35px;
-}
-
-.eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 9px;
-    padding: 9px 15px;
-    border: 1px solid rgba(255, 32, 45, .28);
-    border-radius: 8px;
-    background: rgba(255, 32, 45, .06);
-    color: #ff6973;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    animation: fadeIn .8s .2s both;
-}
-
-.eyebrow-line {
-    width: 18px;
-    height: 1px;
-    background: var(--red);
-    box-shadow: 0 0 8px var(--red);
-}
-
-.hero-symbol {
-    width: 106px;
-    height: 106px;
-    margin: 31px auto 24px;
-    position: relative;
-    display: grid;
-    place-items: center;
-}
-
-.hero-symbol::before,
-.hero-symbol::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border: 1px solid rgba(255, 32, 45, .35);
-    border-radius: 29px;
-    transform: rotate(45deg);
-    animation: symbolRotate 14s linear infinite;
-}
-
-.hero-symbol::after {
-    inset: 10px;
-    border-color: rgba(255, 32, 45, .17);
-    animation-direction: reverse;
-    animation-duration: 10s;
-}
-
-.symbol-inner {
-    width: 69px;
-    height: 69px;
-    display: grid;
-    place-items: center;
-    border-radius: 22px;
-    background: linear-gradient(145deg, rgba(255, 32, 45, .22), rgba(80, 0, 8, .5));
-    border: 1px solid rgba(255, 32, 45, .4);
-    color: var(--red);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 24px;
-    font-weight: 900;
-    text-shadow: 0 0 20px rgba(255, 32, 45, .8);
-    box-shadow: 0 0 40px rgba(255, 32, 45, .13);
-    animation: heartPulse 1.65s ease-in-out infinite;
-}
-
-h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(29px, 5.4vw, 62px);
-    font-weight: 900;
-    line-height: 1.2;
-    letter-spacing: -1.8px;
-    text-transform: uppercase;
-}
-
-.title-line {
-    display: block;
-}
-
-.title-red {
-    margin-top: 5px;
-    color: var(--red);
-    text-shadow: 0 0 32px rgba(255, 32, 45, .24);
-}
-
-.animated-word {
-    display: inline-block;
-    white-space: nowrap;
-}
-
-.animated-word span {
-    display: inline-block;
-    animation: letterPulse 2.4s ease-in-out infinite;
-    animation-delay: calc(var(--i) * 0.055s);
-}
-
-.description {
-    max-width: 590px;
-    margin: 24px auto 0;
-    color: var(--muted);
-    font-size: 13px;
-    line-height: 2;
-    animation: fadeInUp .9s .4s both;
-}
-
-.description strong {
-    color: #fff;
-    font-weight: 800;
-}
-
-/* VISUAL LINE */
-
-.energy-line {
-    height: 1px;
-    width: 100%;
-    margin: 15px 0 35px;
-    background: linear-gradient(90deg, transparent, rgba(255, 32, 45, .28), transparent);
-    position: relative;
-    overflow: hidden;
-}
-
-.energy-line::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: -30%;
-    height: 100%;
-    width: 25%;
-    background: var(--red);
-    box-shadow: 0 0 12px 2px var(--red);
-    animation: energyTravel 3s linear infinite;
-}
-
-/* WORKS */
-
-.section-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 18px;
-}
-
-.section-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 1.1px;
-}
-
-.section-number {
-    color: #755258;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-}
-
-.work-grid {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
-}
-
-.work-card {
-    position: relative;
-    min-height: 170px;
-    padding: 19px 15px;
-    border-radius: 15px;
-    overflow: hidden;
-    background: linear-gradient(145deg, rgba(35, 10, 14, .85), rgba(15, 5, 7, .95));
-    border: 1px solid rgba(255, 32, 45, .14);
-    transition: transform .3s ease, border-color .3s ease, box-shadow .3s ease;
-    animation: cardAppear .7s both;
-}
-
-.work-card:nth-child(2) { animation-delay: .1s; }
-.work-card:nth-child(3) { animation-delay: .2s; }
-.work-card:nth-child(4) { animation-delay: .3s; }
-
-.work-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 15%;
-    right: 15%;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--red), transparent);
-    opacity: .7;
-}
-
-.work-card::after {
-    content: "";
-    position: absolute;
-    width: 110px;
-    height: 110px;
-    right: -60px;
-    bottom: -70px;
-    border-radius: 50%;
-    background: rgba(255, 32, 45, .1);
-    filter: blur(25px);
-    transition: transform .4s;
-}
-
-.work-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255, 32, 45, .5);
-    box-shadow: 0 12px 35px rgba(0, 0, 0, .3), 0 0 20px rgba(255, 32, 45, .05);
-}
-
-.work-card:hover::after {
-    transform: scale(1.7);
-}
-
-.work-icon {
-    width: 39px;
-    height: 39px;
-    display: grid;
-    place-items: center;
-    border-radius: 11px;
-    background: rgba(255, 32, 45, .09);
-    border: 1px solid rgba(255, 32, 45, .15);
-    font-size: 18px;
-    margin-bottom: 17px;
-    animation: iconBreathe 3s ease-in-out infinite;
-}
-
-.work-card:nth-child(2) .work-icon { animation-delay: .4s; }
-.work-card:nth-child(3) .work-icon { animation-delay: .8s; }
-.work-card:nth-child(4) .work-icon { animation-delay: 1.2s; }
-
-.work-card h3 {
-    font-size: 11px;
-    line-height: 1.6;
-    font-weight: 800;
-    margin-bottom: 7px;
-}
-
-.work-card p {
-    color: #9e8589;
-    font-size: 10px;
-    line-height: 1.8;
-}
-
-.work-status {
-    margin-top: 13px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    color: #ff6670;
-    font-size: 8px;
-    font-weight: 900;
-    letter-spacing: 1px;
-}
-
-.work-status i {
-    width: 5px;
-    height: 5px;
-    display: inline-block;
-    border-radius: 50%;
-    background: var(--red);
-    box-shadow: 0 0 7px var(--red);
-}
-
-/* COUNTDOWN */
-
-.countdown-panel {
-    position: relative;
-    margin-top: 34px;
-    padding: 26px 22px 23px;
-    border-radius: 19px;
-    border: 1px solid rgba(255, 32, 45, .28);
-    background:
-        radial-gradient(ellipse at 50% 0%, rgba(255, 32, 45, .1), transparent 65%),
-        linear-gradient(145deg, rgba(28, 7, 10, .95), rgba(13, 4, 6, .96));
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 10px 55px rgba(0, 0, 0, .25);
-}
-
-.countdown-panel::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(120deg, transparent, rgba(255, 32, 45, .4), transparent, rgba(255, 32, 45, .2), transparent);
-    background-size: 250% 250%;
-    animation: borderFlow 7s linear infinite;
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-}
-
-.countdown-heading {
-    color: #d8b8bd;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: 2.2px;
-    text-transform: uppercase;
-}
-
-.countdown-heading span {
-    color: var(--red);
-    margin-right: 7px;
-}
-
-.countdown {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 13px;
-    max-width: 620px;
-    margin: 24px auto 20px;
-    position: relative;
-}
-
-.time-box {
-    position: relative;
-    min-width: 0;
-    padding: 18px 7px 14px;
-    border: 1px solid rgba(255, 32, 45, .18);
-    border-radius: 13px;
-    background: linear-gradient(180deg, rgba(255, 32, 45, .065), rgba(255, 32, 45, .015));
-    transition: border-color .3s, transform .3s;
-}
-
-.time-box:hover {
-    border-color: rgba(255, 32, 45, .55);
-    transform: translateY(-3px);
-}
-
-.time-value {
-    display: block;
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(23px, 4.5vw, 43px);
-    line-height: 1.2;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
-    color: #fff;
-    text-shadow: 0 0 20px rgba(255, 32, 45, .16);
-    transition: color .2s;
-}
-
-.time-value.changed {
-    animation: numberFlip .35s ease;
-}
-
-.time-label {
-    display: block;
-    margin-top: 9px;
-    color: #9c777d;
-    font-size: 9px;
-    font-weight: 800;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-}
-
-.opening-date {
-    font-size: 12px;
-    color: #bda4a8;
-    line-height: 1.8;
-}
-
-.opening-date strong {
-    display: inline-block;
-    color: #fff;
-    font-weight: 800;
-}
-
-.msk-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    margin-top: 11px;
-    padding: 7px 11px;
-    border: 1px solid rgba(255, 32, 45, .19);
-    border-radius: 8px;
-    background: rgba(255, 32, 45, .055);
-    color: #ff727b;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 9px;
-    font-weight: 700;
-}
-
-/* AUDIO */
-
-.audio-panel {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin-top: 17px;
-    padding: 14px 16px;
-    border: 1px solid rgba(255, 255, 255, .055);
-    border-radius: 13px;
-    background: rgba(255, 255, 255, .018);
-}
-
-.audio-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-}
-
-.audio-icon {
-    width: 37px;
-    height: 37px;
-    flex-shrink: 0;
-    border: 1px solid rgba(255, 32, 45, .2);
-    background: rgba(255, 32, 45, .08);
-    border-radius: 11px;
-    display: grid;
-    place-items: center;
-    font-size: 17px;
-}
-
-.audio-title {
-    font-size: 11px;
-    font-weight: 800;
-}
-
-.audio-caption {
-    margin-top: 4px;
-    color: #8d7478;
-    font-size: 9px;
-    line-height: 1.5;
-}
-
-.audio-toggle {
-    flex-shrink: 0;
-    padding: 10px 13px;
-    border-radius: 9px;
-    border: 1px solid rgba(255, 32, 45, .35);
-    background: rgba(255, 32, 45, .1);
-    color: #ff727b;
-    font-family: 'Manrope', sans-serif;
-    font-size: 10px;
-    font-weight: 900;
-    cursor: pointer;
-    transition: .2s;
-}
-
-.audio-toggle:hover {
-    background: rgba(255, 32, 45, .19);
-    box-shadow: 0 0 18px rgba(255, 32, 45, .1);
-}
-
-.audio-toggle:active {
-    transform: scale(.96);
-}
-
-.audio-toggle.active {
-    color: white;
-    background: #b20b1b;
-}
-
-/* TELEGRAM */
-
-.telegram {
-    position: relative;
-    width: 100%;
-    min-height: 54px;
-    margin-top: 17px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 11px;
-    padding: 16px;
-    border: 1px solid rgba(255, 32, 45, .5);
-    border-radius: 12px;
-    overflow: hidden;
-    background: linear-gradient(100deg, #e71829, #a90014);
-    color: #fff;
-    text-decoration: none;
-    font-size: 11px;
-    font-weight: 900;
-    letter-spacing: .8px;
-    box-shadow: 0 7px 30px rgba(255, 20, 40, .12);
-    transition: transform .25s, box-shadow .25s;
-}
-
-.telegram::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    left: -120%;
-    width: 70%;
-    background: linear-gradient(100deg, transparent, rgba(255,255,255,.17), transparent);
-    transform: skewX(-20deg);
-    transition: left .7s;
-}
-
-.telegram:hover::before {
-    left: 150%;
-}
-
-.telegram:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 12px 38px rgba(255, 20, 40, .23);
-}
-
-.telegram:active {
-    transform: scale(.985);
-}
-
-/* FOOTER */
+.loader-title {
+ font-size:22px;
+ font-weight:900;
+ letter-spacing:2px;
+ margin-bottom:11px;
+ color:#ff5369;
+ text-shadow:0 0 25px #ff1838;
+ animation:titleGlow 3s infinite;
+}
+
+.loader-subtitle {
+ font-size:10px;
+ letter-spacing:1.4px;
+ line-height:1.8;
+ color:#cbb7be;
+ margin-bottom:24px;
+}
+
+.loader-track {
+ width:100%;
+ height:5px;
+ overflow:hidden;
+ border-radius:50px;
+ background:#ffffff12;
+}
+
+.loader-progress {
+ width:0;
+ height:100%;
+ border-radius:inherit;
+ background:linear-gradient(90deg,#8f001b,#ff1838,#ffb0bd);
+ box-shadow:0 0 20px var(--red);
+}
+
+.loader-percent {
+ margin-top:12px;
+ font-size:13px;
+ font-weight:900;
+ color:var(--red-light);
+}
+
+/* =========================
+   ОСНОВНОЙ САЙТ
+========================= */
+
+.wrapper {
+ position:relative;
+ z-index:2;
+ width:min(900px,100%);
+ margin:0 auto;
+ padding:35px 20px 65px;
+ opacity:0;
+ transform:translateY(18px);
+ transition:opacity .8s ease,transform .8s ease;
+}
+
+.wrapper.visible {
+ opacity:1;
+ transform:translateY(0);
+}
+
+.top-line {
+ width:100%;
+ height:3px;
+ border-radius:10px;
+ margin-bottom:30px;
+ background:linear-gradient(90deg,transparent,#ff1838,#ffb3bf,#ff1838,transparent);
+ box-shadow:0 0 25px #ff183866;
+ position:relative;
+ overflow:hidden;
+}
+
+.top-line::after {
+ content:"";
+ position:absolute;
+ top:0;
+ left:-30%;
+ width:25%;
+ height:100%;
+ background:white;
+ filter:blur(5px);
+ animation:topLineMove 4s linear infinite;
+}
+
+@keyframes topLineMove {
+ to {left:120%}
+}
+
+.green-badge {
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ width:fit-content;
+ max-width:100%;
+ margin:0 auto 25px;
+ padding:10px 18px;
+ border:1px solid #00f58a55;
+ border-radius:50px;
+ background:#00f58a0b;
+ box-shadow:0 0 25px #00f58a0b;
+}
+
+.green-dot {
+ width:8px;
+ height:8px;
+ flex-shrink:0;
+ border-radius:50%;
+ background:var(--green);
+ box-shadow:0 0 12px var(--green);
+ animation:onlinePulse 1.4s infinite alternate;
+}
+
+.green-badge-text {
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:1.3px;
+ color:var(--green);
+}
+
+.hero-title {
+ text-align:center;
+ font-size:clamp(29px,5.5vw,49px);
+ font-weight:900;
+ line-height:1.2;
+ letter-spacing:-1.5px;
+ margin-bottom:22px;
+ background:linear-gradient(180deg,#ffffff 5%,#ffb7c1 42%,#ff1838 78%,#a40020 100%);
+ -webkit-background-clip:text;
+ background-clip:text;
+ color:transparent;
+ filter:drop-shadow(0 0 22px #ff18382c);
+ animation:titleGlow 4s ease-in-out infinite;
+}
+
+.hero-title .title-small {
+ display:block;
+ margin-top:10px;
+ font-size:clamp(13px,2.5vw,19px);
+ letter-spacing:5px;
+ color:var(--red-light);
+ -webkit-text-fill-color:var(--red-light);
+}
+
+.hero-description {
+ max-width:750px;
+ margin:0 auto 35px;
+ text-align:center;
+ color:#d8c9ce;
+ font-size:14px;
+ line-height:1.95;
+ font-weight:500;
+}
+
+.section-label {
+ text-align:center;
+ color:var(--red-light);
+ font-size:10px;
+ font-weight:800;
+ letter-spacing:3px;
+ margin-bottom:25px;
+ text-shadow:0 0 15px #ff18384d;
+}
+
+.section-label::before,
+.section-label::after {
+ content:"✦";
+ margin:0 10px;
+ color:var(--red);
+}
+
+/* =========================
+   КАРТОЧКИ
+========================= */
+
+.animated-card {
+ position:relative;
+ overflow:hidden;
+ padding:28px;
+ margin-bottom:24px;
+ border-radius:23px;
+ border:1px solid #ff18383b;
+ background:
+  radial-gradient(ellipse at 100% 0%,#ff18380b,transparent 50%),
+  linear-gradient(145deg,#250711ed,#0d0509f5);
+ box-shadow:
+  0 15px 45px #00000050,
+  inset 0 1px 0 #ffffff08;
+ backdrop-filter:blur(15px);
+ opacity:0;
+ transform:translateY(30px) scale(.985);
+ transition:
+  opacity .7s ease,
+  transform .7s cubic-bezier(.2,.7,.2,1),
+  border-color .35s ease,
+  box-shadow .35s ease;
+}
+
+.animated-card.in-view {
+ opacity:1;
+ transform:translateY(0) scale(1);
+}
+
+.animated-card:hover {
+ border-color:#ff5369a3;
+ box-shadow:
+  0 18px 55px #ff183817,
+  0 15px 45px #00000055;
+}
+
+.animated-card::before {
+ content:"";
+ position:absolute;
+ top:0;
+ left:8%;
+ width:35%;
+ height:1px;
+ background:linear-gradient(90deg,transparent,#ff5369,transparent);
+}
+
+.animated-card::after {
+ content:"";
+ position:absolute;
+ right:-45px;
+ top:-55px;
+ width:130px;
+ height:130px;
+ border-radius:50%;
+ background:#ff18380b;
+ filter:blur(5px);
+ pointer-events:none;
+ transition:background .3s,transform .4s;
+}
+
+.animated-card:hover::after {
+ background:#ff18381b;
+ transform:scale(1.3);
+}
+
+.card-title {
+ display:flex;
+ align-items:center;
+ gap:12px;
+ margin-bottom:15px;
+ font-size:19px;
+ font-weight:800;
+ line-height:1.4;
+ letter-spacing:-.3px;
+}
+
+.card-title .icon {
+ display:grid;
+ place-items:center;
+ width:43px;
+ height:43px;
+ flex-shrink:0;
+ border-radius:14px;
+ border:1px solid #ff18384f;
+ background:linear-gradient(145deg,#ff18382b,#ff183808);
+ font-size:20px;
+ box-shadow:0 0 18px #ff18380b;
+ animation:iconFloat 4s ease-in-out infinite;
+}
+
+.card-text {
+ color:var(--muted);
+ font-size:13px;
+ line-height:1.95;
+ font-weight:500;
+ margin-bottom:19px;
+}
+
+/* =========================
+   ФОТОГРАФИИ
+========================= */
+
+.photo-frame {
+ position:relative;
+ height:340px;
+ margin-top:18px;
+ overflow:hidden;
+ border:1px solid #ff18385c;
+ border-radius:17px;
+ background:#14040a;
+ box-shadow:0 10px 30px #00000055;
+ cursor:pointer;
+ isolation:isolate;
+ transition:border-color .3s,box-shadow .3s,transform .3s;
+}
+
+.photo-frame:hover {
+ border-color:var(--red-light);
+ box-shadow:0 0 32px #ff183832;
+ transform:translateY(-2px);
+}
+
+.photo-frame img {
+ display:block;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s;
+}
+
+.photo-frame:hover img {
+ transform:scale(1.055);
+ filter:saturate(1.15);
+}
+
+.photo-frame::before {
+ content:"";
+ position:absolute;
+ inset:0;
+ z-index:1;
+ pointer-events:none;
+ background:linear-gradient(135deg,#ff18380c,transparent 40%,#08020430);
+}
+
+.photo-frame::after {
+ content:"";
+ position:absolute;
+ inset:55% 0 0;
+ z-index:1;
+ pointer-events:none;
+ background:linear-gradient(transparent,#08020455);
+}
+
+/* =========================
+   ПРОМОКОД
+========================= */
+
+.promo-card {
+ position:relative;
+ padding:25px 18px;
+ margin:20px 0;
+ text-align:center;
+ border:1px dashed var(--red);
+ border-radius:19px;
+ background:
+  radial-gradient(ellipse at top,#ff183826,transparent 75%),
+  #0d0509;
+ box-shadow:inset 0 0 30px #ff183807;
+ animation:borderGlow 4s ease-in-out infinite;
+}
+
+.promo-caption {
+ font-size:11px;
+ color:#f1dce1;
+ font-weight:800;
+ letter-spacing:1px;
+}
+
+.promo-code-btn {
+ position:relative;
+ display:inline-block;
+ margin:18px 0 12px;
+ padding:12px 30px;
+ border:1px solid #ffb1bc55;
+ border-radius:12px;
+ background:linear-gradient(135deg,#ff5369,#cf001f 60%,#850016);
+ color:white;
+ font-family:Inter,Arial,sans-serif;
+ font-size:28px;
+ font-weight:900;
+ cursor:pointer;
+ box-shadow:0 0 30px #ff183847;
+ transition:transform .25s,box-shadow .25s,filter .25s;
+ user-select:none;
+}
+
+.promo-code-btn:hover {
+ transform:translateY(-3px) scale(1.025);
+ box-shadow:0 0 42px #ff183877;
+ filter:brightness(1.1);
+}
+
+.promo-code-btn:active {
+ transform:scale(.95);
+}
+
+.promo-hint {
+ color:#a9959c;
+ font-size:10px;
+}
+
+.bonus-list {
+ display:grid;
+ gap:10px;
+ margin:20px auto 0;
+ width:fit-content;
+ list-style:none;
+ text-align:left;
+}
+
+.bonus-list li {
+ color:#fff;
+ font-size:13px;
+ font-weight:700;
+}
+
+.bonus-list li span {
+ color:var(--red-light);
+}
+
+/* =========================
+   КНОПКИ
+========================= */
+
+.btn-group {
+ display:flex;
+ flex-direction:column;
+ align-items:center;
+ gap:13px;
+ margin-top:25px;
+}
+
+.btn-red {
+ position:relative;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ width:100%;
+ max-width:420px;
+ min-height:57px;
+ padding:17px 20px;
+ overflow:hidden;
+ border:1px solid #ffb3bf38;
+ border-radius:15px;
+ background:linear-gradient(110deg,#ff2948,#bc001f 70%,#820017);
+ box-shadow:0 8px 28px #ff18382b;
+ color:white;
+ text-decoration:none;
+ text-align:center;
+ font-size:12px;
+ font-weight:800;
+ letter-spacing:.5px;
+ cursor:pointer;
+ transition:transform .25s,box-shadow .25s,filter .25s;
+}
+
+.btn-red::before {
+ content:"";
+ position:absolute;
+ top:0;
+ left:-120%;
+ width:70%;
+ height:100%;
+ transform:skewX(-25deg);
+ background:linear-gradient(90deg,transparent,#ffffff25,transparent);
+}
+
+.btn-red:hover::before {
+ animation:shine .75s ease;
+}
+
+.btn-red:hover {
+ transform:translateY(-3px);
+ box-shadow:0 12px 35px #ff18384a;
+ filter:brightness(1.12);
+}
+
+.btn-red:active {
+ transform:scale(.98);
+}
+
+.btn-telegram {
+ border-color:#48baff50;
+ background:linear-gradient(110deg,#168bd4,#07528f);
+ box-shadow:0 8px 28px #168bd425;
+}
+
+.btn-support {
+ background:linear-gradient(110deg,#ff5369,#9d001b);
+}
+
+.btn-secondary {
+ background:linear-gradient(110deg,#292027,#171015);
+ border-color:#ffffff19;
+ box-shadow:none;
+}
+
+.btn-icon {
+ font-size:19px;
+ transition:transform .25s;
+}
+
+.btn-red:hover .btn-icon {
+ transform:scale(1.15) rotate(-5deg);
+}
+
+/* =========================
+   ФИНАЛЬНАЯ КАРТОЧКА
+========================= */
+
+.final-card {
+ text-align:center;
+ background:
+  radial-gradient(ellipse at top,#ff183822,transparent 70%),
+  linear-gradient(150deg,#280711,#0b0508);
+}
+
+.final-title {
+ justify-content:center;
+ font-size:25px;
+ color:var(--red-light);
+ letter-spacing:1px;
+}
+
+.final-description {
+ max-width:550px;
+ margin:0 auto;
+}
 
 .footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 23px;
-    padding: 0 3px;
-    color: #654b50;
-    font-size: 9px;
+ position:relative;
+ z-index:2;
+ padding:20px 15px 35px;
+ text-align:center;
+ color:#8b747c;
+ font-size:10px;
+ line-height:2;
 }
 
-.footer-logo {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 10px;
-    font-weight: 800;
-    letter-spacing: 1px;
-    color: #97777c;
+.footer-brand {
+ color:#ff8c9b;
+ font-weight:900;
+ letter-spacing:3px;
+ margin-bottom:5px;
+ text-shadow:0 0 18px #ff18383b;
 }
 
-.footer-status {
-    display: flex;
-    align-items: center;
-    gap: 7px;
+.admin-secret-trigger {
+ position:relative;
+ z-index:10;
+ width:9px;
+ height:9px;
+ margin:30px auto 0;
+ border-radius:50%;
+ background:#ffffff0c;
+ cursor:pointer;
 }
 
-/* ANIMATIONS */
-
-@keyframes letterPulse {
-    0%, 100% { transform: translateY(0) scale(1); }
-    35% { transform: translateY(-3px) scale(1.045); }
-    60% { transform: translateY(1px) scale(.985); }
+.admin-secret-trigger:hover {
+ background:var(--red);
+ box-shadow:0 0 12px var(--red);
 }
 
-@keyframes heartPulse {
-    0%, 100% { transform: scale(1); box-shadow: 0 0 25px rgba(255, 32, 45, .1); }
-    15% { transform: scale(1.08); box-shadow: 0 0 42px rgba(255, 32, 45, .28); }
-    28% { transform: scale(1); }
-    42% { transform: scale(1.045); }
-    55% { transform: scale(1); }
+/* =========================
+   МОДАЛЬНЫЕ ОКНА
+   АДМИН-ПАНЕЛЬ СОХРАНЕНА
+========================= */
+
+.modal-overlay {
+ position:fixed;
+ inset:0;
+ z-index:100000;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:18px;
+ background:#000000d9;
+ backdrop-filter:blur(15px);
+ opacity:0;
+ visibility:hidden;
+ pointer-events:none;
+ transition:opacity .25s,visibility .25s;
 }
 
-@keyframes logoPulse {
-    0%, 100% { box-shadow: 0 0 15px rgba(255, 32, 45, .15); }
-    50% { box-shadow: 0 0 30px rgba(255, 32, 45, .35); }
+.modal-overlay.active {
+ opacity:1;
+ visibility:visible;
+ pointer-events:auto;
 }
 
-@keyframes symbolRotate {
-    to { transform: rotate(405deg); }
+.admin-box {
+ width:100%;
+ max-width:440px;
+ max-height:88vh;
+ overflow-y:auto;
+ padding:25px;
+ border:1px solid #ff18386c;
+ border-radius:22px;
+ background:linear-gradient(145deg,#280711,#0b0508);
+ box-shadow:0 0 60px #ff18381c;
 }
 
-@keyframes dotBlink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: .25; }
+.admin-heading {
+ margin-bottom:20px;
+ color:var(--red-light);
+ font-size:17px;
+ font-weight:900;
+ text-align:center;
 }
 
-@keyframes energyTravel {
-    from { left: -30%; }
-    to { left: 110%; }
+.admin-input {
+ width:100%;
+ min-height:45px;
+ padding:12px;
+ margin-bottom:13px;
+ outline:none;
+ border:1px solid #ff183842;
+ border-radius:11px;
+ background:#ffffff08;
+ color:white;
+ font-size:13px;
 }
 
-@keyframes iconBreathe {
-    0%, 100% { box-shadow: 0 0 0 rgba(255, 32, 45, 0); }
-    50% { box-shadow: 0 0 18px rgba(255, 32, 45, .12); }
+.admin-input:focus {
+ border-color:var(--red);
 }
 
-@keyframes numberFlip {
-    0% { transform: translateY(-5px); opacity: .3; }
-    100% { transform: translateY(0); opacity: 1; }
+.admin-input::placeholder {
+ color:#9b858d;
 }
 
-@keyframes borderFlow {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 250% 50%; }
+.admin-setting-item {
+ padding:15px;
+ margin-bottom:13px;
+ border:1px solid #ffffff12;
+ border-radius:13px;
+ background:#ffffff05;
 }
 
-@keyframes ambientMove {
-    from { transform: translate(0, 0) scale(1); }
-    to { transform: translate(70px, 50px) scale(1.25); }
+.admin-setting-item label {
+ display:block;
+ margin-bottom:10px;
+ color:#e8dce0;
+ font-size:12px;
+ font-weight:700;
 }
 
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-15px); }
-    to { opacity: 1; transform: translateY(0); }
+.admin-setting-item input[type=range] {
+ width:100%;
+ accent-color:var(--red);
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.admin-setting-item input[type=file] {
+ font-size:11px;
 }
 
-@keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to { opacity: 1; transform: translateY(0); }
+#height-val {
+ margin-top:8px;
+ text-align:right;
+ color:#bcaab1;
+ font-size:11px;
 }
 
-@keyframes cardAppear {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
+/* =========================
+   HALLOWEEN УВЕДОМЛЕНИЕ
+========================= */
+
+.halloween-toast {
+ position:fixed;
+ z-index:110000;
+ right:20px;
+ bottom:20px;
+ width:min(390px,calc(100vw - 28px));
+ padding:20px 48px 20px 20px;
+ border:1px solid #ff5369a6;
+ border-radius:18px;
+ background:linear-gradient(135deg,#300711f5,#100408f8);
+ box-shadow:0 15px 55px #0009,0 0 28px #ff183826;
+ backdrop-filter:blur(18px);
+ opacity:0;
+ transform:translateY(25px) scale(.97);
+ visibility:hidden;
+ transition:opacity .4s,transform .4s,visibility .4s;
 }
 
-/* MOBILE */
-
-@media (max-width: 800px) {
-    .work-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .work-card {
-        min-height: 155px;
-    }
+.halloween-toast.show {
+ opacity:1;
+ transform:translateY(0) scale(1);
+ visibility:visible;
 }
 
-@media (max-width: 520px) {
-    .page {
-        padding: 19px 13px 16px;
-    }
-
-    .header {
-        margin-bottom: 20px;
-        gap: 10px;
-    }
-
-    .brand {
-        gap: 9px;
-    }
-
-    .brand-logo {
-        width: 39px;
-        height: 39px;
-        border-radius: 12px;
-        font-size: 15px;
-    }
-
-    .brand-name {
-        font-size: 10px;
-        letter-spacing: .7px;
-    }
-
-    .brand-caption {
-        font-size: 7px;
-        letter-spacing: 1.4px;
-    }
-
-    .status {
-        gap: 6px;
-        padding: 8px 9px;
-        font-size: 7px;
-        letter-spacing: .3px;
-    }
-
-    .status-dot {
-        width: 5px;
-        height: 5px;
-    }
-
-    .hero {
-        padding: 25px 0 23px;
-    }
-
-    .eyebrow {
-        font-size: 8px;
-        letter-spacing: 1px;
-        padding: 8px 10px;
-    }
-
-    .hero-symbol {
-        width: 83px;
-        height: 83px;
-        margin: 26px auto 22px;
-    }
-
-    .symbol-inner {
-        width: 56px;
-        height: 56px;
-        border-radius: 17px;
-        font-size: 19px;
-    }
-
-    h1 {
-        font-size: clamp(25px, 7.2vw, 36px);
-        letter-spacing: -1px;
-    }
-
-    .description {
-        margin-top: 18px;
-        font-size: 11px;
-        line-height: 1.9;
-    }
-
-    .energy-line {
-        margin: 8px 0 25px;
-    }
-
-    .section-title {
-        font-size: 10px;
-    }
-
-    .work-grid {
-        gap: 9px;
-    }
-
-    .work-card {
-        padding: 14px 12px;
-        min-height: 157px;
-    }
-
-    .work-icon {
-        width: 34px;
-        height: 34px;
-        margin-bottom: 12px;
-    }
-
-    .work-card h3 {
-        font-size: 10px;
-    }
-
-    .work-card p {
-        font-size: 9px;
-    }
-
-    .work-status {
-        font-size: 7px;
-    }
-
-    .countdown-panel {
-        margin-top: 25px;
-        padding: 22px 11px 19px;
-    }
-
-    .countdown-heading {
-        font-size: 8px;
-        letter-spacing: 1.2px;
-    }
-
-    .countdown {
-        gap: 6px;
-        margin: 19px auto 16px;
-    }
-
-    .time-box {
-        padding: 14px 3px 11px;
-        border-radius: 10px;
-    }
-
-    .time-value {
-        font-size: clamp(20px, 6.2vw, 29px);
-    }
-
-    .time-label {
-        font-size: 7px;
-        letter-spacing: .6px;
-        margin-top: 7px;
-    }
-
-    .opening-date {
-        font-size: 10px;
-    }
-
-    .msk-tag {
-        font-size: 8px;
-    }
-
-    .audio-panel {
-        gap: 9px;
-        padding: 12px 10px;
-    }
-
-    .audio-info {
-        gap: 9px;
-    }
-
-    .audio-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 14px;
-    }
-
-    .audio-title {
-        font-size: 10px;
-    }
-
-    .audio-caption {
-        font-size: 8px;
-    }
-
-    .audio-toggle {
-        padding: 9px 10px;
-        font-size: 9px;
-    }
-
-    .telegram {
-        font-size: 9px;
-        gap: 7px;
-        padding: 15px 8px;
-        letter-spacing: .3px;
-    }
-
-    .footer {
-        justify-content: center;
-        text-align: center;
-    }
+.toast-title {
+ font-size:14px;
+ font-weight:900;
+ color:#ff7183;
+ margin-bottom:7px;
 }
 
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: .01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-    }
+.toast-text {
+ font-size:12px;
+ line-height:1.7;
+ color:#e4d2d9;
+}
+
+.toast-close {
+ position:absolute;
+ right:12px;
+ top:10px;
+ width:29px;
+ height:29px;
+ border:1px solid #ffffff1c;
+ border-radius:9px;
+ background:#ffffff09;
+ color:#fff;
+ font-size:18px;
+ cursor:pointer;
+}
+
+.toast-spark {
+ position:absolute;
+ right:17px;
+ bottom:10px;
+ font-size:22px;
+ opacity:.75;
+}
+
+@media(max-width:600px) {
+ .wrapper {
+  padding:22px 14px 45px;
+ }
+
+ .hero-title {
+  font-size:clamp(27px,8vw,39px);
+  letter-spacing:-.8px;
+ }
+
+ .hero-title .title-small {
+  letter-spacing:3px;
+ }
+
+ .hero-description {
+  font-size:13px;
+ }
+
+ .animated-card {
+  padding:19px;
+  border-radius:19px;
+ }
+
+ .card-title {
+  font-size:16px;
+ }
+
+ .card-title .icon {
+  width:39px;
+  height:39px;
+ }
+
+ .card-text {
+  font-size:12px;
+ }
+
+ .photo-frame {
+  height:230px;
+  border-radius:13px;
+ }
+
+ .promo-code-btn {
+  font-size:26px;
+  padding:12px 25px;
+ }
+
+ .btn-red {
+  min-height:54px;
+  padding:15px;
+  font-size:11px;
+ }
+
+ .green-badge-text {
+  font-size:9px;
+  letter-spacing:.7px;
+ }
+
+ .halloween-toast {
+  right:14px;
+  bottom:14px;
+ }
+}
+
+@media(prefers-reduced-motion:reduce) {
+ *,
+ *::before,
+ *::after {
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  scroll-behavior:auto!important;
+  transition-duration:.01ms!important;
+ }
 }
 </style>
 </head>
 
 <body>
 
-<canvas id="particles"></canvas>
-<div class="ambient a"></div>
-<div class="ambient b"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="noise"></div>
 
-<main class="page">
+<div class="halloween-decor" aria-hidden="true">
+ <span class="floating-pumpkin pumpkin-a">🎃</span>
+ <span class="floating-pumpkin pumpkin-b">🎃</span>
+ <span class="floating-pumpkin pumpkin-c">🎃</span>
+ <span class="floating-pumpkin pumpkin-d">🕯️</span>
+ <span class="bat bat-a">🦇</span>
+ <span class="bat bat-b">🦇</span>
+</div>
 
-    <header class="header">
-        <div class="brand">
-            <div class="brand-logo">KR</div>
-            <div>
-                <div class="brand-name">KRAPINN RUSSIA</div>
-                <div class="brand-caption">NEXT GENERATION</div>
-            </div>
-        </div>
+<!-- ЭКРАН ЗАГРУЗКИ -->
 
-        <div class="status">
-            <span class="status-dot"></span>
-            ТЕХНИЧЕСКИЕ РАБОТЫ
-        </div>
-    </header>
+<div id="loader-screen">
+ <div class="loader-content">
+  <div class="orb">
+   <div class="orb-ring one"></div>
+   <div class="orb-ring two"></div>
+   <div class="orb-ring three"></div>
+   <div class="orb-center">🎃</div>
+  </div>
 
-    <section class="hero">
+  <div class="loader-title">HORIZON RUSSIA</div>
 
-        <div class="eyebrow">
-            <span class="eyebrow-line"></span>
-            SYSTEM MAINTENANCE
-            <span class="eyebrow-line"></span>
-        </div>
+  <div class="loader-subtitle" id="loader-status">
+   ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА...
+  </div>
 
-        <div class="hero-symbol">
-            <div class="symbol-inner">KR</div>
-        </div>
+  <div class="loader-track">
+   <div class="loader-progress" id="loader-fill"></div>
+  </div>
 
-        <h1>
-            <span class="title-line animated-word" id="titleWhite">САЙТ ВРЕМЕННО</span>
-            <span class="title-line title-red animated-word" id="titleRed">НЕДОСТУПЕН</span>
-        </h1>
+  <div class="loader-percent" id="loader-num">0%</div>
+ </div>
+</div>
 
-        <p class="description">
-            Мы временно закрыли сайт для проведения
-            <strong>ночных технических работ.</strong>
-            Исправляем массовые ошибки с фотографиями,
-            проверяем установку APK, устраняем баги и готовим
-            <strong>новые возможности KRAPINN RUSSIA.</strong>
-            Скоро вернёмся с улучшенной версией проекта.
-        </p>
+<!-- ОСНОВНОЙ САЙТ -->
 
-    </section>
+<main class="wrapper" id="main-content">
 
-    <div class="energy-line"></div>
+ <div class="top-line"></div>
 
-    <section>
-        <div class="section-head">
-            <div class="section-title">ЧТО МЫ ИСПРАВЛЯЕМ</div>
-            <div class="section-number">01 / SYSTEM</div>
-        </div>
+ <div class="green-badge">
+  <span class="green-dot"></span>
+  <span class="green-badge-text">СЕРВЕР АКТИВЕН / ОНЛАЙН</span>
+ </div>
 
-        <div class="work-grid">
+ <header>
+  <h1 class="hero-title">
+   HORIZON RUSSIA
+   <span class="title-small">ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ</span>
+  </h1>
 
-            <article class="work-card">
-                <div class="work-icon">▧</div>
-                <h3>Фотографии</h3>
-                <p>Исправляем ошибки загрузки и отображения изображений на сайте.</p>
-                <div class="work-status"><i></i> В РАБОТЕ</div>
-            </article>
+  <p class="hero-description">
+   Добро пожаловать в HORIZON RUSSIA — мир, в котором ты сам решаешь,
+   кем стать и какой путь выбрать. Исследуй города, развивай персонажа,
+   знакомься с игроками и создавай собственную историю.
+   Готов выйти за горизонт?
+  </p>
+ </header>
 
-            <article class="work-card">
-                <div class="work-icon">⇩</div>
-                <h3>Установка APK</h3>
-                <p>Проверяем скачивание APK и устраняем проблемы с установкой.</p>
-                <div class="work-status"><i></i> ПРОВЕРКА</div>
-            </article>
+ <div class="section-label">
+  🎃 ВОЗМОЖНОСТИ ПРОЕКТА 🎃
+ </div>
 
-            <article class="work-card">
-                <div class="work-icon">⌘</div>
-                <h3>Система сайта</h3>
-                <p>Проверяем кнопки, ссылки, страницы и основные функции.</p>
-                <div class="work-status"><i></i> В РАБОТЕ</div>
-            </article>
+ <!-- КАРТОЧКА 1 -->
 
-            <article class="work-card">
-                <div class="work-icon">✦</div>
-                <h3>Новые функции</h3>
-                <p>Подготавливаем дополнительные возможности и улучшения проекта.</p>
-                <div class="work-status"><i></i> ПОДГОТОВКА</div>
-            </article>
+ <section class="animated-card">
 
-        </div>
-    </section>
+  <h2 class="card-title">
+   <span class="icon">🚘</span>
+   Огромный открытый мир
+  </h2>
 
-    <section class="countdown-panel">
+  <p class="card-text">
+   Исследуй города, покупай автомобили, обзаводись недвижимостью,
+   зарабатывай деньги и развивай своего персонажа.
+   Начни с нуля, достигай новых высот и докажи, что именно ты
+   способен стать настоящей легендой HORIZON RUSSIA.
+  </p>
 
-        <div class="countdown-heading">
-            <span>●</span> ОБРАТНЫЙ ОТСЧЁТ ДО ОТКРЫТИЯ
-        </div>
+  <div class="photo-frame">
+   <img
+    id="img-1"
+    src="./images/photo1.jpg"
+    alt="Игровой мир HORIZON RUSSIA"
+    loading="lazy"
+    decoding="async"
+   >
+  </div>
 
-        <div class="countdown" id="countdown">
+ </section>
 
-            <div class="time-box">
-                <span class="time-value" id="days">00</span>
-                <span class="time-label">Дней</span>
-            </div>
+ <!-- КАРТОЧКА 2 -->
 
-            <div class="time-box">
-                <span class="time-value" id="hours">00</span>
-                <span class="time-label">Часов</span>
-            </div>
+ <section class="animated-card">
 
-            <div class="time-box">
-                <span class="time-value" id="minutes">00</span>
-                <span class="time-label">Минут</span>
-            </div>
+  <h2 class="card-title">
+   <span class="icon">⚖️</span>
+   Выбирай собственный путь
+  </h2>
 
-            <div class="time-box">
-                <span class="time-value" id="seconds">00</span>
-                <span class="time-label">Секунд</span>
-            </div>
+  <p class="card-text">
+   Служи закону, вступай в государственные организации, развивайся
+   по карьерной лестнице или выбирай совершенно другой путь.
+   Создавай свою команду, находи союзников и участвуй в событиях
+   игрового мира. Здесь каждый выбор может изменить твою историю.
+  </p>
 
-        </div>
+  <div class="photo-frame">
+   <img
+    id="img-2"
+    src="./images/photo2.png"
+    alt="Организации и фракции HORIZON RUSSIA"
+    loading="lazy"
+    decoding="async"
+   >
+  </div>
 
-        <div class="opening-date">
-            ПЛАНИРУЕМОЕ ОТКРЫТИЕ<br>
-            <strong>27 октября 2026 · 12:00</strong>
-        </div>
+ </section>
 
-        <div class="msk-tag">◷ МОСКОВСКОЕ ВРЕМЯ · UTC+3</div>
+ <!-- КАРТОЧКА 3 -->
 
-    </section>
+ <section class="animated-card">
 
-    <section class="audio-panel">
-        <div class="audio-info">
-            <div class="audio-icon" id="audioIcon">♥</div>
-            <div>
-                <div class="audio-title">Пульс системы</div>
-                <div class="audio-caption" id="audioCaption">
-                    Включи атмосферный звук сердцебиения
-                </div>
-            </div>
-        </div>
+  <h2 class="card-title">
+   <span class="icon">🎁</span>
+   Бонус для новичков
+  </h2>
 
-        <button class="audio-toggle" id="audioToggle" type="button">
-            ▶ ВКЛЮЧИТЬ
-        </button>
-    </section>
+  <p class="card-text">
+   Начинать всегда приятнее с небольшим преимуществом.
+   Используй наш эксклюзивный промокод и забирай стартовые бонусы!
+  </p>
 
-    <a class="telegram"
-       href="https://t.me/lame_mobile"
-       target="_blank"
-       rel="noopener noreferrer">
-        <span>✈</span>
-        <span>СЛЕДИТЬ ЗА НОВОСТЯМИ В TELEGRAM</span>
-        <span>↗</span>
-    </a>
+  <div class="promo-card">
 
-    <footer class="footer">
-        <div class="footer-logo">KRAPINN RUSSIA © 2026</div>
-        <div class="footer-status">
-            <span class="status-dot"></span>
-            СИСТЕМА ПРОХОДИТ ОБСЛУЖИВАНИЕ
-        </div>
-    </footer>
+   <div class="promo-caption">
+    🎃 ЭКСКЛЮЗИВНЫЙ ПРОМОКОД ПРОЕКТА 🎃
+   </div>
+
+   <div
+    class="promo-code-btn"
+    id="promo-btn"
+    role="button"
+    tabindex="0"
+    onclick="copyPromo()"
+    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyPromo();}"
+   >#Фарка</div>
+
+   <div class="promo-hint" id="promo-hint">
+    Нажми на промокод, чтобы скопировать
+   </div>
+
+   <ul class="bonus-list">
+    <li>💎 <span>+1 000 BC</span></li>
+    <li>💵 <span>+20 000 000</span> игровой валюты</li>
+   </ul>
+
+  </div>
+
+  <div class="photo-frame">
+   <img
+    id="img-3"
+    src="./images/photo3.jpg"
+    alt="Бонусы и наборы HORIZON RUSSIA"
+    loading="lazy"
+    decoding="async"
+   >
+  </div>
+
+ </section>
+
+ <!-- ФИНАЛЬНАЯ КАРТОЧКА -->
+
+ <section class="animated-card final-card">
+
+  <h2 class="card-title final-title">
+   🎃 HORIZON RUSSIA 🎃
+  </h2>
+
+  <p class="card-text final-description">
+   Твой мир. Твои решения. Твоя история.
+   Присоединяйся к проекту, знакомься с игроками и начинай
+   собственное приключение. Встретимся за горизонтом!
+  </p>
+
+  <div class="btn-group">
+
+   <a
+    href="https://t.me/FarichovskiyHub/22"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-red"
+   >
+    <span class="btn-icon">📦</span>
+    <span>СКАЧАТЬ ИГРУ (APK)</span>
+   </a>
+
+   <a
+    href="https://t.me/lame_mobile"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-red btn-telegram"
+   >
+    <span class="btn-icon">✈️</span>
+    <span>НАШ TELEGRAM-КАНАЛ</span>
+   </a>
+
+   <a
+    href="https://t.me/farich10"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="btn-red btn-support"
+   >
+    <span class="btn-icon">🛠️</span>
+    <span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
+   </a>
+
+  </div>
+
+ </section>
+
+ <!-- СКРЫТЫЙ ВХОД В АДМИН-ПАНЕЛЬ -->
+
+ <div
+  class="admin-secret-trigger"
+  onclick="openAdminAuth()"
+  title="Admin"
+  aria-label="Открыть вход в панель управления"
+ ></div>
 
 </main>
 
+<footer class="footer">
+
+ <div class="footer-brand">HORIZON RUSSIA</div>
+
+ <div>Играй. Развивайся. Создавай свою историю.</div>
+
+ <div>🎃 HALLOWEEN EDITION 🎃</div>
+
+ <div style="margin-top:8px;opacity:.6">
+  © HORIZON RUSSIA
+ </div>
+
+</footer>
+
+<!-- HALLOWEEN УВЕДОМЛЕНИЕ -->
+
+<div
+ class="halloween-toast"
+ id="halloween-toast"
+ role="status"
+ aria-live="polite"
+>
+ <button
+  class="toast-close"
+  type="button"
+  onclick="closeHalloweenToast()"
+  aria-label="Закрыть"
+ >×</button>
+
+ <div class="toast-title">
+  🎃 ТЫ ПОПАЛ В HORIZON HALLOWEEN!
+ </div>
+
+ <div class="toast-text">
+  За горизонтом начинается новая история.
+  Пусть эта хэллоуинская ночь принесёт удачу,
+  редкие находки и незабываемые приключения!
+ </div>
+
+ <span class="toast-spark">🦇</span>
+</div>
+
+<!-- АВТОРИЗАЦИЯ АДМИНИСТРАТОРА
+     ЛОГИКА СОХРАНЕНА -->
+
+<div class="modal-overlay" id="admin-auth-modal">
+
+ <div class="admin-box">
+
+  <h2 class="admin-heading">🔐 ПАНЕЛЬ УПРАВЛЕНИЯ</h2>
+
+  <input
+   type="text"
+   id="admin-login"
+   class="admin-input"
+   placeholder="Логин"
+   autocomplete="username"
+  >
+
+  <input
+   type="password"
+   id="admin-pass"
+   class="admin-input"
+   placeholder="Пароль"
+   autocomplete="current-password"
+  >
+
+  <button
+   type="button"
+   class="btn-red"
+   onclick="checkAdminAuth()"
+  >ВОЙТИ</button>
+
+  <button
+   type="button"
+   class="btn-red btn-secondary"
+   style="margin-top:10px"
+   onclick="closeModals()"
+  >ОТМЕНА</button>
+
+ </div>
+
+</div>
+
+<!-- АДМИН-ПАНЕЛЬ
+     ЭЛЕМЕНТЫ И НАСТРОЙКИ СОХРАНЕНЫ -->
+
+<div class="modal-overlay" id="admin-panel-modal">
+
+ <div class="admin-box">
+
+  <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА</h2>
+
+  <div class="admin-setting-item">
+
+   <label for="frame-height-slider">
+    📏 Высота всех фотографий
+   </label>
+
+   <input
+    type="range"
+    id="frame-height-slider"
+    min="150"
+    max="600"
+    value="340"
+   >
+
+   <div id="height-val">340px</div>
+
+  </div>
+
+  <div class="admin-setting-item">
+
+   <label for="file-img-1">
+    🖼 Фото №1 — игровой мир
+   </label>
+
+   <input
+    type="file"
+    id="file-img-1"
+    accept="image/*"
+    class="admin-input"
+   >
+
+  </div>
+
+  <div class="admin-setting-item">
+
+   <label for="file-img-2">
+    🖼 Фото №2 — организации
+   </label>
+
+   <input
+    type="file"
+    id="file-img-2"
+    accept="image/*"
+    class="admin-input"
+   >
+
+  </div>
+
+  <div class="admin-setting-item">
+
+   <label for="file-img-3">
+    🖼 Фото №3 — бонусы
+   </label>
+
+   <input
+    type="file"
+    id="file-img-3"
+    accept="image/*"
+    class="admin-input"
+   >
+
+  </div>
+
+  <button
+   type="button"
+   class="btn-red"
+   onclick="closeModals()"
+  >СОХРАНИТЬ И ЗАКРЫТЬ</button>
+
+ </div>
+
+</div>
+
 <script>
-/* АНИМАЦИЯ БУКВ */
+"use strict";
 
-function animateLetters(element) {
-    const text = element.textContent.trim();
-    element.textContent = "";
+/* =========================
+   ФОНОВЫЕ ЧАСТИЦЫ
+========================= */
 
-    [...text].forEach((char, index) => {
-        const span = document.createElement("span");
-        span.textContent = char === " " ? "\u00A0" : char;
-        span.style.setProperty("--i", index % 20);
-        element.appendChild(span);
-    });
-}
-
-animateLetters(document.getElementById("titleWhite"));
-animateLetters(document.getElementById("titleRed"));
-
-
-/* ТАЙМЕР ДО 27 ОКТЯБРЯ 2026, 12:00 ПО МОСКВЕ */
-
-const openingTime = new Date("2026-10-27T12:00:00+03:00").getTime();
-
-const timeElements = {
-    days: document.getElementById("days"),
-    hours: document.getElementById("hours"),
-    minutes: document.getElementById("minutes"),
-    seconds: document.getElementById("seconds")
-};
-
-let previousValues = {};
-
-function updateCountdown() {
-    const difference = openingTime - Date.now();
-
-    if (difference <= 0) {
-        document.getElementById("countdown").innerHTML = `
-            <div style="
-                grid-column:1/-1;
-                padding:20px 5px;
-                color:#ff5964;
-                font-family:Orbitron,sans-serif;
-                font-size:clamp(15px,4vw,24px);
-                font-weight:900;
-                line-height:1.7;
-            ">
-                ВРЕМЯ ОТКРЫТИЯ НАСТУПИЛО
-            </div>`;
-        return;
-    }
-
-    const values = {
-        days: Math.floor(difference / 86400000),
-        hours: Math.floor((difference % 86400000) / 3600000),
-        minutes: Math.floor((difference % 3600000) / 60000),
-        seconds: Math.floor((difference % 60000) / 1000)
-    };
-
-    for (const key in values) {
-        const formatted = String(values[key]).padStart(2, "0");
-        const element = timeElements[key];
-
-        if (previousValues[key] !== formatted) {
-            element.textContent = formatted;
-            element.classList.remove("changed");
-            void element.offsetWidth;
-            element.classList.add("changed");
-            previousValues[key] = formatted;
-        }
-    }
-}
-
-updateCountdown();
-setInterval(updateCountdown, 1000);
-
-
-/* ЗВУК СЕРДЦЕБИЕНИЯ — БЕЗ ВНЕШНИХ АУДИОФАЙЛОВ */
-
-let audioContext = null;
-let heartbeatTimer = null;
-let heartbeatEnabled = false;
-
-const audioToggle = document.getElementById("audioToggle");
-const audioCaption = document.getElementById("audioCaption");
-const audioIcon = document.getElementById("audioIcon");
-
-function playHeartbeatBeat(startTime, frequency, volume, duration) {
-    if (!audioContext || audioContext.state !== "running") return;
-
-    const oscillator = audioContext.createOscillator();
-    const gain = audioContext.createGain();
-
-    oscillator.type = "sine";
-    oscillator.frequency.setValueAtTime(frequency, startTime);
-    oscillator.frequency.exponentialRampToValueAtTime(
-        Math.max(25, frequency * 0.55),
-        startTime + duration
-    );
-
-    gain.gain.setValueAtTime(0.0001, startTime);
-    gain.gain.exponentialRampToValueAtTime(volume, startTime + 0.025);
-    gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
-
-    oscillator.connect(gain);
-    gain.connect(audioContext.destination);
-
-    oscillator.start(startTime);
-    oscillator.stop(startTime + duration + 0.03);
-}
-
-function playHeartbeat() {
-    if (!heartbeatEnabled || !audioContext) return;
-
-    const now = audioContext.currentTime;
-
-    // Два мягких низких импульса, напоминающих сердцебиение.
-    playHeartbeatBeat(now, 72, 0.13, 0.15);
-    playHeartbeatBeat(now + 0.19, 58, 0.09, 0.17);
-}
-
-async function enableHeartbeat() {
-    try {
-        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-
-        if (!AudioContextClass) {
-            audioCaption.textContent = "Браузер не поддерживает звуковые эффекты";
-            return;
-        }
-
-        if (!audioContext) {
-            audioContext = new AudioContextClass();
-        }
-
-        await audioContext.resume();
-
-        heartbeatEnabled = true;
-        playHeartbeat();
-        heartbeatTimer = setInterval(playHeartbeat, 1150);
-
-        audioToggle.textContent = "Ⅱ ВЫКЛЮЧИТЬ";
-        audioToggle.classList.add("active");
-        audioCaption.textContent = "Сердцебиение включено · Нажми, чтобы отключить";
-        audioIcon.textContent = "♥";
-    } catch (error) {
-        audioCaption.textContent = "Не удалось включить звук в этом браузере";
-    }
-}
-
-function disableHeartbeat() {
-    heartbeatEnabled = false;
-
-    if (heartbeatTimer) {
-        clearInterval(heartbeatTimer);
-        heartbeatTimer = null;
-    }
-
-    audioToggle.textContent = "▶ ВКЛЮЧИТЬ";
-    audioToggle.classList.remove("active");
-    audioCaption.textContent = "Звук выключен · Включи для атмосферы";
-    audioIcon.textContent = "♡";
-}
-
-audioToggle.addEventListener("click", async () => {
-    if (heartbeatEnabled) {
-        disableHeartbeat();
-    } else {
-        await enableHeartbeat();
-    }
-});
-
-document.addEventListener("visibilitychange", () => {
-    if (document.hidden && heartbeatEnabled) {
-        disableHeartbeat();
-    }
-});
-
-
-/* КРАСНЫЕ ЭНЕРГЕТИЧЕСКИЕ ЧАСТИЦЫ */
-
-const canvas = document.getElementById("particles");
+const canvas = document.getElementById("bg-canvas");
 const ctx = canvas.getContext("2d");
 
-let width = 0;
-let height = 0;
 let particles = [];
+let canvasWidth = 0;
+let canvasHeight = 0;
+let animationFrameId = null;
 
 function resizeCanvas() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+ const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    width = window.innerWidth;
-    height = window.innerHeight;
+ canvasWidth = window.innerWidth;
+ canvasHeight = window.innerHeight;
 
-    canvas.width = width * dpr;
-    canvas.height = height * dpr;
-    canvas.style.width = width + "px";
-    canvas.style.height = height + "px";
+ canvas.width = canvasWidth * dpr;
+ canvas.height = canvasHeight * dpr;
 
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+ canvas.style.width = canvasWidth + "px";
+ canvas.style.height = canvasHeight + "px";
 
-    const count = Math.min(75, Math.max(25, Math.floor(width / 17)));
+ ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    particles = Array.from({ length: count }, () => ({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 2 + 0.5,
-        speed: Math.random() * 0.55 + 0.12,
-        drift: (Math.random() - 0.5) * 0.45,
-        alpha: Math.random() * 0.6 + 0.15,
-        phase: Math.random() * Math.PI * 2
-    }));
+ createParticles();
 }
 
-let frame = 0;
+class Particle {
+ constructor() {
+  this.reset(true);
+ }
 
-function drawParticles() {
-    ctx.clearRect(0, 0, width, height);
-    frame += 0.015;
+ reset(initial = false) {
+  this.x = Math.random() * canvasWidth;
 
-    for (const p of particles) {
-        p.y -= p.speed;
-        p.x += p.drift;
+  this.y = initial
+   ? Math.random() * canvasHeight
+   : canvasHeight + 10;
 
-        if (p.y < -5) {
-            p.y = height + 5;
-            p.x = Math.random() * width;
-        }
+  this.size = Math.random() * 2 + 0.5;
+  this.speed = Math.random() * 0.65 + 0.15;
+  this.alpha = Math.random() * 0.48 + 0.12;
+  this.drift = (Math.random() - 0.5) * 0.35;
+  this.red = Math.random() > 0.2;
+ }
 
-        if (p.x < -5) p.x = width + 5;
-        if (p.x > width + 5) p.x = -5;
+ update() {
+  this.y -= this.speed;
+  this.x += this.drift;
 
-        const glow = 0.55 + Math.sin(frame + p.phase) * 0.3;
-        const alpha = Math.max(0.05, p.alpha * glow);
+  if (this.y < -10) {
+   this.reset();
+  }
 
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255, 35, 50, ${alpha})`;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = "rgba(255, 20, 40, 0.8)";
-        ctx.fill();
-    }
+  if (this.x < -10) {
+   this.x = canvasWidth + 10;
+  }
 
-    ctx.shadowBlur = 0;
-    requestAnimationFrame(drawParticles);
+  if (this.x > canvasWidth + 10) {
+   this.x = -10;
+  }
+ }
+
+ draw() {
+  ctx.fillStyle = this.red
+   ? `rgba(255,24,56,${this.alpha})`
+   : `rgba(255,205,215,${this.alpha})`;
+
+  ctx.beginPath();
+  ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+  ctx.fill();
+ }
+}
+
+function createParticles() {
+ const count = window.innerWidth < 600 ? 26 : 55;
+
+ particles = Array.from(
+  { length: count },
+  () => new Particle()
+ );
+}
+
+function animateCanvas() {
+ ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+
+ for (const particle of particles) {
+  particle.update();
+  particle.draw();
+ }
+
+ animationFrameId = requestAnimationFrame(animateCanvas);
 }
 
 resizeCanvas();
-drawParticles();
+animateCanvas();
 
 window.addEventListener("resize", resizeCanvas);
+
+/* =========================
+   ЗАСТАВКА ЗАГРУЗКИ
+========================= */
+
+const loaderScreen = document.getElementById("loader-screen");
+const loaderFill = document.getElementById("loader-fill");
+const loaderNum = document.getElementById("loader-num");
+const loaderStatus = document.getElementById("loader-status");
+const mainContent = document.getElementById("main-content");
+
+const loaderDuration = 4200;
+const loaderStart = performance.now();
+
+const loaderMessages = [
+ {
+  progress: 0,
+  text: "ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА..."
+ },
+ {
+  progress: 20,
+  text: "ЗАГРУЖАЕМ HORIZON RUSSIA..."
+ },
+ {
+  progress: 45,
+  text: "ПРОБУЖДАЕМ ТЁМНЫЙ МИР..."
+ },
+ {
+  progress: 70,
+  text: "РАЗГОНЯЕМ ТУМАН..."
+ },
+ {
+  progress: 90,
+  text: "ПОЧТИ ГОТОВО..."
+ }
+];
+
+function finishLoading() {
+ loaderScreen.classList.add("hide");
+ mainContent.classList.add("visible");
+
+ setTimeout(checkScrollAnimations, 100);
+
+ setTimeout(() => {
+  const toast = document.getElementById("halloween-toast");
+
+  try {
+   if (!sessionStorage.getItem("horizon_halloween_seen")) {
+    toast.classList.add("show");
+    sessionStorage.setItem("horizon_halloween_seen", "1");
+   }
+  } catch (error) {
+   toast.classList.add("show");
+  }
+ }, 8000);
+}
+
+function updateLoader(now) {
+ const elapsed = now - loaderStart;
+
+ const progress = Math.min(
+  100,
+  Math.floor(elapsed / loaderDuration * 100)
+ );
+
+ loaderFill.style.width = progress + "%";
+ loaderNum.textContent = progress + "%";
+
+ let message = loaderMessages[0];
+
+ for (const item of loaderMessages) {
+  if (progress >= item.progress) {
+   message = item;
+  }
+ }
+
+ loaderStatus.textContent = message.text;
+
+ if (progress < 100) {
+  requestAnimationFrame(updateLoader);
+ } else {
+  finishLoading();
+ }
+}
+
+requestAnimationFrame(updateLoader);
+
+/* =========================
+   ПОЯВЛЕНИЕ КАРТОЧЕК
+========================= */
+
+const animatedCards = document.querySelectorAll(".animated-card");
+
+function checkScrollAnimations() {
+ const trigger = window.innerHeight * 0.92;
+
+ animatedCards.forEach((card, index) => {
+  if (card.getBoundingClientRect().top < trigger) {
+   card.classList.add("in-view");
+   card.style.transitionDelay = Math.min(index * 70, 210) + "ms";
+  }
+ });
+}
+
+window.addEventListener(
+ "scroll",
+ checkScrollAnimations,
+ { passive: true }
+);
+
+/* =========================
+   КОПИРОВАНИЕ ПРОМОКОДА
+   ПРОМОКОД И БОНУСЫ НЕ ИЗМЕНЕНЫ
+========================= */
+
+async function copyPromo() {
+ const promo = "#Фарка";
+
+ const btn = document.getElementById("promo-btn");
+ const hint = document.getElementById("promo-hint");
+
+ try {
+  if (navigator.clipboard && window.isSecureContext) {
+   await navigator.clipboard.writeText(promo);
+  } else {
+   const textarea = document.createElement("textarea");
+
+   textarea.value = promo;
+   textarea.style.position = "fixed";
+   textarea.style.opacity = "0";
+
+   document.body.appendChild(textarea);
+   textarea.select();
+
+   const copied = document.execCommand("copy");
+
+   textarea.remove();
+
+   if (!copied) {
+    throw new Error("Не удалось скопировать");
+   }
+  }
+
+  btn.textContent = "СКОПИРОВАНО!";
+  hint.textContent = "Промокод скопирован в буфер обмена";
+
+  setTimeout(() => {
+   btn.textContent = "#Фарка";
+   hint.textContent = "Нажми на промокод, чтобы скопировать";
+  }, 1800);
+
+ } catch (error) {
+  hint.textContent = "Промокод: #Фарка";
+ }
+}
+
+/* =========================
+   HALLOWEEN УВЕДОМЛЕНИЕ
+========================= */
+
+function closeHalloweenToast() {
+ document
+  .getElementById("halloween-toast")
+  .classList.remove("show");
+}
+
+/* =========================
+   АДМИН-ПАНЕЛЬ
+   ЛОГИКА СОХРАНЕНА
+========================= */
+
+function openAdminAuth() {
+ document
+  .getElementById("admin-auth-modal")
+  .classList.add("active");
+}
+
+function checkAdminAuth() {
+ const login = document.getElementById("admin-login").value;
+ const pass = document.getElementById("admin-pass").value;
+
+ /*
+  Внимание: это клиентская проверка,
+  а не настоящая серверная защита.
+ */
+
+ if (login === "Admin" && pass === "Aaa007!") {
+  closeModals();
+
+  document
+   .getElementById("admin-panel-modal")
+   .classList.add("active");
+
+ } else {
+  alert("Неверный логин или пароль!");
+ }
+}
+
+function closeModals() {
+ document
+  .querySelectorAll(".modal-overlay")
+  .forEach(modal => modal.classList.remove("active"));
+}
+
+document.querySelectorAll(".modal-overlay").forEach(modal => {
+ modal.addEventListener("click", event => {
+  if (event.target === modal) {
+   modal.classList.remove("active");
+  }
+ });
+});
+
+document.addEventListener("keydown", event => {
+ if (event.key === "Escape") {
+  closeModals();
+ }
+});
+
+/* =========================
+   ИЗМЕНЕНИЕ ВЫСОТЫ ФОТО
+========================= */
+
+const heightSlider = document.getElementById("frame-height-slider");
+const heightValue = document.getElementById("height-val");
+
+function updateFrameHeight(value, save = true) {
+ const height = Number(value);
+
+ if (!Number.isFinite(height)) {
+  return;
+ }
+
+ document.querySelectorAll(".photo-frame").forEach(frame => {
+  frame.style.height = height + "px";
+ });
+
+ heightValue.textContent = height + "px";
+
+ if (save) {
+  try {
+   localStorage.setItem(
+    "horizon_frame_height",
+    String(height)
+   );
+  } catch (error) {
+   console.warn("Настройка не сохранена.");
+  }
+ }
+}
+
+heightSlider.addEventListener("input", event => {
+ updateFrameHeight(event.target.value);
+});
+
+/* =========================
+   ЗАГРУЗКА СОХРАНЁННЫХ ФОТО
+========================= */
+
+function loadSavedImages() {
+ ["img-1", "img-2", "img-3"].forEach(id => {
+  try {
+   const saved = localStorage.getItem("horizon_" + id);
+
+   if (saved) {
+    document.getElementById(id).src = saved;
+   }
+  } catch (error) {
+   console.warn("Не удалось загрузить сохранённое фото.");
+  }
+ });
+
+ try {
+  const height = localStorage.getItem("horizon_frame_height");
+
+  if (height) {
+   heightSlider.value = height;
+   updateFrameHeight(height, false);
+  }
+ } catch (error) {
+  console.warn("Не удалось загрузить настройки.");
+ }
+}
+
+/* =========================
+   ЗАГРУЗКА ФОТО ЧЕРЕЗ АДМИНКУ
+========================= */
+
+function uploadImage(event, targetId) {
+ const file = event.target.files && event.target.files[0];
+
+ if (!file) {
+  return;
+ }
+
+ if (!file.type.startsWith("image/")) {
+  alert("Выбери файл изображения.");
+  event.target.value = "";
+  return;
+ }
+
+ if (file.size > 2 * 1024 * 1024) {
+  alert("Размер изображения должен быть не больше 2 МБ.");
+  event.target.value = "";
+  return;
+ }
+
+ const reader = new FileReader();
+
+ reader.onload = event => {
+  const imageData = event.target.result;
+
+  document.getElementById(targetId).src = imageData;
+
+  try {
+   localStorage.setItem("horizon_" + targetId, imageData);
+  } catch (error) {
+   alert(
+    "Фото показано, но не удалось сохранить его в браузере. " +
+    "Попробуй выбрать изображение меньшего размера."
+   );
+  }
+ };
+
+ reader.onerror = () => {
+  alert("Не удалось прочитать изображение.");
+ };
+
+ reader.readAsDataURL(file);
+}
+
+document
+ .getElementById("file-img-1")
+ .addEventListener("change", event => uploadImage(event, "img-1"));
+
+document
+ .getElementById("file-img-2")
+ .addEventListener("change", event => uploadImage(event, "img-2"));
+
+document
+ .getElementById("file-img-3")
+ .addEventListener("change", event => uploadImage(event, "img-3"));
+
+/* =========================
+   ИНИЦИАЛИЗАЦИЯ
+========================= */
+
+loadSavedImages();
+
 </script>
 
 </body>
