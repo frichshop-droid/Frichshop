@@ -2,1909 +2,1227 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#100306">
-<meta name="description" content="HORIZON RUSSIA — начни свою историю. Halloween Edition.">
-<title>HORIZON RUSSIA — Halloween Edition</title>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#100008">
+<title>KRAPINN RUSSIA — Halloween Edition</title>
 
 <style>
-:root {
- --red:#ff1838;
- --red-light:#ff5369;
- --red-dark:#8f001b;
- --red-deep:#39000c;
- --black:#070306;
- --panel:rgba(23,5,11,.91);
- --white:#fff5f7;
- --muted:#c8aeb5;
- --green:#00f58a;
- --blue:#229cff;
+:root{
+ --red:#ff123e;--darkred:#a9002b;--orange:#ff762b;
+ --pink:#ff69cf;--bg:#09030b;--panel:#160711cc;
+ --line:#ff234955;--muted:#d5b4c0;--white:#fff5f8;
 }
-
-* {
- box-sizing:border-box;
- margin:0;
- padding:0;
- -webkit-tap-highlight-color:transparent;
-}
-
-html {
- scroll-behavior:smooth;
- scroll-padding-top:20px;
-}
-
-body {
- min-height:100vh;
- overflow-x:hidden;
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+ min-height:100vh;color:var(--white);
+ font-family:Arial,Helvetica,sans-serif;overflow-x:hidden;
  background:
-  radial-gradient(ellipse at 50% 0%,#600819 0%,transparent 48%),
-  radial-gradient(ellipse at 0% 55%,#30040e 0%,transparent 42%),
-  radial-gradient(ellipse at 100% 90%,#27020b 0%,transparent 40%),
-  var(--black);
- color:var(--white);
- font-family:Inter,Arial,sans-serif;
+ linear-gradient(180deg, rgba(7,2,8,0.75) 0%, rgba(23,5,15,0.85) 50%, rgba(8,3,9,0.9) 100%),
+ url('https://images.unsplash.com/photo-1508385082359-f38ae991e8f2?auto=format&fit=crop&w=2000&q=85') center/cover fixed no-repeat;
 }
-
-body::before {
- content:"";
- position:fixed;
- inset:0;
- z-index:0;
- pointer-events:none;
- background:linear-gradient(115deg,transparent 35%,#ff183805 50%,transparent 65%);
- background-size:200% 100%;
- animation:backgroundSweep 12s linear infinite;
+button,input,textarea,select{font:inherit}
+button{cursor:pointer;color:inherit}
+button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{
+ outline:2px solid var(--orange);outline-offset:3px
 }
-
-button,input {
- font:inherit;
+#particles{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.ambient{
+ position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+ background:radial-gradient(ellipse at 50% 0%,#ff123e15,transparent 60%);
 }
-
-button,a {
- -webkit-tap-highlight-color:transparent;
+.fog{
+ position:absolute;width:85vw;height:40vh;border-radius:50%;
+ background:#8e193b18;filter:blur(55px);
+ animation:fogDrift 22s ease-in-out infinite alternate;
 }
-
-button {
- color:inherit;
+.fog.one{left:-20%;top:20%}
+.fog.two{right:-25%;bottom:5%;animation-delay:-11s}
+.float{
+ position:fixed;z-index:0;pointer-events:none;user-select:none;
+ opacity:.22;filter:drop-shadow(0 0 22px #ff351c);
+ animation:float 8s ease-in-out infinite;
 }
-
-a {
- color:inherit;
-}
-
-::selection {
- background:var(--red);
- color:white;
-}
-
-#bg-canvas {
- position:fixed;
- inset:0;
- width:100%;
- height:100%;
- z-index:0;
- pointer-events:none;
-}
-
-.noise {
- position:fixed;
- inset:0;
- z-index:0;
- pointer-events:none;
- opacity:.07;
- background-image:radial-gradient(rgba(255,255,255,.15) .6px,transparent .6px);
- background-size:5px 5px;
-}
-
-.halloween-decor {
- position:fixed;
- inset:0;
- z-index:1;
- pointer-events:none;
- overflow:hidden;
-}
-
-.floating-pumpkin {
- position:absolute;
- font-size:clamp(25px,4vw,48px);
- opacity:.22;
- filter:drop-shadow(0 0 15px #ff1838);
- animation:pumpkinFloat 8s ease-in-out infinite;
-}
-
-.pumpkin-a {left:2%;top:18%}
-.pumpkin-b {right:3%;top:43%;animation-delay:-3s;font-size:clamp(30px,5vw,56px)}
-.pumpkin-c {left:5%;top:76%;animation-delay:-5s}
-.pumpkin-d {right:7%;top:82%;animation-delay:-2s;font-size:clamp(22px,3vw,38px)}
-
-.bat {
- position:absolute;
- font-size:25px;
- opacity:.28;
- animation:batFly 19s linear infinite;
-}
-
-.bat-a {top:16%;left:-50px}
-.bat-b {top:64%;left:-50px;animation-delay:-9s;font-size:19px}
-
-@keyframes pumpkinFloat {
- 0%,100% {transform:translate3d(0,0,0) rotate(-7deg)}
- 50% {transform:translate3d(12px,-24px,0) rotate(8deg)}
-}
-
-@keyframes batFly {
- 0% {transform:translateX(-60px) translateY(0)}
- 45% {transform:translateX(55vw) translateY(-35px) rotate(8deg)}
- 100% {transform:translateX(calc(100vw + 80px)) translateY(15px) rotate(-4deg)}
-}
-
-@keyframes backgroundSweep {
- 0% {background-position:200% 0}
- 100% {background-position:-200% 0}
-}
-
-@keyframes redPulse {
- 0%,100% {filter:drop-shadow(0 0 8px #ff183829)}
- 50% {filter:drop-shadow(0 0 25px #ff18388c)}
-}
-
-@keyframes titleGlow {
- 0%,100% {text-shadow:0 0 15px #ff18382b}
- 50% {text-shadow:0 0 30px #ff183880,0 0 60px #ff001e30}
-}
-
-@keyframes spin {
- to {transform:rotate(360deg)}
-}
-
-@keyframes spinReverse {
- from {transform:rotate(360deg)}
- to {transform:rotate(0deg)}
-}
-
-@keyframes pulse {
- from {transform:scale(.8)}
- to {transform:scale(1.15)}
-}
-
-@keyframes onlinePulse {
- to {opacity:.4;transform:scale(.75)}
-}
-
-@keyframes borderGlow {
- 0%,100% {border-color:#ff18382e}
- 50% {border-color:#ff1838a1}
-}
-
-@keyframes shine {
- 0% {transform:translateX(-160%) skewX(-25deg)}
- 100% {transform:translateX(240%) skewX(-25deg)}
-}
-
-@keyframes iconFloat {
- 0%,100% {transform:translateY(0) rotate(0)}
- 50% {transform:translateY(-4px) rotate(-4deg)}
-}
-
-/* =========================
-   ЗАГРУЗКА
-========================= */
-
-#loader-screen {
- position:fixed;
- inset:0;
- z-index:99999;
- display:flex;
- align-items:center;
- justify-content:center;
- flex-direction:column;
+.pumpkin1{top:12%;left:-18px;font-size:75px}
+.pumpkin2{right:-20px;top:60%;font-size:85px;animation-delay:-3s}
+.bat{left:5%;bottom:5%;font-size:38px;animation-delay:-5s}
+.web{
+ position:fixed;top:0;width:180px;height:180px;z-index:0;
+ pointer-events:none;opacity:.3;
  background:
-  radial-gradient(circle at center,#4a0616 0%,#19030a 42%,#050204 100%);
- transition:opacity .8s ease,visibility .8s ease;
+ repeating-conic-gradient(from 0deg at 0 0,
+ transparent 0deg 14deg,#f5c9e3 14.5deg 15deg,
+ transparent 15.5deg 30deg);
+ -webkit-mask-image:radial-gradient(circle at 0 0,#000 0,#000 56%,transparent 75%);
+ mask-image:radial-gradient(circle at 0 0,#000 0,#000 56%,transparent 75%);
 }
-
-#loader-screen.hide {
- opacity:0;
- visibility:hidden;
- pointer-events:none;
+.web.left{left:0}
+.web.right{right:0;transform:scaleX(-1)}
+.app{position:relative;z-index:1;max-width:1450px;margin:auto;padding:18px}
+.panel{
+ border:2px solid #ff234966;border-radius:24px;background:var(--panel);
+ box-shadow:0 25px 90px #000b,0 0 55px #ff123e18;overflow:hidden;
+ backdrop-filter:blur(12px)
 }
-
-.loader-content {
- width:min(340px,88vw);
- display:flex;
- flex-direction:column;
- align-items:center;
- text-align:center;
+.header{
+ position:relative;text-align:center;padding:27px 15px 23px;
+ border-bottom:1px solid var(--line)
 }
+.header:after{
+ content:"";position:absolute;bottom:0;left:10%;width:80%;height:2px;
+ background:linear-gradient(90deg,transparent,var(--red),var(--orange),var(--red),transparent);
+ box-shadow:0 0 16px #ff123e
+}
+.logo{
+ width:60px;height:60px;margin:0 auto 12px;display:grid;
+ place-items:center;position:relative;isolation:isolate;
+ border:2px solid #ff7a6caa;border-radius:18px;
+ background:linear-gradient(145deg,#ff183f,#76001d);
+ box-shadow:0 7px 0 #510015,0 14px 35px #ff123e50;
+ animation:pulse 3s infinite
+}
+.logo .sigil{width:40px;height:40px}
+h1{
+ font-size:clamp(26px,5.5vw,42px);font-weight:1000;letter-spacing:1px;
+ text-shadow:0 3px #65001d,0 0 30px #ff123e66
+}
+h1 span,.accent{color:var(--red)}
+.subtitle{margin-top:8px;color:#f0b8c8;font-size:11px;letter-spacing:2.5px;text-transform:uppercase}
+.season{
+ display:inline-flex;margin-top:12px;padding:8px 15px;
+ border:1px solid #ff762b88;border-radius:30px;background:#ff762b18;
+ color:#ffc5a4;font-size:11px;font-weight:900;letter-spacing:1.5px;
+ box-shadow:0 0 20px #ff762b22
+}
+.layout{display:grid;grid-template-columns:255px minmax(0,1fr);min-height:650px}
+.sidebar{padding:18px 13px;border-right:1px solid var(--line);background:#0c0309dd}
+.side-title{padding:10px 12px 14px;color:#c99aa9;font-size:11px;font-weight:900;letter-spacing:1.8px;text-transform:uppercase}
+.nav-btn{
+ display:flex;align-items:center;gap:12px;width:100%;padding:13px 14px;
+ border:1px solid transparent;border-radius:12px;background:transparent;
+ text-align:left;color:#eac4d4;font-size:12px;font-weight:800;transition:.25s
+}
+.nav-btn .ico{width:24px;text-align:center;font-size:18px;filter:drop-shadow(0 0 6px #ff123e88)}
+.nav-btn:hover,.nav-btn.active{
+ border-color:#ff2349aa;
+ background:linear-gradient(90deg,#ff123e33,#ff123e0a);
+ color:white;transform:translateX(4px);
+ box-shadow:0 0 20px #ff123e22
+}
+.nav-btn.active{box-shadow:inset 3px 0 var(--red),0 0 25px #ff123e33}
+.side-bottom{margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:14px;background:#ff123e12}
+.side-bottom p{font-size:11px;color:var(--muted);line-height:1.8}
+.main{min-width:0;padding:25px}
+.topbar{
+ display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;
+ padding:14px 18px;margin-bottom:22px;border:1px solid var(--line);
+ border-radius:14px;background:#ff123e12;font-size:12px;
+ box-shadow:0 8px 30px #0006
+}
+.btn{
+ padding:12px 18px;border:1px solid #ff6b7daa;border-radius:12px;
+ background:linear-gradient(135deg,#ff1642,#b0002c);
+ box-shadow:0 5px 0 #65001b,0 10px 25px #ff123e33;
+ font-size:12px;font-weight:900;transition:transform .18s,filter .18s,box-shadow .18s
+}
+.btn:hover{filter:brightness(1.15);transform:translateY(-2px);box-shadow:0 7px 0 #65001b,0 14px 30px #ff123e55}
+.btn.secondary{background:#ff123e18;box-shadow:0 4px 0 #410012,0 8px 20px #0004;border-color:#ff234977}
+.view{display:none;animation:appear .4s cubic-bezier(.2,.8,.2,1)}
+.view.active{display:block}
+.title{font-size:clamp(24px,4vw,33px);font-weight:1000;margin-bottom:14px;text-shadow:0 2px 15px #ff123e44}
+.desc{font-size:13px;line-height:1.8;color:var(--muted);margin-bottom:22px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.card{
+ position:relative;min-width:0;min-height:135px;padding:18px;
+ border:2px solid #ff234944;border-radius:18px;
+ background:linear-gradient(145deg,#3b0b1ceb,#12040eea);
+ text-align:left;overflow:hidden;transition:.3s;
+ box-shadow:0 8px 30px #0006, inset 0 0 20px #ff123e0a;
+ animation: cardGlow 4s ease-in-out infinite alternate;
+}
+.card:hover{
+ transform:translateY(-6px) scale(1.01);
+ border-color:#ff4c68;
+ box-shadow:0 15px 40px #0009,0 0 30px #ff123e33, inset 0 0 25px #ff123e22;
+}
+.card:after{
+ content:"";position:absolute;top:0;left:-120%;width:55%;height:100%;
+ transform:skewX(-22deg);background:linear-gradient(90deg,transparent,#ffffff22,transparent);
+ transition:left .7s
+}
+.card:hover:after{left:150%}
+.card-icon{display:block;font-size:28px;margin-bottom:12px;filter:drop-shadow(0 0 10px #ff762b88);animation: bounceIcon 3s ease-in-out infinite;}
+.card-title{font-size:14px;font-weight:900;line-height:1.5;color:#fff}
+.card-desc{font-size:11px;color:var(--muted);line-height:1.7;margin-top:6px}
+.box{padding:20px;margin-bottom:15px;border:1px solid var(--line);border-radius:16px;background:#1a0713ee;box-shadow:0 8px 30px #0006}
+.box h3{font-size:15px;margin-bottom:10px;color:#ffc5a4}
+.box p,.box li{font-size:13px;color:var(--muted);line-height:1.9}
+.box ul,.box ol{padding-left:20px}
+.back{margin-bottom:20px}
+.rule{
+ width:100%;text-align:left;padding:16px;margin:9px 0;
+ border:1px solid var(--line);border-radius:14px;background:#ff123e12;
+ transition:.25s;box-shadow:0 4px 15px #0004
+}
+.rule:hover{border-color:var(--orange);background:#ff123e22;transform:translateX(4px)}
+.rule b{display:block;margin-bottom:6px;color:#fff}
+.rule span{color:var(--muted);font-size:12px;line-height:1.7}
+.field{display:block;margin:14px 0}
+.field span{display:block;font-size:12px;font-weight:800;margin-bottom:8px;color:#f5d7e2}
+.field input,.field select,.field textarea{
+ display:block;width:100%;padding:13px;border:1px solid #ff234966;
+ border-radius:12px;background:#0d030a;color:white;outline:none;font-size:14px;
+ box-shadow:inset 0 2px 10px #0009
+}
+.field textarea{min-height:100px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--orange);box-shadow:inset 0 2px 10px #0009,0 0 15px #ff762b55}
+.auth-wrap{
+ position:fixed;inset:0;z-index:1000;display:flex;align-items:center;
+ justify-content:center;padding:18px;background:#050208f8;
+ backdrop-filter:blur(18px);overflow-y:auto
+}
+.auth-wrap[hidden]{display:none}
+.auth-card{
+ width:min(450px,100%);padding:28px;border:2px solid #ff473faa;
+ border-radius:26px;background:linear-gradient(145deg,#300817bb,#0b0309eb);
+ box-shadow:0 25px 90px #000,0 0 50px #ff123e22
+}
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:6px;background:#0a0308;border:1px solid var(--line);border-radius:14px;margin:18px 0}
+.tab{padding:12px;border:0;border-radius:10px;background:transparent;color:var(--muted);font-weight:800;transition:.2s}
+.tab.active{background:linear-gradient(135deg,var(--red),#9b0028);color:white;box-shadow:0 0 15px #ff123e66}
+.error{min-height:20px;color:#ff9ebd;font-size:12px;line-height:1.6;margin-top:10px}
+.note{font-size:10px;line-height:1.7;color:#b594a2;margin-top:14px}
 
-.orb {
- width:120px;
- height:120px;
+/* ЗАГРУЗКА */
+#loader{
+ position:fixed;inset:0;z-index:900;display:none;flex-direction:column;
+ align-items:center;justify-content:center;gap:16px;
+ background:radial-gradient(ellipse at center,#510b1bee,#16030bee 50%,#080208ef 80%);
+ text-align:center;overflow:hidden
+}
+#loader.show{display:flex}
+.loader-pumpkins{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.loader-pumpkin{
+ position:absolute;font-size:clamp(40px,9vw,80px);opacity:.25;
+ filter:drop-shadow(0 0 25px #ff4018);animation:drift 5s ease-in-out infinite
+}
+.loader-pumpkin:nth-child(1){top:12%;left:8%}
+.loader-pumpkin:nth-child(2){top:22%;right:9%;animation-delay:-2s}
+.loader-pumpkin:nth-child(3){bottom:15%;left:15%;animation-delay:-3s}
+.loader-pumpkin:nth-child(4){bottom:18%;right:13%;animation-delay:-1s}
+.load-logo{
+ width:110px;height:110px;display:grid;place-items:center;position:relative;
+ border:2px solid #ff763b;border-radius:32px;
+ background:linear-gradient(145deg,#ff263f,#7b001d);
+ box-shadow:0 0 50px #ff123e66,0 0 100px #ff123e22;
+ animation:logoFloat 2s ease-in-out infinite
+}
+.load-logo:before{
+ content:"";position:absolute;inset:-10px;border:1px solid #ff762b77;
+ border-radius:38px;animation:ringSpin 7s linear infinite
+}
+.load-logo:after{
+ content:"";position:absolute;inset:-19px;border:1px dashed #ff123e88;
+ border-radius:44px;animation:ringSpin 12s linear infinite reverse
+}
+.load-logo .sigil{width:65px;height:65px;filter:drop-shadow(0 0 15px #ff762b)}
+.load-title{font-size:clamp(25px,6vw,34px);font-weight:1000;text-shadow:0 3px #65001b}
+.load-title span{color:var(--red)}
+.load-status{font-size:12px;color:#f0c5d0;min-height:18px}
+.progress{width:min(290px,75vw);height:7px;background:#ffffff22;border-radius:20px;overflow:hidden;margin-top:12px;box-shadow:inset 0 1px 4px #000}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#c10030,#ff123e,#ff762b);box-shadow:0 0 20px var(--red)}
+.load-meta{width:min(290px,75vw);display:flex;justify-content:space-between;font-size:10px;color:#f0aab9}
+
+/* РАМКИ СПИСКА АДМИНИСТРАЦИИ */
+.admin-card{
+ overflow:hidden;margin-bottom:22px;
+ border:3px solid #b38642;
+ border-radius:24px;
+ background:linear-gradient(160deg,#1c0714eb,#080206ee);
+ box-shadow:0 20px 60px #0009, inset 0 0 40px rgba(179,134,66,0.15), 0 0 25px rgba(255,18,62,0.2);
+ transition:all .3s cubic-bezier(.2,.8,.2,1);
  position:relative;
- display:grid;
- place-items:center;
- margin-bottom:32px;
 }
-
-.orb-ring {
- position:absolute;
- border-radius:50%;
- border:2px solid transparent;
-}
-
-.orb-ring.one {
- inset:0;
- border-top-color:var(--red);
- border-bottom-color:var(--red);
- box-shadow:0 0 30px #ff18384a;
- animation:spin 2s linear infinite;
-}
-
-.orb-ring.two {
- inset:13px;
- border-left-color:white;
- border-right-color:var(--red-light);
- animation:spinReverse 1.5s linear infinite;
-}
-
-.orb-ring.three {
- inset:27px;
- border:1px dashed var(--red-light);
- animation:spin 4s linear infinite;
-}
-
-.orb-center {
- font-size:32px;
- filter:drop-shadow(0 0 15px #ff1838);
- animation:pulse 1s ease-in-out infinite alternate;
-}
-
-.loader-title {
- font-size:22px;
- font-weight:900;
- letter-spacing:2px;
- margin-bottom:11px;
- color:#ff5369;
- text-shadow:0 0 25px #ff1838;
- animation:titleGlow 3s infinite;
-}
-
-.loader-subtitle {
- font-size:10px;
- letter-spacing:1.4px;
- line-height:1.8;
- color:#cbb7be;
- margin-bottom:24px;
-}
-
-.loader-track {
- width:100%;
- height:5px;
- overflow:hidden;
- border-radius:50px;
- background:#ffffff12;
-}
-
-.loader-progress {
- width:0;
- height:100%;
- border-radius:inherit;
- background:linear-gradient(90deg,#8f001b,#ff1838,#ffb0bd);
- box-shadow:0 0 20px var(--red);
-}
-
-.loader-percent {
- margin-top:12px;
- font-size:13px;
- font-weight:900;
- color:var(--red-light);
-}
-
-/* =========================
-   ОСНОВНОЙ САЙТ
-========================= */
-
-.wrapper {
- position:relative;
- z-index:2;
- width:min(900px,100%);
- margin:0 auto;
- padding:35px 20px 65px;
- opacity:0;
- transform:translateY(18px);
- transition:opacity .8s ease,transform .8s ease;
-}
-
-.wrapper.visible {
- opacity:1;
- transform:translateY(0);
-}
-
-.top-line {
- width:100%;
- height:3px;
- border-radius:10px;
- margin-bottom:30px;
- background:linear-gradient(90deg,transparent,#ff1838,#ffb3bf,#ff1838,transparent);
- box-shadow:0 0 25px #ff183866;
- position:relative;
- overflow:hidden;
-}
-
-.top-line::after {
- content:"";
- position:absolute;
- top:0;
- left:-30%;
- width:25%;
- height:100%;
- background:white;
- filter:blur(5px);
- animation:topLineMove 4s linear infinite;
-}
-
-@keyframes topLineMove {
- to {left:120%}
-}
-
-.green-badge {
- display:flex;
- align-items:center;
- justify-content:center;
- gap:10px;
- width:fit-content;
- max-width:100%;
- margin:0 auto 25px;
- padding:10px 18px;
- border:1px solid #00f58a55;
- border-radius:50px;
- background:#00f58a0b;
- box-shadow:0 0 25px #00f58a0b;
-}
-
-.green-dot {
- width:8px;
- height:8px;
- flex-shrink:0;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 12px var(--green);
- animation:onlinePulse 1.4s infinite alternate;
-}
-
-.green-badge-text {
- font-size:10px;
- font-weight:800;
- letter-spacing:1.3px;
- color:var(--green);
-}
-
-.hero-title {
- text-align:center;
- font-size:clamp(29px,5.5vw,49px);
- font-weight:900;
- line-height:1.2;
- letter-spacing:-1.5px;
- margin-bottom:22px;
- background:linear-gradient(180deg,#ffffff 5%,#ffb7c1 42%,#ff1838 78%,#a40020 100%);
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- filter:drop-shadow(0 0 22px #ff18382c);
- animation:titleGlow 4s ease-in-out infinite;
-}
-
-.hero-title .title-small {
- display:block;
- margin-top:10px;
- font-size:clamp(13px,2.5vw,19px);
- letter-spacing:5px;
- color:var(--red-light);
- -webkit-text-fill-color:var(--red-light);
-}
-
-.hero-description {
- max-width:750px;
- margin:0 auto 35px;
- text-align:center;
- color:#d8c9ce;
- font-size:14px;
- line-height:1.95;
- font-weight:500;
-}
-
-.section-label {
- text-align:center;
- color:var(--red-light);
- font-size:10px;
- font-weight:800;
- letter-spacing:3px;
- margin-bottom:25px;
- text-shadow:0 0 15px #ff18384d;
-}
-
-.section-label::before,
-.section-label::after {
- content:"✦";
- margin:0 10px;
- color:var(--red);
-}
-
-/* =========================
-   КАРТОЧКИ
-========================= */
-
-.animated-card {
- position:relative;
- overflow:hidden;
- padding:28px;
- margin-bottom:24px;
- border-radius:23px;
- border:1px solid #ff18383b;
- background:
-  radial-gradient(ellipse at 100% 0%,#ff18380b,transparent 50%),
-  linear-gradient(145deg,#250711ed,#0d0509f5);
- box-shadow:
-  0 15px 45px #00000050,
-  inset 0 1px 0 #ffffff08;
- backdrop-filter:blur(15px);
- opacity:0;
- transform:translateY(30px) scale(.985);
- transition:
-  opacity .7s ease,
-  transform .7s cubic-bezier(.2,.7,.2,1),
-  border-color .35s ease,
-  box-shadow .35s ease;
-}
-
-.animated-card.in-view {
- opacity:1;
- transform:translateY(0) scale(1);
-}
-
-.animated-card:hover {
- border-color:#ff5369a3;
- box-shadow:
-  0 18px 55px #ff183817,
-  0 15px 45px #00000055;
-}
-
-.animated-card::before {
- content:"";
- position:absolute;
- top:0;
- left:8%;
- width:35%;
- height:1px;
- background:linear-gradient(90deg,transparent,#ff5369,transparent);
-}
-
-.animated-card::after {
- content:"";
- position:absolute;
- right:-45px;
- top:-55px;
- width:130px;
- height:130px;
- border-radius:50%;
- background:#ff18380b;
- filter:blur(5px);
- pointer-events:none;
- transition:background .3s,transform .4s;
-}
-
-.animated-card:hover::after {
- background:#ff18381b;
- transform:scale(1.3);
-}
-
-.card-title {
- display:flex;
- align-items:center;
- gap:12px;
- margin-bottom:15px;
- font-size:19px;
- font-weight:800;
- line-height:1.4;
- letter-spacing:-.3px;
-}
-
-.card-title .icon {
- display:grid;
- place-items:center;
- width:43px;
- height:43px;
- flex-shrink:0;
- border-radius:14px;
- border:1px solid #ff18384f;
- background:linear-gradient(145deg,#ff18382b,#ff183808);
- font-size:20px;
- box-shadow:0 0 18px #ff18380b;
- animation:iconFloat 4s ease-in-out infinite;
-}
-
-.card-text {
- color:var(--muted);
- font-size:13px;
- line-height:1.95;
- font-weight:500;
- margin-bottom:19px;
-}
-
-/* =========================
-   ФОТОГРАФИИ
-========================= */
-
-.photo-frame {
- position:relative;
- height:340px;
- margin-top:18px;
- overflow:hidden;
- border:1px solid #ff18385c;
- border-radius:17px;
- background:#14040a;
- box-shadow:0 10px 30px #00000055;
- cursor:pointer;
- isolation:isolate;
- transition:border-color .3s,box-shadow .3s,transform .3s;
-}
-
-.photo-frame:hover {
- border-color:var(--red-light);
- box-shadow:0 0 32px #ff183832;
- transform:translateY(-2px);
-}
-
-.photo-frame img {
- display:block;
- width:100%;
- height:100%;
- object-fit:cover;
- transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s;
-}
-
-.photo-frame:hover img {
- transform:scale(1.055);
- filter:saturate(1.15);
-}
-
-.photo-frame::before {
- content:"";
- position:absolute;
- inset:0;
- z-index:1;
- pointer-events:none;
- background:linear-gradient(135deg,#ff18380c,transparent 40%,#08020430);
-}
-
-.photo-frame::after {
- content:"";
- position:absolute;
- inset:55% 0 0;
- z-index:1;
- pointer-events:none;
- background:linear-gradient(transparent,#08020455);
-}
-
-/* =========================
-   ПРОМОКОД
-========================= */
-
-.promo-card {
- position:relative;
- padding:25px 18px;
- margin:20px 0;
- text-align:center;
- border:1px dashed var(--red);
- border-radius:19px;
- background:
-  radial-gradient(ellipse at top,#ff183826,transparent 75%),
-  #0d0509;
- box-shadow:inset 0 0 30px #ff183807;
- animation:borderGlow 4s ease-in-out infinite;
-}
-
-.promo-caption {
- font-size:11px;
- color:#f1dce1;
- font-weight:800;
- letter-spacing:1px;
-}
-
-.promo-code-btn {
- position:relative;
- display:inline-block;
- margin:18px 0 12px;
- padding:12px 30px;
- border:1px solid #ffb1bc55;
- border-radius:12px;
- background:linear-gradient(135deg,#ff5369,#cf001f 60%,#850016);
- color:white;
- font-family:Inter,Arial,sans-serif;
- font-size:28px;
- font-weight:900;
- cursor:pointer;
- box-shadow:0 0 30px #ff183847;
- transition:transform .25s,box-shadow .25s,filter .25s;
- user-select:none;
-}
-
-.promo-code-btn:hover {
- transform:translateY(-3px) scale(1.025);
- box-shadow:0 0 42px #ff183877;
- filter:brightness(1.1);
-}
-
-.promo-code-btn:active {
- transform:scale(.95);
-}
-
-.promo-hint {
- color:#a9959c;
- font-size:10px;
-}
-
-.bonus-list {
- display:grid;
- gap:10px;
- margin:20px auto 0;
- width:fit-content;
- list-style:none;
- text-align:left;
-}
-
-.bonus-list li {
- color:#fff;
- font-size:13px;
- font-weight:700;
-}
-
-.bonus-list li span {
- color:var(--red-light);
-}
-
-/* =========================
-   КНОПКИ
-========================= */
-
-.btn-group {
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:13px;
- margin-top:25px;
-}
-
-.btn-red {
- position:relative;
- display:flex;
- align-items:center;
- justify-content:center;
- gap:10px;
- width:100%;
- max-width:420px;
- min-height:57px;
- padding:17px 20px;
- overflow:hidden;
- border:1px solid #ffb3bf38;
- border-radius:15px;
- background:linear-gradient(110deg,#ff2948,#bc001f 70%,#820017);
- box-shadow:0 8px 28px #ff18382b;
- color:white;
- text-decoration:none;
- text-align:center;
- font-size:12px;
- font-weight:800;
- letter-spacing:.5px;
- cursor:pointer;
- transition:transform .25s,box-shadow .25s,filter .25s;
-}
-
-.btn-red::before {
- content:"";
- position:absolute;
- top:0;
- left:-120%;
- width:70%;
- height:100%;
- transform:skewX(-25deg);
- background:linear-gradient(90deg,transparent,#ffffff25,transparent);
-}
-
-.btn-red:hover::before {
- animation:shine .75s ease;
-}
-
-.btn-red:hover {
- transform:translateY(-3px);
- box-shadow:0 12px 35px #ff18384a;
- filter:brightness(1.12);
-}
-
-.btn-red:active {
- transform:scale(.98);
-}
-
-.btn-telegram {
- border-color:#48baff50;
- background:linear-gradient(110deg,#168bd4,#07528f);
- box-shadow:0 8px 28px #168bd425;
-}
-
-.btn-support {
- background:linear-gradient(110deg,#ff5369,#9d001b);
-}
-
-.btn-secondary {
- background:linear-gradient(110deg,#292027,#171015);
- border-color:#ffffff19;
- box-shadow:none;
-}
-
-.btn-icon {
- font-size:19px;
- transition:transform .25s;
-}
-
-.btn-red:hover .btn-icon {
- transform:scale(1.15) rotate(-5deg);
-}
-
-/* =========================
-   ФИНАЛЬНАЯ КАРТОЧКА
-========================= */
-
-.final-card {
- text-align:center;
- background:
-  radial-gradient(ellipse at top,#ff183822,transparent 70%),
-  linear-gradient(150deg,#280711,#0b0508);
-}
-
-.final-title {
- justify-content:center;
- font-size:25px;
- color:var(--red-light);
- letter-spacing:1px;
-}
-
-.final-description {
- max-width:550px;
- margin:0 auto;
-}
-
-.footer {
- position:relative;
- z-index:2;
- padding:20px 15px 35px;
- text-align:center;
- color:#8b747c;
- font-size:10px;
- line-height:2;
-}
-
-.footer-brand {
- color:#ff8c9b;
- font-weight:900;
- letter-spacing:3px;
- margin-bottom:5px;
- text-shadow:0 0 18px #ff18383b;
-}
-
-.admin-secret-trigger {
- position:relative;
- z-index:10;
- width:9px;
- height:9px;
- margin:30px auto 0;
- border-radius:50%;
- background:#ffffff0c;
- cursor:pointer;
-}
-
-.admin-secret-trigger:hover {
- background:var(--red);
- box-shadow:0 0 12px var(--red);
-}
-
-/* =========================
-   МОДАЛЬНЫЕ ОКНА
-   АДМИН-ПАНЕЛЬ СОХРАНЕНА
-========================= */
-
-.modal-overlay {
- position:fixed;
- inset:0;
- z-index:100000;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:18px;
- background:#000000d9;
- backdrop-filter:blur(15px);
- opacity:0;
- visibility:hidden;
- pointer-events:none;
- transition:opacity .25s,visibility .25s;
-}
-
-.modal-overlay.active {
- opacity:1;
- visibility:visible;
- pointer-events:auto;
-}
-
-.admin-box {
- width:100%;
- max-width:440px;
- max-height:88vh;
- overflow-y:auto;
- padding:25px;
- border:1px solid #ff18386c;
- border-radius:22px;
- background:linear-gradient(145deg,#280711,#0b0508);
- box-shadow:0 0 60px #ff18381c;
-}
-
-.admin-heading {
- margin-bottom:20px;
- color:var(--red-light);
- font-size:17px;
- font-weight:900;
- text-align:center;
-}
-
-.admin-input {
- width:100%;
- min-height:45px;
- padding:12px;
- margin-bottom:13px;
- outline:none;
- border:1px solid #ff183842;
- border-radius:11px;
- background:#ffffff08;
- color:white;
- font-size:13px;
-}
-
-.admin-input:focus {
- border-color:var(--red);
-}
-
-.admin-input::placeholder {
- color:#9b858d;
-}
-
-.admin-setting-item {
- padding:15px;
- margin-bottom:13px;
- border:1px solid #ffffff12;
- border-radius:13px;
- background:#ffffff05;
-}
-
-.admin-setting-item label {
- display:block;
- margin-bottom:10px;
- color:#e8dce0;
- font-size:12px;
- font-weight:700;
-}
-
-.admin-setting-item input[type=range] {
- width:100%;
- accent-color:var(--red);
-}
-
-.admin-setting-item input[type=file] {
- font-size:11px;
-}
-
-#height-val {
- margin-top:8px;
- text-align:right;
- color:#bcaab1;
- font-size:11px;
-}
-
-/* =========================
-   HALLOWEEN УВЕДОМЛЕНИЕ
-========================= */
-
-.halloween-toast {
- position:fixed;
- z-index:110000;
- right:20px;
- bottom:20px;
- width:min(390px,calc(100vw - 28px));
- padding:20px 48px 20px 20px;
- border:1px solid #ff5369a6;
- border-radius:18px;
- background:linear-gradient(135deg,#300711f5,#100408f8);
- box-shadow:0 15px 55px #0009,0 0 28px #ff183826;
- backdrop-filter:blur(18px);
- opacity:0;
- transform:translateY(25px) scale(.97);
- visibility:hidden;
- transition:opacity .4s,transform .4s,visibility .4s;
-}
-
-.halloween-toast.show {
- opacity:1;
- transform:translateY(0) scale(1);
- visibility:visible;
-}
-
-.toast-title {
- font-size:14px;
- font-weight:900;
- color:#ff7183;
- margin-bottom:7px;
-}
-
-.toast-text {
- font-size:12px;
- line-height:1.7;
- color:#e4d2d9;
-}
-
-.toast-close {
- position:absolute;
- right:12px;
- top:10px;
- width:29px;
- height:29px;
- border:1px solid #ffffff1c;
- border-radius:9px;
- background:#ffffff09;
- color:#fff;
- font-size:18px;
- cursor:pointer;
-}
-
-.toast-spark {
- position:absolute;
- right:17px;
- bottom:10px;
- font-size:22px;
- opacity:.75;
-}
-
-@media(max-width:600px) {
- .wrapper {
-  padding:22px 14px 45px;
- }
-
- .hero-title {
-  font-size:clamp(27px,8vw,39px);
-  letter-spacing:-.8px;
- }
-
- .hero-title .title-small {
-  letter-spacing:3px;
- }
-
- .hero-description {
-  font-size:13px;
- }
-
- .animated-card {
-  padding:19px;
-  border-radius:19px;
- }
-
- .card-title {
-  font-size:16px;
- }
-
- .card-title .icon {
-  width:39px;
-  height:39px;
- }
-
- .card-text {
-  font-size:12px;
- }
-
- .photo-frame {
-  height:230px;
-  border-radius:13px;
- }
-
- .promo-code-btn {
-  font-size:26px;
-  padding:12px 25px;
- }
-
- .btn-red {
-  min-height:54px;
-  padding:15px;
-  font-size:11px;
- }
-
- .green-badge-text {
-  font-size:9px;
-  letter-spacing:.7px;
- }
-
- .halloween-toast {
-  right:14px;
-  bottom:14px;
- }
-}
-
-@media(prefers-reduced-motion:reduce) {
- *,
- *::before,
- *::after {
-  animation-duration:.01ms!important;
-  animation-iteration-count:1!important;
-  scroll-behavior:auto!important;
-  transition-duration:.01ms!important;
- }
+.admin-card::before{
+ content:"";position:absolute;inset:4px;border:1px solid rgba(255,215,0,0.3);
+ border-radius:20px;pointer-events:none;z-index:2;
+}
+.admin-card:hover{
+ border-color:#ffd700;
+ box-shadow:0 25px 70px #000b, inset 0 0 50px rgba(255,215,0,0.25), 0 0 35px rgba(255,118,43,0.4);
+ transform:translateY(-4px);
+}
+.admin-banner{
+ height:150px;background-color:#210811;background-size:cover;background-position:center;
+ border-bottom:2px solid #b38642;position:relative;overflow:hidden
+}
+.admin-banner:before{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(115deg,#08030988,transparent 40%,#ff123e22)
+}
+.admin-banner:after{
+ content:"";position:absolute;inset:0;
+ background:linear-gradient(180deg,#12040b11,#130811ee)
+}
+.admin-profile{padding:0 22px 24px}
+.admin-identity{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-top:-52px;position:relative;z-index:3}
+.admin-avatar{
+ width:100px;height:100px;flex:0 0 100px;border-radius:50%;
+ border:4px solid #ffd700;background:radial-gradient(circle,#360b1a,#080308);
+ background-size:cover;background-position:center;display:grid;place-items:center;
+ font-size:34px;font-weight:900;cursor:pointer;
+ box-shadow:0 0 0 5px #130811,0 0 30px rgba(255,215,0,0.4);
+ transition:transform .25s, box-shadow .25s
+}
+.admin-avatar:hover{transform:scale(1.06);box-shadow:0 0 0 5px #130811,0 0 40px rgba(255,215,0,0.7)}
+.admin-nick{
+ font-size:clamp(22px,4vw,32px);font-weight:900;overflow-wrap:anywhere;
+ cursor:pointer;color:var(--pink);text-shadow:0 0 20px #ff69cf44
+}
+.verified{
+ display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;
+ border-radius:50%;background:#168dff;color:white;font-size:13px;margin-left:7px;
+ box-shadow:0 0 10px #168dffaa
+}
+.admin-badges{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.admin-badge{
+ padding:9px 14px;border-radius:10px;background:#2d242e;color:#fff;
+ font-size:12px;font-weight:800;border:1px solid #ffd70033;
+ box-shadow:0 4px 10px #0004
+}
+.admin-badge.project{background:linear-gradient(135deg,#ffca05,#cc9a00);border-color:#ffe56a;color:#170e00;box-shadow:0 0 15px rgba(255,202,5,0.4)}
+.admin-badge.special{background:linear-gradient(135deg,#e50016,#99000f);border-color:#ff3547;color:#fff;box-shadow:0 0 15px rgba(229,0,22,0.4)}
+.admin-badge.developer{background:linear-gradient(135deg,#d90017,#80000d);border-color:#ff4052;color:#fff;box-shadow:0 0 15px rgba(217,0,23,0.4)}
+.admin-badge.pr{background:linear-gradient(135deg,#ed57b5,#b32e82);border-color:#ff9cdd;color:#fff;box-shadow:0 0 15px rgba(237,87,181,0.4)}
+.admin-badge.media{background:linear-gradient(135deg,#34c759,#248a3d);border-color:#5aea7a;color:#fff;box-shadow:0 0 15px rgba(52,199,89,0.4)}
+.admin-badge.tech{background:linear-gradient(135deg,#af52de,#7c22aa);border-color:#d484ff;color:#fff;box-shadow:0 0 15px rgba(175,82,222,0.4)}
+.admin-badge.forum{background:linear-gradient(135deg,#36303d,#211c26);border-color:#5a5061;color:#fff}
+.admin-badge.dep-special{background:linear-gradient(135deg,#b80f2a,#52000f);border-color:#ff4d6a;color:#fff;box-shadow:0 0 15px rgba(184,15,42,0.4)}
+.admin-badge.cur-junior{background:linear-gradient(135deg,#2b580c,#122603);border-color:#7af224;color:#fff;box-shadow:0 0 15px rgba(43,88,12,0.4)}
+.admin-badge.cur-pr{background:linear-gradient(135deg,#5e17eb,#2d0773);border-color:#b88aff;color:#fff;box-shadow:0 0 15px rgba(94,23,235,0.4)}
+.admin-hint{text-align:center;color:#cca6b4;font-size:12px;line-height:1.8;margin-top:18px}
+.account-row{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:14px 0;border-bottom:1px solid var(--line)}
+.account-row small{display:block;color:var(--muted);margin-top:4px;font-size:10px}
+.account-row select{max-width:100%;padding:10px;background:#160711;color:white;border:1px solid var(--line);border-radius:9px}
+.profile-modal{position:fixed;inset:0;z-index:1600;background:#050208ed;backdrop-filter:blur(14px);display:none;align-items:center;justify-content:center;padding:18px}
+.profile-modal.open{display:flex}
+.profile-modal-card{width:min(720px,100%);max-height:90vh;overflow:auto;padding:16px;background:#130811;border:2px solid #b38642;border-radius:24px;box-shadow:0 25px 80px #000, 0 0 40px rgba(179,134,66,0.3)}
+.profile-modal-banner{height:190px;border-radius:14px;background:#260812;background-size:cover;background-position:center;border:1px solid #b38642}
+.profile-modal-avatar{width:105px;height:105px;border-radius:50%;border:4px solid #ffd700;background:#080308;background-size:cover;background-position:center;margin:-48px 0 14px 22px;position:relative;display:grid;place-items:center;font-size:34px;font-weight:900;box-shadow:0 0 25px rgba(255,215,0,0.5)}
+.profile-modal-actions{display:flex;gap:10px;flex-wrap:wrap;padding:12px}
+.footer{text-align:center;color:#b08898;font-size:10px;line-height:1.8;padding:25px 10px;text-shadow:0 2px 10px #000}
+.toast{
+ position:fixed;z-index:2000;bottom:20px;left:50%;transform:translateX(-50%);
+ padding:14px 20px;border:2px solid #ff473f;border-radius:14px;
+ background:#210815ee;color:white;box-shadow:0 10px 40px #000b,0 0 25px #ff123e44;
+ font-size:12px;max-width:90vw;text-align:center;backdrop-filter:blur(8px)
+}
+
+/* ПРОМОКОД */
+#promo{
+ position:fixed;z-index:800;right:-430px;bottom:5%;width:min(390px,92vw);
+ display:flex;align-items:flex-end;gap:8px;pointer-events:none;
+ transition:right .8s cubic-bezier(.2,.8,.2,1)
+}
+#promo.show{right:12px}
+#promo.hide{right:-430px}
+.mascot{
+ font-size:clamp(75px,15vw,125px);
+ filter:drop-shadow(0 0 20px #ff762b);
+ animation:peek 1s ease-in-out infinite alternate;transform-origin:bottom
+}
+.promo-sign{
+ position:relative;max-width:230px;margin-bottom:22px;padding:15px 17px;
+ border:2px solid #ff762b;border-radius:14px;
+ background:linear-gradient(145deg,#390716,#12030a);
+ box-shadow:0 0 25px #ff123e55,0 7px 0 #5b001b;
+ transform:rotate(-3deg);animation:sign .8s ease-in-out infinite alternate
+}
+.promo-sign small{display:block;color:#ffb58e;font-size:9px;letter-spacing:1.5px;font-weight:900}
+.promo-sign strong{
+ display:block;margin-top:5px;color:#fff;font-size:clamp(24px,6vw,32px);
+ font-weight:1000;text-shadow:0 0 16px #ff123e
+}
+.promo-sign span{display:block;margin-top:5px;color:#e7bac6;font-size:10px}
+.promo-close{
+ position:absolute;top:-10px;right:-7px;pointer-events:auto;width:25px;height:25px;
+ border:1px solid #ff762b;border-radius:50%;background:#240712;color:white;font-weight:900
+}
+
+/* ПАУК НА ПАУТИНЕ */
+#spider-event{
+ position:fixed;z-index:700;top:0;right:clamp(24px,12vw,150px);
+ width:76px;height:0;pointer-events:none;opacity:0
+}
+#spider-event.playing{animation:spiderDrop 5.5s ease-in-out both}
+.spider-thread{
+ position:absolute;left:37px;bottom:100%;width:1px;height:125px;
+ background:linear-gradient(to bottom,#e5d4e1,#a78a9b88);
+ box-shadow:0 0 5px #ffffff55
+}
+.spider-body{
+ position:absolute;top:0;left:10px;width:56px;height:57px;
+ transform-origin:top center;animation:spiderSwing 1.1s ease-in-out infinite alternate
+}
+.spider-head{
+ position:absolute;z-index:2;top:12px;left:17px;width:24px;height:23px;
+ border:1px solid #55505c;border-radius:50%;
+ background:radial-gradient(circle at 35% 25%,#55505e,#17131d 55%,#050407);
+ box-shadow:0 0 12px #ff123e55
+}
+.spider-eye{
+ position:absolute;top:8px;width:5px;height:5px;border-radius:50%;
+ background:#ff274d;box-shadow:0 0 7px #ff123e
+}
+.spider-eye:first-child{left:4px}
+.spider-eye:last-child{right:4px}
+.spider-abdomen{
+ position:absolute;top:28px;left:13px;width:32px;height:26px;
+ border:1px solid #49424f;border-radius:48% 48% 55% 55%;
+ background:radial-gradient(ellipse at 35% 20%,#4b4554,#17131c 60%,#050407);
+ box-shadow:inset 0 -4px 8px #000
+}
+.spider-legs i{
+ position:absolute;z-index:1;top:20px;width:22px;height:12px;
+ border-top:2px solid #625565;filter:drop-shadow(0 1px 1px #000)
+}
+.spider-legs i:nth-child(odd){
+ left:0;transform:rotate(-28deg);transform-origin:right center;border-radius:90% 0 0
+}
+.spider-legs i:nth-child(even){
+ right:0;transform:scaleX(-1) rotate(-28deg);transform-origin:left center;border-radius:90% 0 0
+}
+.spider-legs i:nth-child(1),.spider-legs i:nth-child(2){top:17px}
+.spider-legs i:nth-child(3),.spider-legs i:nth-child(4){top:25px}
+.spider-legs i:nth-child(5),.spider-legs i:nth-child(6){top:33px}
+.spider-legs i:nth-child(7),.spider-legs i:nth-child(8){top:41px}
+
+@keyframes pulse{0%,100%{transform:translateY(0);filter:brightness(1)}50%{transform:translateY(-5px);filter:brightness(1.16)}}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes float{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -18px;rotate:7deg}}
+@keyframes drift{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-20px) rotate(9deg) scale(1.08)}}
+@keyframes peek{from{transform:translateY(5px) rotate(-4deg)}to{transform:translateY(-8px) rotate(4deg)}}
+@keyframes sign{from{transform:rotate(-4deg) translateY(2px)}to{transform:rotate(3deg) translateY(-4px)}}
+@keyframes fogDrift{from{transform:translate3d(-3%,0,0) scale(1)}to{transform:translate3d(7%,10%,0) scale(1.25)}}
+@keyframes logoFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-7px) rotate(2deg)}}
+@keyframes ringSpin{to{transform:rotate(360deg)}}
+@keyframes spiderSwing{from{transform:rotate(-7deg)}to{transform:rotate(7deg)}}
+@keyframes cardGlow{0%{border-color:#ff234944}100%{border-color:#ff762b77}}
+@keyframes bounceIcon{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes spiderDrop{
+ 0%{opacity:0;transform:translateY(-170px)}
+ 10%{opacity:1;transform:translateY(125px)}
+ 20%{opacity:1;transform:translateY(125px)}
+ 42%{opacity:1;transform:translateY(125px)}
+ 75%{opacity:1;transform:translateY(125px)}
+ 100%{opacity:0;transform:translateY(-170px)}
+}
+@media(max-width:850px){
+ .app{padding:9px}.layout{grid-template-columns:1fr}
+ .sidebar{border-right:0;border-bottom:1px solid var(--line);padding:10px}
+ .side-title{padding:6px 8px 10px}
+ .nav-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}
+ .nav-btn{padding:10px 10px;font-size:11px}
+ .side-bottom{display:none}.main{padding:14px}
+}
+@media(max-width:480px){
+ .grid{grid-template-columns:1fr}.card{min-height:115px}
+ .nav-btn{font-size:10px;gap:6px}.nav-btn .ico{font-size:15px;width:18px}
+ .main{padding:11px}.header{padding-top:20px}
+ .admin-profile{padding:0 13px 18px}
+ .admin-avatar{width:82px;height:82px;flex-basis:82px}
+ .admin-identity{margin-top:-39px}
+ #promo.show{right:4px}.mascot{font-size:76px}
+ .promo-sign{padding:11px;margin-bottom:15px}
+ .web{width:100px;height:100px}
+}
+@media(prefers-reduced-motion:reduce){
+ *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition:none!important}
 }
 </style>
 </head>
 
 <body>
-
-<canvas id="bg-canvas"></canvas>
-<div class="noise"></div>
-
-<div class="halloween-decor" aria-hidden="true">
- <span class="floating-pumpkin pumpkin-a">🎃</span>
- <span class="floating-pumpkin pumpkin-b">🎃</span>
- <span class="floating-pumpkin pumpkin-c">🎃</span>
- <span class="floating-pumpkin pumpkin-d">🕯️</span>
- <span class="bat bat-a">🦇</span>
- <span class="bat bat-b">🦇</span>
+<canvas id="particles"></canvas>
+<div class="ambient" aria-hidden="true">
+ <div class="fog one"></div><div class="fog two"></div>
 </div>
+<div class="float pumpkin1" aria-hidden="true">🎃</div>
+<div class="float pumpkin2" aria-hidden="true">🎃</div>
+<div class="float bat" aria-hidden="true">🦇</div>
+<div class="web left" aria-hidden="true"></div>
+<div class="web right" aria-hidden="true"></div>
 
-<!-- ЭКРАН ЗАГРУЗКИ -->
-
-<div id="loader-screen">
- <div class="loader-content">
-  <div class="orb">
-   <div class="orb-ring one"></div>
-   <div class="orb-ring two"></div>
-   <div class="orb-ring three"></div>
-   <div class="orb-center">🎃</div>
+<!-- Паук появляется через 9 секунд после загрузки -->
+<div id="spider-event" aria-hidden="true">
+ <div class="spider-thread"></div>
+ <div class="spider-body">
+  <div class="spider-legs">
+   <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
   </div>
-
-  <div class="loader-title">HORIZON RUSSIA</div>
-
-  <div class="loader-subtitle" id="loader-status">
-   ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА...
+  <div class="spider-head">
+   <span class="spider-eye"></span><span class="spider-eye"></span>
   </div>
-
-  <div class="loader-track">
-   <div class="loader-progress" id="loader-fill"></div>
-  </div>
-
-  <div class="loader-percent" id="loader-num">0%</div>
+  <div class="spider-abdomen"></div>
  </div>
 </div>
 
-<!-- ОСНОВНОЙ САЙТ -->
+<!-- Авторизация -->
+<div class="auth-wrap" id="auth-screen" hidden>
+ <form class="auth-card" id="auth-form">
+  <div class="logo">
+   <svg class="sigil" viewBox="0 0 100 100" aria-hidden="true">
+    <path d="M50 7 84 27 84 68 50 91 16 68 16 27Z" fill="none" stroke="#ffd3dc" stroke-width="3"/>
+    <path d="M50 17 70 31 64 59 50 75 36 59 30 31Z" fill="#21040d" stroke="#ffb0bd" stroke-width="2"/>
+    <path d="M37 42 45 48 39 53M63 42 55 48 61 53M42 64 50 59 58 64" fill="none" stroke="#ff274d" stroke-width="4" stroke-linecap="round"/>
+   </svg>
+  </div>
+  <h1 style="text-align:center">KRAPINN <span>RUSSIA</span></h1>
+  <div class="season" style="display:flex;width:max-content;margin:14px auto">🕸 HALLOWEEN EDITION 🕸</div>
+  <p class="desc" style="text-align:center;margin-top:13px">Войди в аккаунт или создай новый, чтобы открыть портал.</p>
+  <div class="tabs">
+   <button class="tab active" type="button" id="login-tab">Вход</button>
+   <button class="tab" type="button" id="register-tab">Регистрация</button>
+  </div>
+  <label class="field"><span>Игровой ник</span><input id="auth-nick" autocomplete="username" minlength="3" maxlength="24" required placeholder="Player_Name"></label>
+  <label class="field"><span>Пароль</span><input id="auth-pass" type="password" autocomplete="current-password" minlength="6" maxlength="100" required placeholder="Не менее 6 символов"></label>
+  <label class="field" id="confirm-wrap" hidden><span>Повтори пароль</span><input id="auth-confirm" type="password" autocomplete="new-password" minlength="6" maxlength="100"></label>
+  <button class="btn" style="width:100%" id="auth-submit" type="submit">ВОЙТИ В АККАУНТ</button>
+  <div class="error" id="auth-error" role="status"></div>
+  <p class="note">Демонстрационная авторизация: аккаунты хранятся только в этом браузере. Не используй пароли от личных аккаунтов.</p>
+ </form>
+</div>
 
-<main class="wrapper" id="main-content">
+<!-- Загрузочный экран -->
+<div id="loader">
+ <div class="loader-pumpkins">
+  <span class="loader-pumpkin">🎃</span><span class="loader-pumpkin">🎃</span>
+  <span class="loader-pumpkin">🦇</span><span class="loader-pumpkin">🎃</span>
+ </div>
+ <div class="load-logo">
+  <svg class="sigil" viewBox="0 0 100 100" aria-hidden="true">
+   <path d="M50 5 88 27 82 70 50 94 18 70 12 27Z" fill="none" stroke="#ffd1dc" stroke-width="3"/>
+   <path d="M50 15 72 31 65 61 50 79 35 61 28 31Z" fill="#25040e" stroke="#ff9dad" stroke-width="2"/>
+   <path d="M34 42 44 49 37 55M66 42 56 49 63 55M40 65 50 59 60 65" fill="none" stroke="#ff274d" stroke-width="4" stroke-linecap="round"/>
+   <circle cx="50" cy="50" r="43" fill="none" stroke="#ff762b" stroke-opacity=".45"/>
+  </svg>
+ </div>
+ <div class="load-title">KRAPINN <span>RUSSIA</span></div>
+ <div class="season">☠ HALLOWEEN IS LOADING ☠</div>
+ <div class="progress"><div class="progress-fill" id="progress-fill"></div></div>
+ <div class="load-meta"><span>ЗАГРУЗКА ПОРТАЛА</span><span id="progress-number">0%</span></div>
+ <div class="load-status" id="load-status">Пробуждаем тёмную эмблему...</div>
+</div>
 
- <div class="top-line"></div>
+<!-- Промокод -->
+<div id="promo" aria-label="Промокод FARKA">
+ <div class="mascot">🎃</div>
+ <div class="promo-sign">
+  <button class="promo-close" id="promo-close" aria-label="Закрыть">×</button>
+  <small>ТЫКВА ПРИНЕСЛА ТЕБЕ</small>
+  <strong>#FARKA</strong>
+  <span>Промокод проекта KRAPINN RUSSIA</span>
+ </div>
+</div>
 
- <div class="green-badge">
-  <span class="green-dot"></span>
-  <span class="green-badge-text">СЕРВЕР АКТИВЕН / ОНЛАЙН</span>
+<!-- Профиль -->
+<div class="profile-modal" id="profile-modal" aria-modal="true" role="dialog">
+ <div class="profile-modal-card">
+  <div class="profile-modal-banner" id="modal-banner"></div>
+  <div class="profile-modal-avatar" id="modal-avatar"></div>
+  <div class="profile-modal-actions" id="modal-actions"></div>
+  <div style="text-align:right;padding:8px"><button class="btn secondary" id="close-profile" type="button">Закрыть</button></div>
+ </div>
+</div>
+
+<main class="app panel">
+<header class="header">
+ <div class="logo">
+  <svg class="sigil" viewBox="0 0 100 100" aria-hidden="true">
+   <path d="M50 7 84 27 84 68 50 91 16 68 16 27Z" fill="none" stroke="#ffd3dc" stroke-width="3"/>
+   <path d="M50 17 70 31 64 59 50 75 36 59 30 31Z" fill="#21040d" stroke="#ffb0bd" stroke-width="2"/>
+   <path d="M37 42 45 48 39 53M63 42 55 48 61 53M42 64 50 59 58 64" fill="none" stroke="#ff274d" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+ </div>
+ <h1>KRAPINN <span>RUSSIA</span></h1>
+ <p class="subtitle">Официальный портал проекта</p>
+ <div class="season">🕸 HALLOWEEN EDITION · 2026 🕸</div>
+</header>
+
+<div class="layout">
+<aside class="sidebar">
+ <div class="side-title">Навигация по форуму</div>
+ <nav class="nav-list" id="navigation">
+  <button class="nav-btn active" data-page="home-view"><span class="ico">⌂</span>Главная</button>
+  <button class="nav-btn" data-page="rules-view"><span class="ico">📜</span>Правила проекта</button>
+  <button class="nav-btn" data-page="admin-rules-view"><span class="ico">🛡️</span>Правила администрации</button>
+  <button class="nav-btn" data-page="rp-view"><span class="ico">🎮</span>RP-термины</button>
+  <button class="nav-btn" data-page="unban-view"><span class="ico">🔓</span>Разбан</button>
+  <button class="nav-btn" data-page="leader-view"><span class="ico">👑</span>Заявка на лидера</button>
+  <button class="nav-btn" data-page="leader-complaint-view"><span class="ico">⚖️</span>Жалоба на лидера</button>
+  <button class="nav-btn" data-page="support-view"><span class="ico">🛠️</span>Техподдержка</button>
+  <button class="nav-btn" data-page="bug-view"><span class="ico">🐞</span>Баг-трекер</button>
+  <button class="nav-btn" data-page="special-contact-view"><span class="ico">📨</span>Связь со спец. администратором</button>
+  <button class="nav-btn" data-page="goss-view"><span class="ico">🏛️</span>Госорганизации</button>
+  <button class="nav-btn" data-page="opg-view"><span class="ico">🌑</span>Криминальные организации</button>
+  <button class="nav-btn" data-page="admin-application-view"><span class="ico">🛡️</span>Заявка на администратора</button>
+  <button class="nav-btn" data-page="player-complaint-view"><span class="ico">📝</span>Жалоба на игрока</button>
+  <button class="nav-btn" data-page="admin-complaint-view"><span class="ico">🚨</span>Жалоба на администратора</button>
+  <button class="nav-btn" data-page="admin-list-view"><span class="ico">👥</span>Список администрации</button>
+  <button class="nav-btn" data-page="leaders-list-view"><span class="ico">🏆</span>Список лидеров</button>
+ </nav>
+ <div class="side-bottom"><p>🎃 <b>KRAPINN RUSSIA</b><br>Все разделы проекта в одном месте.</p></div>
+</aside>
+
+<div class="main">
+ <div class="topbar">
+  <span>🎃 Единый портал проекта · <b id="current-user">—</b></span>
+  <button class="btn secondary" id="logout-btn" type="button">Выйти</button>
  </div>
 
- <header>
-  <h1 class="hero-title">
-   HORIZON RUSSIA
-   <span class="title-small">ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ</span>
-  </h1>
-
-  <p class="hero-description">
-   Добро пожаловать в HORIZON RUSSIA — мир, в котором ты сам решаешь,
-   кем стать и какой путь выбрать. Исследуй города, развивай персонажа,
-   знакомься с игроками и создавай собственную историю.
-   Готов выйти за горизонт?
-  </p>
- </header>
-
- <div class="section-label">
-  🎃 ВОЗМОЖНОСТИ ПРОЕКТА 🎃
- </div>
-
- <!-- КАРТОЧКА 1 -->
-
- <section class="animated-card">
-
-  <h2 class="card-title">
-   <span class="icon">🚘</span>
-   Огромный открытый мир
-  </h2>
-
-  <p class="card-text">
-   Исследуй города, покупай автомобили, обзаводись недвижимостью,
-   зарабатывай деньги и развивай своего персонажа.
-   Начни с нуля, достигай новых высот и докажи, что именно ты
-   способен стать настоящей легендой HORIZON RUSSIA.
-  </p>
-
-  <div class="photo-frame">
-   <img
-    id="img-1"
-    src="./images/photo1.jpg"
-    alt="Игровой мир HORIZON RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
+ <section class="view active" id="home-view">
+  <h2 class="title">Добро пожаловать в <span class="accent">KRAPINN</span></h2>
+  <p class="desc">Рады видеть тебя в нашем проекте! Здесь собраны основные разделы, обращения и информация для игроков. Выбери нужное направление и присоединяйся к развитию KRAPINN RUSSIA.</p>
+  <div class="grid">
+   <button class="card" data-page="rules-view"><span class="card-icon">📜</span><div class="card-title">Правила проекта</div><div class="card-desc">Изучи правила, чтобы уверенно чувствовать себя на проекте и помогать сохранять порядок.</div></button>
+   <button class="card" data-page="admin-rules-view"><span class="card-icon">🛡️</span><div class="card-title">Правила администрации</div><div class="card-desc">Основные нормы, обязанности и требования для участников состава администрации.</div></button>
+   <button class="card" data-page="rp-view"><span class="card-icon">🎮</span><div class="card-title">RP-термины</div><div class="card-desc">Разберись в основных понятиях Role Play и улучшай свои игровые ситуации.</div></button>
+   <button class="card" data-page="unban-view"><span class="card-icon">🔓</span><div class="card-title">Разбан</div><div class="card-desc">Если считаешь наказание ошибочным, подготовь обращение и объясни ситуацию.</div></button>
+   <button class="card" data-page="leader-view"><span class="card-icon">👑</span><div class="card-title">Заявка на лидера</div><div class="card-desc">Попробуй себя в руководстве, прояви ответственность и помоги своей организации развиваться.</div></button>
+   <button class="card" data-page="leader-complaint-view"><span class="card-icon">⚖️</span><div class="card-title">Жалоба на лидера</div><div class="card-desc">Помоги поддерживать честную игру. Опиши ситуацию и приложи доказательства.</div></button>
+   <button class="card" data-page="support-view"><span class="card-icon">🛠️</span><div class="card-title">Техподдержка</div><div class="card-desc">Столкнулся с технической проблемой? Расскажи нам, и мы постараемся разобраться.</div></button>
+   <button class="card" data-page="bug-view"><span class="card-icon">🐞</span><div class="card-title">Баг-трекер</div><div class="card-desc">Нашёл ошибку? Твоё сообщение поможет сделать проект стабильнее.</div></button>
+   <button class="card" data-page="special-contact-view"><span class="card-icon">📨</span><div class="card-title">Связь со спец. администратором</div><div class="card-desc">Важный вопрос, который требует внимания специальной администрации? Напиши напрямую.</div></button>
+   <button class="card" data-page="goss-view"><span class="card-icon">🏛️</span><div class="card-title">Госорганизации</div><div class="card-desc">Узнай о государственных структурах и возможностях развития в них.</div></button>
+   <button class="card" data-page="opg-view"><span class="card-icon">🌑</span><div class="card-title">Криминальные организации</div><div class="card-desc">Информация о криминальных структурах проекта.</div></button>
+   <button class="card" data-page="admin-application-view"><span class="card-icon">🛡️</span><div class="card-title">Заявка на администратора</div><div class="card-desc">Хочешь помогать игрокам? Начни путь в команде и получи ценный опыт.</div></button>
+   <button class="card" data-page="player-complaint-view"><span class="card-icon">📝</span><div class="card-title">Жалоба на игрока</div><div class="card-desc">Сообщи о нарушении с доказательствами, чтобы команда могла его проверить.</div></button>
+   <button class="card" data-page="admin-complaint-view"><span class="card-icon">🚨</span><div class="card-title">Жалоба на администратора</div><div class="card-desc">Опиши ситуацию спокойно и подробно — обращение будет рассмотрено.</div></button>
+   <button class="card" data-page="admin-list-view"><span class="card-icon">👥</span><div class="card-title">Список администрации</div><div class="card-desc">Познакомься с командой, которая помогает поддерживать проект.</div></button>
+   <button class="card" data-page="leaders-list-view"><span class="card-icon">🏆</span><div class="card-title">Список лидеров</div><div class="card-desc">Посмотри состав руководителей организаций.</div></button>
   </div>
-
  </section>
 
- <!-- КАРТОЧКА 2 -->
-
- <section class="animated-card">
-
-  <h2 class="card-title">
-   <span class="icon">⚖️</span>
-   Выбирай собственный путь
-  </h2>
-
-  <p class="card-text">
-   Служи закону, вступай в государственные организации, развивайся
-   по карьерной лестнице или выбирай совершенно другой путь.
-   Создавай свою команду, находи союзников и участвуй в событиях
-   игрового мира. Здесь каждый выбор может изменить твою историю.
-  </p>
-
-  <div class="photo-frame">
-   <img
-    id="img-2"
-    src="./images/photo2.png"
-    alt="Организации и фракции HORIZON RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
-  </div>
-
+ <section class="view" id="rules-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">📜 Правила проекта</h2>
+  <p class="desc">Знание правил помогает избегать нарушений и делает игру комфортнее для всех. Нажми на правило, чтобы прочитать описание.</p>
+  <button class="rule" data-rule="DM — убийство без причины|Запрещено наносить урон или убивать игрока без веской RP-причины."><b>1.1 DM — убийство без причины</b><span>Запрещено нападать на игроков без веской RP-причины.</span></button>
+  <button class="rule" data-rule="DB — убийство транспортом|Запрещено намеренно давить игроков транспортом или использовать его как оружие без RP-основания."><b>1.2 DB — убийство транспортом</b><span>Запрещено намеренно давить игроков транспортом.</span></button>
+  <button class="rule" data-rule="MG — Metagaming|Запрещено использовать внеигровую информацию в игровом процессе."><b>1.3 MG — Metagaming</b><span>Не смешивайте IC и OOC информацию.</span></button>
+  <button class="rule" data-rule="TK — Team Kill|Запрещено нападать на участников своей организации без предусмотренной RP-причины."><b>1.4 TK — Team Kill</b><span>Запрещено атаковать своих без RP-причины.</span></button>
+  <button class="rule" data-rule="SK — Spawn Kill|Запрещено атаковать игроков в местах появления, если это запрещено правилами сервера."><b>1.5 SK — Spawn Kill</b><span>Не мешайте игрокам в местах появления.</span></button>
+  <button class="rule" data-rule="NonRP Drive|Запрещено управлять транспортом способом, который явно противоречит реалистичному поведению в RP-ситуации."><b>1.6 NonRP Drive</b><span>Запрещено нереалистичное вождение.</span></button>
+  <div class="box"><h3>Общие правила</h3><ol><li>Соблюдайте правила игрового проекта и указания администрации.</li><li>Не используйте сторонние программы, эксплойты и уязвимости.</li><li>Не пытайтесь получить чужой аккаунт или обойти блокировку.</li><li>При обнаружении ошибки сообщите о ней в технический раздел.</li></ol></div>
  </section>
 
- <!-- КАРТОЧКА 3 -->
-
- <section class="animated-card">
-
-  <h2 class="card-title">
-   <span class="icon">🎁</span>
-   Бонус для новичков
-  </h2>
-
-  <p class="card-text">
-   Начинать всегда приятнее с небольшим преимуществом.
-   Используй наш эксклюзивный промокод и забирай стартовые бонусы!
-  </p>
-
-  <div class="promo-card">
-
-   <div class="promo-caption">
-    🎃 ЭКСКЛЮЗИВНЫЙ ПРОМОКОД ПРОЕКТА 🎃
-   </div>
-
-   <div
-    class="promo-code-btn"
-    id="promo-btn"
-    role="button"
-    tabindex="0"
-    onclick="copyPromo()"
-    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyPromo();}"
-   >#Фарка</div>
-
-   <div class="promo-hint" id="promo-hint">
-    Нажми на промокод, чтобы скопировать
-   </div>
-
-   <ul class="bonus-list">
-    <li>💎 <span>+1 000 BC</span></li>
-    <li>💵 <span>+20 000 000</span> игровой валюты</li>
+ <!-- РАЗДЕЛ: ПРАВИЛА АДМИНИСТРАЦИИ -->
+ <section class="view" id="admin-rules-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🛡️ Правила администрации</h2>
+  <p class="desc">Обязательные требования и регламент поведения для всех членов административного состава KRAPINN RUSSIA.</p>
+  <div class="box">
+   <h3>Основные обязанности</h3>
+   <ul>
+    <li>Администратор обязан быть вежливым и адекватным в общении с игроками и коллегами.</li>
+    <li>Своевременно реагировать на репорты и помогать игрокам в решении игровых проблем.</li>
+    <li>Соблюдать субординацию, ежедневную норму онлайна и норму ответов.</li>
    </ul>
-
   </div>
-
-  <div class="photo-frame">
-   <img
-    id="img-3"
-    src="./images/photo3.jpg"
-    alt="Бонусы и наборы HORIZON RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
+  <div class="box">
+   <h3>Запреты для администрации</h3>
+   <ul>
+    <li>Запрещено использовать административные привилегии в личных целях или ради выгоды.</li>
+    <li>Запрещено разглашать конфиденциальную информацию проекта и коллег.</li>
+    <li>Запрещено вмешиваться в RP-процесс без веских оснований и репорта.</li>
+   </ul>
   </div>
-
+  <div class="box">
+   <h3>Проверки и логи</h3>
+   <p>Все подозрительные действия, выдачи наказаний и переводы имущества строго контролируются техническими специалистами по логам.</p>
+  </div>
  </section>
 
- <!-- ФИНАЛЬНАЯ КАРТОЧКА -->
-
- <section class="animated-card final-card">
-
-  <h2 class="card-title final-title">
-   🎃 HORIZON RUSSIA 🎃
-  </h2>
-
-  <p class="card-text final-description">
-   Твой мир. Твои решения. Твоя история.
-   Присоединяйся к проекту, знакомься с игроками и начинай
-   собственное приключение. Встретимся за горизонтом!
-  </p>
-
-  <div class="btn-group">
-
-   <a
-    href="https://t.me/FarichovskiyHub/22"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red"
-   >
-    <span class="btn-icon">📦</span>
-    <span>СКАЧАТЬ ИГРУ (APK)</span>
-   </a>
-
-   <a
-    href="https://t.me/lame_mobile"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red btn-telegram"
-   >
-    <span class="btn-icon">✈️</span>
-    <span>НАШ TELEGRAM-КАНАЛ</span>
-   </a>
-
-   <a
-    href="https://t.me/farich10"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red btn-support"
-   >
-    <span class="btn-icon">🛠️</span>
-    <span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
-   </a>
-
-  </div>
-
+ <section class="view" id="rp-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🎮 RP-термины</h2>
+  <div class="box"><h3>Role Play (RP)</h3><p>Игра по ролям: действия персонажа должны соответствовать игровой ситуации.</p></div>
+  <div class="box"><h3>IC — In Character</h3><p>Информация и действия внутри игрового мира от лица персонажа.</p></div>
+  <div class="box"><h3>OOC — Out Of Character</h3><p>Общение вне роли персонажа.</p></div>
+  <div class="box"><h3>DM / DB / MG / PG</h3><p>DM — нападение без RP-причины; DB — использование транспорта для нанесения урона; MG — смешивание IC и OOC; PG — нереалистичное преувеличение возможностей персонажа.</p></div>
  </section>
 
- <!-- СКРЫТЫЙ ВХОД В АДМИН-ПАНЕЛЬ -->
+ <section class="view" id="unban-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🔓 Разбан</h2>
+  <p class="desc">Если ты считаешь, что наказание выдано ошибочно, расскажи о ситуации и приложи доказательства. Пожалуйста, указывай точные данные.</p>
+  <div class="box"><h3>Обращение на разбан</h3><p>Подготовь ник, сервер, причину и дату наказания, а также доказательства, если они есть.</p><button class="btn" data-send="unban">Подать обращение в Telegram</button></div>
+ </section>
 
- <div
-  class="admin-secret-trigger"
-  onclick="openAdminAuth()"
-  title="Admin"
-  aria-label="Открыть вход в панель управления"
- ></div>
+ <section class="view" id="leader-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">👑 Заявка на лидера</h2>
+  <p class="desc">Хочешь стать лидером? Это возможность проявить себя, научиться руководить составом и внести вклад в развитие организации. Ответственность, активность и уважение к игрокам станут твоими сильными сторонами.</p>
+  <div class="box"><h3>Готов попробовать себя?</h3><p>Подготовь информацию о своём игровом опыте, выбранной организации и причинах, по которым ты хочешь занять руководящую должность. Желаем удачи!</p><button class="btn" data-send="leader">Подать заявление в Telegram</button></div>
+ </section>
 
+ <section class="view" id="leader-complaint-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">⚖️ Жалоба на лидера</h2>
+  <p class="desc">Считаешь, что лидер нарушил правила? Помоги нам разобраться. Чёткое описание и достоверные доказательства ускорят рассмотрение обращения.</p>
+  <div class="box"><h3>Расскажи о ситуации</h3><p>Укажи свой ник, ник лидера, организацию, обстоятельства и приложи доказательства.</p><button class="btn" data-send="leader-complaint">Подать жалобу в Telegram</button></div>
+ </section>
+
+ <section class="view" id="support-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🛠️ Техподдержка</h2>
+  <p class="desc">Возникли проблемы с сайтом или проектом? Не переживай — подробно опиши проблему, укажи устройство и приложи скриншоты, если они помогут.</p>
+  <div class="box"><h3>Мы готовы помочь</h3><p>Нажми кнопку, чтобы открыть Telegram и подготовить техническое обращение.</p><button class="btn" data-send="support">Обратиться в техподдержку</button></div>
+ </section>
+
+ <section class="view" id="bug-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🐞 Баг-трекер</h2>
+  <p class="desc">Каждая найденная ошибка — возможность сделать KRAPINN RUSSIA лучше. Спасибо, что помогаешь улучшать проект!</p>
+  <div class="box"><h3>Нашёл ошибку?</h3><p>Напиши, где она возникла, что ты делал перед этим и как её можно повторить. Если возможно, добавь скриншот или видео.</p><button class="btn" data-send="bug">Сообщить об ошибке в Telegram</button></div>
+ </section>
+
+ <section class="view" id="special-contact-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">📨 Связь со специальным администратором</h2>
+  <p class="desc">Есть важный вопрос по развитию проекта, работе администрации или ситуации, требующей дополнительного внимания? Напиши специальному администратору. Постарайся изложить всё спокойно, понятно и по существу.</p>
+  <div class="box"><h3>Прямая связь</h3><p>Нажми кнопку ниже, чтобы открыть Telegram-профиль для обращения.</p><button class="btn" data-send="special-admin">Связаться со спец. администратором</button></div>
+ </section>
+
+ <section class="view" id="goss-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🏛️ Госорганизации</h2>
+  <div class="box"><h3>Государственные структуры</h3><ul><li>Правительство</li><li>Министерство внутренних дел</li><li>ГИБДД</li><li>Федеральная служба безопасности</li><li>Федеральная служба исполнения наказаний</li><li>Министерство здравоохранения</li></ul><p style="margin-top:10px">Информация о руководителях и условиях вступления появится после утверждения состава.</p></div>
+ </section>
+
+ <section class="view" id="opg-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🌑 Криминальные организации</h2>
+  <div class="box"><h3>Список ОПГ</h3><p>Состав криминальных организаций будет опубликован после утверждения руководителей. Следи за обновлениями портала.</p></div>
+ </section>
+
+ <section class="view" id="admin-application-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🛡️ Заявка на администратора</h2>
+  <p class="desc">Привет! Захотел на админку? Поздравляем с решением сделать следующий шаг. Здесь ты сможешь получить большой игровой опыт, научиться помогать игрокам и в дальнейшем развиваться до более высоких руководящих должностей. Активные, справедливые и ответственные люди помогают нашему проекту становиться лучше.</p>
+  <div class="box"><h3>Мы ждём именно тебя!</h3><p>Если ты готов учиться, соблюдать правила и помогать сообществу — подготовь заявку. Расскажи о себе, своём опыте и мотивации. Удачи на отборе!</p><button class="btn" data-send="admin-application">Подать заявление в Telegram</button></div>
+ </section>
+
+ <section class="view" id="player-complaint-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">📝 Жалоба на игрока</h2>
+  <p class="desc">Столкнулся с нарушением? Помоги сохранить честную игру. Укажи ник игрока, время и обстоятельства, а также приложи доказательства.</p>
+  <div class="box"><h3>Сообщить о нарушении</h3><p>Пожалуйста, описывай ситуацию корректно и не отправляй личные данные, которые не нужны для рассмотрения.</p><button class="btn" data-send="player-complaint">Подать жалобу в Telegram</button></div>
+ </section>
+
+ <section class="view" id="admin-complaint-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🚨 Жалоба на администратора</h2>
+  <p class="desc">Если у тебя возникли вопросы по действиям администратора, изложи ситуацию подробно. Объективное описание и доказательства помогут разобраться в обращении.</p>
+  <div class="box"><h3>Обращение будет рассмотрено</h3><p>Укажи свой ник, ник администратора, дату, время и суть ситуации.</p><button class="btn" data-send="admin-complaint">Подать жалобу в Telegram</button></div>
+ </section>
+
+ <section class="view" id="admin-list-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">👥 Список администрации</h2>
+  <p class="desc">Познакомься с командой KRAPINN RUSSIA. Здесь отображаются участники команды и их должности.</p>
+  
+  <!-- Заданные новые администраторы -->
+  <div class="admin-card">
+   <div class="admin-banner"></div>
+   <div class="admin-profile">
+    <div class="admin-identity">
+     <div class="admin-avatar">F</div>
+     <div>
+      <div class="admin-nick" style="color:var(--pink)">Farich_Lagurov<span class="verified" title="Команда проекта">✓</span></div>
+      <div style="color:var(--muted);font-size:12px;margin-top:7px">Команда KRAPINN RUSSIA</div>
+     </div>
+    </div>
+    <div class="admin-badges">
+     <span class="admin-badge project">Команда проекта</span>
+     <span class="admin-badge dep-special">Зам. Специального администратора</span>
+     <span class="admin-badge cur-junior">Куратор мл. Администраторов</span>
+     <span class="admin-badge cur-pr">Куратор Пиар менеджера</span>
+    </div>
+   </div>
+  </div>
+
+  <div class="admin-card">
+   <div class="admin-banner"></div>
+   <div class="admin-profile">
+    <div class="admin-identity">
+     <div class="admin-avatar">A</div>
+     <div>
+      <div class="admin-nick" style="color:var(--pink)">AGENT_MEDIA<span class="verified" title="Команда проекта">✓</span></div>
+      <div style="color:var(--muted);font-size:12px;margin-top:7px">Команда KRAPINN RUSSIA</div>
+     </div>
+    </div>
+    <div class="admin-badges">
+     <span class="admin-badge project">Команда проекта</span>
+     <span class="admin-badge media">Куратор Медиа</span>
+     <span class="admin-badge pr">Пиар Менеджер</span>
+    </div>
+   </div>
+  </div>
+
+  <div class="admin-card">
+   <div class="admin-banner"></div>
+   <div class="admin-profile">
+    <div class="admin-identity">
+     <div class="admin-avatar">T</div>
+     <div>
+      <div class="admin-nick" style="color:var(--pink)">TEX_TEXOV<span class="verified" title="Команда проекта">✓</span></div>
+      <div style="color:var(--muted);font-size:12px;margin-top:7px">Команда KRAPINN RUSSIA</div>
+     </div>
+    </div>
+    <div class="admin-badges">
+     <span class="admin-badge project">Команда проекта</span>
+     <span class="admin-badge tech">Тех. Специалист по логам</span>
+    </div>
+   </div>
+  </div>
+
+  <div id="profile-area"></div><div id="rank-area"></div>
+ </section>
+
+ <section class="view" id="leaders-list-view">
+  <button class="btn secondary back" data-page="home-view">← На главную</button>
+  <h2 class="title">🏆 Список лидеров</h2>
+  <div class="box"><h3>Лидеры организаций</h3><p>Список будет опубликован после утверждения руководителей организаций. Следи за новостями проекта.</p></div>
+ </section>
+</div>
+</div>
 </main>
 
-<footer class="footer">
-
- <div class="footer-brand">HORIZON RUSSIA</div>
-
- <div>Играй. Развивайся. Создавай свою историю.</div>
-
- <div>🎃 HALLOWEEN EDITION 🎃</div>
-
- <div style="margin-top:8px;opacity:.6">
-  © HORIZON RUSSIA
- </div>
-
-</footer>
-
-<!-- HALLOWEEN УВЕДОМЛЕНИЕ -->
-
-<div
- class="halloween-toast"
- id="halloween-toast"
- role="status"
- aria-live="polite"
->
- <button
-  class="toast-close"
-  type="button"
-  onclick="closeHalloweenToast()"
-  aria-label="Закрыть"
- >×</button>
-
- <div class="toast-title">
-  🎃 ТЫ ПОПАЛ В HORIZON HALLOWEEN!
- </div>
-
- <div class="toast-text">
-  За горизонтом начинается новая история.
-  Пусть эта хэллоуинская ночь принесёт удачу,
-  редкие находки и незабываемые приключения!
- </div>
-
- <span class="toast-spark">🦇</span>
-</div>
-
-<!-- АВТОРИЗАЦИЯ АДМИНИСТРАТОРА
-     ЛОГИКА СОХРАНЕНА -->
-
-<div class="modal-overlay" id="admin-auth-modal">
-
- <div class="admin-box">
-
-  <h2 class="admin-heading">🔐 ПАНЕЛЬ УПРАВЛЕНИЯ</h2>
-
-  <input
-   type="text"
-   id="admin-login"
-   class="admin-input"
-   placeholder="Логин"
-   autocomplete="username"
-  >
-
-  <input
-   type="password"
-   id="admin-pass"
-   class="admin-input"
-   placeholder="Пароль"
-   autocomplete="current-password"
-  >
-
-  <button
-   type="button"
-   class="btn-red"
-   onclick="checkAdminAuth()"
-  >ВОЙТИ</button>
-
-  <button
-   type="button"
-   class="btn-red btn-secondary"
-   style="margin-top:10px"
-   onclick="closeModals()"
-  >ОТМЕНА</button>
-
- </div>
-
-</div>
-
-<!-- АДМИН-ПАНЕЛЬ
-     ЭЛЕМЕНТЫ И НАСТРОЙКИ СОХРАНЕНЫ -->
-
-<div class="modal-overlay" id="admin-panel-modal">
-
- <div class="admin-box">
-
-  <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА</h2>
-
-  <div class="admin-setting-item">
-
-   <label for="frame-height-slider">
-    📏 Высота всех фотографий
-   </label>
-
-   <input
-    type="range"
-    id="frame-height-slider"
-    min="150"
-    max="600"
-    value="340"
-   >
-
-   <div id="height-val">340px</div>
-
-  </div>
-
-  <div class="admin-setting-item">
-
-   <label for="file-img-1">
-    🖼 Фото №1 — игровой мир
-   </label>
-
-   <input
-    type="file"
-    id="file-img-1"
-    accept="image/*"
-    class="admin-input"
-   >
-
-  </div>
-
-  <div class="admin-setting-item">
-
-   <label for="file-img-2">
-    🖼 Фото №2 — организации
-   </label>
-
-   <input
-    type="file"
-    id="file-img-2"
-    accept="image/*"
-    class="admin-input"
-   >
-
-  </div>
-
-  <div class="admin-setting-item">
-
-   <label for="file-img-3">
-    🖼 Фото №3 — бонусы
-   </label>
-
-   <input
-    type="file"
-    id="file-img-3"
-    accept="image/*"
-    class="admin-input"
-   >
-
-  </div>
-
-  <button
-   type="button"
-   class="btn-red"
-   onclick="closeModals()"
-  >СОХРАНИТЬ И ЗАКРЫТЬ</button>
-
- </div>
-
-</div>
+<footer class="footer">KRAPINN RUSSIA © 2026<br>🎃 HALLOWEEN EDITION 🎃</footer>
 
 <script>
-"use strict";
+'use strict';
 
-/* =========================
-   ФОНОВЫЕ ЧАСТИЦЫ
-========================= */
+const KEYS={
+ accounts:'krapinn_halloween_accounts_v1',
+ session:'krapinn_halloween_session_v1',
+ owner:'krapinn_halloween_owner_v1',
+ profiles:'krapinn_halloween_profiles_v1'
+};
+const DEFAULT_BANNER='https://images.unsplash.com/photo-1475274047050-1d0c0975c63e?auto=format&fit=crop&w=1400&q=85';
+const RANKS=['Пользователь','Младший модератор','Модератор','Старший модератор','Администратор','Старший администратор','Специальный администратор','Разработчик'];
+let authMode='login';
+let promoTimer=null;
+let spiderTimer=null;
 
-const canvas = document.getElementById("bg-canvas");
-const ctx = canvas.getContext("2d");
-
-let particles = [];
-let canvasWidth = 0;
-let canvasHeight = 0;
-let animationFrameId = null;
-
-function resizeCanvas() {
- const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
- canvasWidth = window.innerWidth;
- canvasHeight = window.innerHeight;
-
- canvas.width = canvasWidth * dpr;
- canvas.height = canvasHeight * dpr;
-
- canvas.style.width = canvasWidth + "px";
- canvas.style.height = canvasHeight + "px";
-
- ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
- createParticles();
+function readAccounts(){
+ try{const v=JSON.parse(localStorage.getItem(KEYS.accounts)||'[]');return Array.isArray(v)?v:[]}
+ catch{return[]}
+}
+function saveAccounts(a){
+ try{localStorage.setItem(KEYS.accounts,JSON.stringify(a));return true}
+ catch{toast('Не удалось сохранить данные.');return false}
+}
+function sessionId(){
+ try{return JSON.parse(localStorage.getItem(KEYS.session)||'null')?.id||null}
+ catch{return null}
+}
+function currentAccount(){
+ const id=sessionId();return id?readAccounts().find(a=>a.id===id)||null:null
+}
+function isOwner(a){return !!a&&localStorage.getItem(KEYS.owner)===a.id}
+function isAdmin(a){return !!a&&(isOwner(a)||(a.rank&&a.rank!=='Пользователь'))}
+function escapeHTML(v){
+ return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))
+}
+function safeImage(v){
+ const s=String(v||'').trim();return /^https?:\/\/[^\s"'<>]+$/i.test(s)?s:''
+}
+function profileStore(){
+ try{return JSON.parse(localStorage.getItem(KEYS.profiles)||'{}')}catch{return{}}
+}
+function saveProfileStore(v){
+ try{localStorage.setItem(KEYS.profiles,JSON.stringify(v));return true}
+ catch{toast('Не удалось сохранить оформление.');return false}
+}
+function passwordHash(p){
+ let h=2166136261;
+ for(let i=0;i<p.length;i++){h^=p.charCodeAt(i);h=Math.imul(h,16777619)}
+ return(h>>>0).toString(16)
 }
 
-class Particle {
- constructor() {
-  this.reset(true);
- }
+function setAuthMode(mode){
+ authMode=mode;
+ document.getElementById('login-tab').classList.toggle('active',mode==='login');
+ document.getElementById('register-tab').classList.toggle('active',mode==='register');
+ document.getElementById('confirm-wrap').hidden=mode!=='register';
+ document.getElementById('auth-confirm').required=mode==='register';
+ document.getElementById('auth-pass').autocomplete=mode==='register'?'new-password':'current-password';
+ document.getElementById('auth-submit').textContent=mode==='register'?'СОЗДАТЬ АККАУНТ':'ВОЙТИ В АККАУНТ';
+ document.getElementById('auth-error').textContent='';
+}
+function showAuth(){document.getElementById('auth-screen').hidden=false}
+function hideAuth(){document.getElementById('auth-screen').hidden=true}
 
- reset(initial = false) {
-  this.x = Math.random() * canvasWidth;
+function submitAuth(e){
+ e.preventDefault();
+ const nick=document.getElementById('auth-nick').value.trim();
+ const password=document.getElementById('auth-pass').value;
+ const confirm=document.getElementById('auth-confirm').value;
+ const error=document.getElementById('auth-error');
+ error.textContent='';
+ if(nick.length<3){error.textContent='Ник должен содержать минимум 3 символа.';return}
+ if(!/^[\p{L}\p{N}_]+$/u.test(nick)){error.textContent='Используй буквы, цифры и нижнее подчёркивание.';return}
+ if(password.length<6){error.textContent='Пароль должен содержать минимум 6 символов.';return}
+ const accounts=readAccounts();
+ const existing=accounts.find(a=>a.nick.toLowerCase()===nick.toLowerCase());
 
-  this.y = initial
-   ? Math.random() * canvasHeight
-   : canvasHeight + 10;
-
-  this.size = Math.random() * 2 + 0.5;
-  this.speed = Math.random() * 0.65 + 0.15;
-  this.alpha = Math.random() * 0.48 + 0.12;
-  this.drift = (Math.random() - 0.5) * 0.35;
-  this.red = Math.random() > 0.2;
- }
-
- update() {
-  this.y -= this.speed;
-  this.x += this.drift;
-
-  if (this.y < -10) {
-   this.reset();
+ if(authMode==='register'){
+  if(existing){error.textContent='Этот ник уже зарегистрирован.';return}
+  if(password!==confirm){error.textContent='Пароли не совпадают.';return}
+  const account={
+   id:'user_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,9),
+   nick,passHash:passwordHash(password),rank:'Пользователь',
+   createdAt:new Date().toISOString()
+  };
+  if(!localStorage.getItem(KEYS.owner)){
+   account.rank='Специальный администратор';
+   account.teamProject=true;account.forumTeam=true;
+   account.developer=true;account.prManager=true;
+   localStorage.setItem(KEYS.owner,account.id);
   }
-
-  if (this.x < -10) {
-   this.x = canvasWidth + 10;
-  }
-
-  if (this.x > canvasWidth + 10) {
-   this.x = -10;
-  }
+  accounts.push(account);
+  if(!saveAccounts(accounts))return;
+  localStorage.setItem(KEYS.session,JSON.stringify({id:account.id}));
+  finishAuth();return;
  }
-
- draw() {
-  ctx.fillStyle = this.red
-   ? `rgba(255,24,56,${this.alpha})`
-   : `rgba(255,205,215,${this.alpha})`;
-
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-  ctx.fill();
+ if(!existing||existing.passHash!==passwordHash(password)){
+  error.textContent='Неверный ник или пароль.';return
  }
+ localStorage.setItem(KEYS.session,JSON.stringify({id:existing.id}));
+ finishAuth();
+}
+function finishAuth(){
+ hideAuth();updateSession();renderProfileAndRanks();startLoader()
+}
+function updateSession(){
+ const a=currentAccount();document.getElementById('current-user').textContent=a?a.nick:'—'
+}
+function logout(){
+ localStorage.removeItem(KEYS.session);location.reload()
 }
 
-function createParticles() {
- const count = window.innerWidth < 600 ? 26 : 55;
-
- particles = Array.from(
-  { length: count },
-  () => new Particle()
- );
-}
-
-function animateCanvas() {
- ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
- for (const particle of particles) {
-  particle.update();
-  particle.draw();
- }
-
- animationFrameId = requestAnimationFrame(animateCanvas);
-}
-
-resizeCanvas();
-animateCanvas();
-
-window.addEventListener("resize", resizeCanvas);
-
-/* =========================
-   ЗАСТАВКА ЗАГРУЗКИ
-========================= */
-
-const loaderScreen = document.getElementById("loader-screen");
-const loaderFill = document.getElementById("loader-fill");
-const loaderNum = document.getElementById("loader-num");
-const loaderStatus = document.getElementById("loader-status");
-const mainContent = document.getElementById("main-content");
-
-const loaderDuration = 4200;
-const loaderStart = performance.now();
-
-const loaderMessages = [
- {
-  progress: 0,
-  text: "ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА..."
- },
- {
-  progress: 20,
-  text: "ЗАГРУЖАЕМ HORIZON RUSSIA..."
- },
- {
-  progress: 45,
-  text: "ПРОБУЖДАЕМ ТЁМНЫЙ МИР..."
- },
- {
-  progress: 70,
-  text: "РАЗГОНЯЕМ ТУМАН..."
- },
- {
-  progress: 90,
-  text: "ПОЧТИ ГОТОВО..."
- }
-];
-
-function finishLoading() {
- loaderScreen.classList.add("hide");
- mainContent.classList.add("visible");
-
- setTimeout(checkScrollAnimations, 100);
-
- setTimeout(() => {
-  const toast = document.getElementById("halloween-toast");
-
-  try {
-   if (!sessionStorage.getItem("horizon_halloween_seen")) {
-    toast.classList.add("show");
-    sessionStorage.setItem("horizon_halloween_seen", "1");
-   }
-  } catch (error) {
-   toast.classList.add("show");
-  }
- }, 8000);
-}
-
-function updateLoader(now) {
- const elapsed = now - loaderStart;
-
- const progress = Math.min(
-  100,
-  Math.floor(elapsed / loaderDuration * 100)
- );
-
- loaderFill.style.width = progress + "%";
- loaderNum.textContent = progress + "%";
-
- let message = loaderMessages[0];
-
- for (const item of loaderMessages) {
-  if (progress >= item.progress) {
-   message = item;
+/* ЗАГРУЗКА РОВНО 6 СЕКУНД */
+function startLoader(){
+ const loader=document.getElementById('loader');
+ const fill=document.getElementById('progress-fill');
+ const number=document.getElementById('progress-number');
+ const status=document.getElementById('load-status');
+ const messages=[
+  [0,'Пробуждаем тёмную эмблему...'],
+  [15,'Открываем портал...'],
+  [33,'Зажигаем фонари...'],
+  [50,'Загружаем разделы...'],
+  [68,'Проверяем администрацию...'],
+  [84,'Паутина готовится...'],
+  [96,'Почти готово...']
+ ];
+ loader.classList.add('show');
+ fill.style.width='0%';number.textContent='0%';
+ const started=performance.now();let previous=-1;
+ function tick(now){
+  const p=Math.min(100,(now-started)/6000*100),v=Math.floor(p);
+  fill.style.width=v+'%';number.textContent=v+'%';
+  let index=0;
+  messages.forEach((m,i)=>{if(v>=m[0])index=i});
+  if(index!==previous){status.textContent=messages[index][1];previous=index}
+  if(p<100)requestAnimationFrame(tick);
+  else{
+   status.textContent='Портал готов';
+   setTimeout(()=>{
+    loader.classList.remove('show');
+    showPromo();
+    scheduleSpider();
+   },250);
   }
  }
-
- loaderStatus.textContent = message.text;
-
- if (progress < 100) {
-  requestAnimationFrame(updateLoader);
- } else {
-  finishLoading();
- }
+ requestAnimationFrame(tick);
 }
 
-requestAnimationFrame(updateLoader);
+/* ПРОМОКОД */
+function showPromo(){
+ const promo=document.getElementById('promo');
+ promo.classList.remove('hide');promo.classList.add('show');
+ clearTimeout(promoTimer);
+ promoTimer=setTimeout(()=>promo.classList.remove('show'),6500);
+}
+function closePromo(){
+ clearTimeout(promoTimer);
+ document.getElementById('promo').classList.remove('show');
+}
 
-/* =========================
-   ПОЯВЛЕНИЕ КАРТОЧЕК
-========================= */
+/* ПАУК: первое появление через 9 секунд после загрузки */
+function scheduleSpider(){
+ clearTimeout(spiderTimer);
+ const spider=document.getElementById('spider-event');
+ if(!spider)return;
+ spider.classList.remove('playing');
+ spiderTimer=setTimeout(()=>{
+  spider.classList.remove('playing');
+  void spider.offsetWidth;
+  spider.classList.add('playing');
+  setTimeout(()=>spider.classList.remove('playing'),5600);
+ },9000);
+}
 
-const animatedCards = document.querySelectorAll(".animated-card");
+function openPage(id){
+ const target=document.getElementById(id);
+ if(!target){toast('Раздел пока недоступен.');return}
+ document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+ target.classList.add('active');
+ document.querySelectorAll('.nav-btn').forEach(b=>b.classList.toggle('active',b.dataset.page===id));
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(id==='admin-list-view')renderProfileAndRanks();
+}
 
-function checkScrollAnimations() {
- const trigger = window.innerHeight * 0.92;
+function toast(message){
+ document.querySelector('.toast')?.remove();
+ const el=document.createElement('div');
+ el.className='toast';el.textContent=message;
+ document.body.appendChild(el);
+ setTimeout(()=>el.remove(),3800);
+}
+function showRule(title,description){
+ const modal=document.createElement('div');modal.className='auth-wrap';modal.style.zIndex='1500';
+ const card=document.createElement('div');card.className='auth-card';
+ const h=document.createElement('h2');h.style.marginBottom='15px';h.textContent=title;
+ const p=document.createElement('p');p.className='desc';p.textContent=description;
+ const b=document.createElement('button');b.className='btn';b.style.width='100%';b.textContent='Понятно';b.type='button';
+ b.onclick=()=>modal.remove();
+ modal.onclick=e=>{if(e.target===modal)modal.remove()};
+ card.append(h,p,b);modal.appendChild(card);document.body.appendChild(modal);
+}
 
- animatedCards.forEach((card, index) => {
-  if (card.getBoundingClientRect().top < trigger) {
-   card.classList.add("in-view");
-   card.style.transitionDelay = Math.min(index * 70, 210) + "ms";
-  }
+/* ПРОФИЛИ АДМИНИСТРАЦИИ */
+function personalProfile(account){
+ const store=profileStore();
+ return store[account.id]||{avatar:'',banner:''}
+}
+function rankBadge(account){
+ const rank=account.rank||'Пользователь';
+ let cls='admin-badge';
+ if(rank==='Специальный администратор')cls+=' special';
+ if(rank==='Разработчик')cls+=' developer';
+ return `<span class="${cls}">${escapeHTML(rank)}</span>`;
+}
+function profileBadges(account){
+ let html='';
+ if(account.forumTeam)html+='<span class="admin-badge forum">Команда форума</span>';
+ if(account.teamProject)html+='<span class="admin-badge project">Команда проекта</span>';
+ if(account.rank==='Специальный администратор')html+='<span class="admin-badge special">Специальный администратор</span>';
+ if(account.developer||account.rank==='Разработчик')html+='<span class="admin-badge developer">Разработчик</span>';
+ if(account.prManager)html+='<span class="admin-badge pr">PR Manager</span>';
+ return html;
+}
+function profileCard(account,me){
+ const own=account.id===me.id;
+ const personal=personalProfile(account);
+ const avatar=safeImage(personal.avatar);
+ const banner=safeImage(personal.banner)||DEFAULT_BANNER;
+ const nickColor=isOwner(account)?'#ff69cf':'#f5d7e2';
+ return `<article class="admin-card">
+  <div class="admin-banner" style="background-image:url('${escapeHTML(banner)}')"></div>
+  <div class="admin-profile">
+   <div class="admin-identity">
+    <div class="admin-avatar" data-open-profile="${escapeHTML(account.id)}" role="button" tabindex="0" style="${avatar?`background-image:url('${escapeHTML(avatar)}')`:''}">${avatar?'':escapeHTML((account.nick||'K').slice(0,1).toUpperCase())}</div>
+    <div>
+     <div class="admin-nick" style="color:${nickColor}" data-open-profile="${escapeHTML(account.id)}" role="button" tabindex="0">${escapeHTML(account.nick)}${isAdmin(account)?'<span class="verified" title="Команда проекта">✓</span>':''}</div>
+     <div style="color:var(--muted);font-size:12px;margin-top:7px">${isOwner(account)?'Владелец проекта':'Команда KRAPINN RUSSIA'}</div>
+    </div>
+   </div>
+   <div class="admin-badges">${rankBadge(account)}${profileBadges(account)}</div>
+   <div class="admin-hint">Нажми на карточку, ник или аватар, чтобы открыть профиль</div>
+  </div>
+ </article>`;
+}
+function renderProfileAndRanks(){
+ const profileArea=document.getElementById('profile-area');
+ const rankArea=document.getElementById('rank-area');
+ if(!profileArea||!rankArea)return;
+ const me=currentAccount();
+ if(!me){
+  profileArea.innerHTML='<div class="box">Войди в аккаунт, чтобы посмотреть список.</div>';
+  rankArea.innerHTML='';return
+ }
+ const accounts=readAccounts();
+ const admins=accounts.filter(isAdmin);
+ profileArea.innerHTML=admins.length?admins.map(a=>profileCard(a,me)).join(''):'';
+ profileArea.querySelectorAll('[data-open-profile]').forEach(el=>{
+  const open=()=>openProfile(el.dataset.openProfile);
+  el.addEventListener('click',open);
+  el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open()}});
  });
+ if(!isOwner(me)){rankArea.innerHTML='';return}
+ rankArea.innerHTML=`<div class="box"><h3>⚙️ Панель владельца</h3><p>Назначай должности зарегистрированным аккаунтам. Эта панель демонстрационная и доступна только аккаунту владельца в данном браузере.</p><div id="rank-list"></div></div>`;
+ const list=document.getElementById('rank-list');
+ list.innerHTML=accounts.map(a=>`<div class="account-row"><div><strong>${escapeHTML(a.nick)}</strong><small>${isOwner(a)?'Владелец':'Аккаунт'}</small></div><select data-rank-id="${escapeHTML(a.id)}" aria-label="Должность ${escapeHTML(a.nick)}" ${isOwner(a)?'disabled':''}>${RANKS.map(r=>`<option value="${escapeHTML(r)}" ${a.rank===r?'selected':''}>${escapeHTML(r)}</option>`).join('')}</select></div>`).join('');
+ list.querySelectorAll('[data-rank-id]').forEach(select=>select.addEventListener('change',()=>{
+  if(!isOwner(currentAccount())){toast('Нет доступа.');renderProfileAndRanks();return}
+  const updated=readAccounts(),target=updated.find(a=>a.id===select.dataset.rankId);
+  if(!target||isOwner(target)){toast('Нельзя изменить владельца.');renderProfileAndRanks();return}
+  target.rank=select.value;
+  target.teamProject=select.value!=='Пользователь';
+  target.verified=target.teamProject;
+  target.developer=select.value==='Разработчик';
+  if(saveAccounts(updated)){toast('Должность сохранена.');renderProfileAndRanks()}
+ }));
+}
+function openProfile(id){
+ const account=readAccounts().find(a=>a.id===id),me=currentAccount();
+ if(!account||!me)return;
+ const personal=personalProfile(account);
+ const banner=safeImage(personal.banner)||DEFAULT_BANNER;
+ const avatarURL=safeImage(personal.avatar);
+ document.getElementById('modal-banner').style.backgroundImage=`url("${banner}")`;
+ const avatar=document.getElementById('modal-avatar');
+ avatar.style.backgroundImage=avatarURL?`url("${avatarURL}")`:'';
+ avatar.textContent=avatarURL?'':(account.nick||'K').slice(0,1).toUpperCase();
+ const actions=document.getElementById('modal-actions');actions.innerHTML='';
+ const info=document.createElement('div');info.style.cssText='width:100%;padding:8px 12px';
+ const name=document.createElement('h2');name.style.fontSize='22px';name.style.color=isOwner(account)?'#ff69cf':'#fff5f8';name.textContent=account.nick;
+ const rank=document.createElement('p');rank.style.cssText='margin-top:9px;color:#ff762b;font-weight:900';rank.textContent=account.rank||'Пользователь';
+ info.append(name,rank);
+ const badges=document.createElement('div');badges.className='admin-badges';badges.innerHTML=profileBadges(account);
+ info.appendChild(badges);actions.appendChild(info);
+ if(account.id===me.id&&isAdmin(me)){
+  const edit=document.createElement('button');edit.className='btn';edit.textContent='Изменить мою аватарку и баннер';edit.onclick=editProfile;actions.appendChild(edit);
+ }
+ if(isOwner(me)){
+  const manage=document.createElement('button');manage.className='btn secondary';manage.textContent='Управление должностями';
+  manage.onclick=()=>{closeProfile();document.getElementById('rank-area').scrollIntoView({behavior:'smooth',block:'start'})};
+  actions.appendChild(manage);
+ }
+ document.getElementById('profile-modal').classList.add('open');
+}
+function closeProfile(){document.getElementById('profile-modal').classList.remove('open')}
+function editProfile(){
+ const me=currentAccount();
+ if(!me||!isAdmin(me)){toast('Изменять оформление можно только в собственном профиле администратора.');return}
+ const current=personalProfile(me);
+ const avatar=prompt('Ссылка на аватар. Пустое поле — стандартная аватарка:',current.avatar||'');
+ if(avatar===null)return;
+ const banner=prompt('Ссылка на баннер. Пустое поле — стандартный баннер:',current.banner||'');
+ if(banner===null)return;
+ const a=safeImage(avatar),b=safeImage(banner);
+ if(avatar.trim()&&!a){toast('Нужна корректная ссылка http:// или https://.');return}
+ if(banner.trim()&&!b){toast('Нужна корректная ссылка http:// или https://.');return}
+ const store=profileStore();store[me.id]={avatar:a,banner:b};
+ if(saveProfileStore(store)){renderProfileAndRanks();openProfile(me.id);toast('Оформление сохранено в этом браузере.')}
 }
 
-window.addEventListener(
- "scroll",
- checkScrollAnimations,
- { passive: true }
-);
+/* ИНДИВИДУАЛЬНЫЕ ШАБЛОНЫ ДЛЯ TELEGRAM С АВТОЗАПОЛНЕНИЕМ */
+function getTelegramTemplates(){
+ const user = currentAccount()?.nick || '';
+ return {
+  'admin-application': `🛡️ ЗАЯВКА НА АДМИНИСТРАТОРА KRAPINN RUSSIA 🛡️\n\n1. Ваш игровой ник: ${user}\n2. Ваше настоящее имя:\n3. Ваш реальный возраст (14+):\n4. Ваш часовой пояс от МСК:\n5. Ваш игровой уровень:\n6. Скриншот статистики персонажа (/mm -> 1):\n7. Ссылка на ваш профиль ВКонтакте:\n8. Ваш Tag в Discord:\n9. Наличие микрофона и готовность пройти обзвон (Да/Нет):\n10. Игровой опыт на RP проектах (где были и на каких должностях):\n11. Почему именно вы должны занять пост администратора?`,
 
-/* =========================
-   КОПИРОВАНИЕ ПРОМОКОДА
-   ПРОМОКОД И БОНУСЫ НЕ ИЗМЕНЕНЫ
-========================= */
+  'leader': `👑 ЗАЯВКА НА ЛИДЕРА ОРГАНИЗАЦИИ KRAPINN RUSSIA 👑\n\n1. Ваш игровой ник: ${user}\n2. Ваше реальное имя и возраст:\n3. На какую организацию подаете заявку?:\n4. Ваш игровой уровень:\n5. Скриншот статистики (/mm -> 1):\n6. Ссылка на VK / Discord:\n7. Ваши идеи по развитию организации (минимум 3):\n8. Готовы ли вы пройти обзвон в Discord? (Да/Нет):\n9. Ваш суточный онлайн:`,
 
-async function copyPromo() {
- const promo = "#Фарка";
+  'unban': `🔓 ОБРАЩЕНИЕ НА РАЗБАН KRAPINN RUSSIA 🔓\n\n1. Ваш игровой ник: ${user}\n2. Ник администратора, выдавшего бан:\n3. Сервер:\n4. Причина блокировки:\n5. Дата и время получения наказания:\n6. Скриншот окна блокировки при входе в игру (Imgur / Yapx):\n7. Подробное описание ситуации:`,
 
- const btn = document.getElementById("promo-btn");
- const hint = document.getElementById("promo-hint");
+  'bug': `🐞 СООБЩЕНИЕ ОБ ОШИБКЕ (БАГ-ТРЕКЕР) 🐞\n\n1. Ваш ник: ${user}\n2. Устройство (Android / iOS / PC):\n3. Где произошел баг (работа, автосалон, инвентарь и т.д.):\n4. Подробное описание ошибки:\n5. Пошаговые действия для повторения бага:\n6. Доказательства (скриншот или видео на YouTube/Imgur):`,
 
- try {
-  if (navigator.clipboard && window.isSecureContext) {
-   await navigator.clipboard.writeText(promo);
-  } else {
-   const textarea = document.createElement("textarea");
+  'support': `🛠️ ТЕХНИЧЕСКАЯ ПОДДЕРЖКА KRAPINN RUSSIA 🛠️\n\n1. Ваш игровой ник: ${user}\n2. Суть проблемы (донат, пропажа имущества, слёт аккаунта):\n3. Дата возникновения проблемы:\n4. Модель вашего устройства:\n5. Доказательства (скриншоты/чеки):`,
 
-   textarea.value = promo;
-   textarea.style.position = "fixed";
-   textarea.style.opacity = "0";
+  'special-admin': `📨 ОБРАЩЕНИЕ К СПЕЦ. АДМИНИСТРАТОРУ 📨\n\n1. Ваш игровой ник: ${user}\n2. Тема обращения:\n3. Суть вашей ситуации / предложения:\n4. Доказательства (если требуется):`,
 
-   document.body.appendChild(textarea);
-   textarea.select();
+  'leader-complaint': `⚖️ ЖАЛОБА НА ЛИДЕРА ⚖️\n\n1. Ваш ник: ${user}\n2. Ник лидера и его организация:\n3. Что именно нарушил лидер?:\n4. Доказательства нарушения (фото/видео):`,
 
-   const copied = document.execCommand("copy");
+  'player-complaint': `📝 ЖАЛОБА НА ИГРОКА 📝\n\n1. Ваш ник: ${user}\n2. Ник нарушителя:\n3. Суть нарушения (DM, DB, SK, TK, NonRP и т.д.):\n4. Дата и время:\n5. Видео/скриншот доказательства:`,
 
-   textarea.remove();
-
-   if (!copied) {
-    throw new Error("Не удалось скопировать");
-   }
-  }
-
-  btn.textContent = "СКОПИРОВАНО!";
-  hint.textContent = "Промокод скопирован в буфер обмена";
-
-  setTimeout(() => {
-   btn.textContent = "#Фарка";
-   hint.textContent = "Нажми на промокод, чтобы скопировать";
-  }, 1800);
-
- } catch (error) {
-  hint.textContent = "Промокод: #Фарка";
- }
+  'admin-complaint': `🚨 ЖАЛОБА НА АДМИНИСТРАТОРА 🚨\n\n1. Ваш ник: ${user}\n2. Ник администратора:\n3. Причина жалобы:\n4. Доказательства (скриншот выдачи наказания):`
+ };
 }
 
-/* =========================
-   HALLOWEEN УВЕДОМЛЕНИЕ
-========================= */
+function sendToTelegram(type){
+ const templates = getTelegramTemplates();
+ const message = templates[type];
+ if(!message){toast('Не удалось открыть форму.');return}
+ 
+ const technical=['support','bug','special-admin'].includes(type);
+ const username=technical?'farich10':'urtung';
+ const url='https://t.me/'+username;
+ const shareURL='https://t.me/share/url?url=&text='+encodeURIComponent(message);
 
-function closeHalloweenToast() {
- document
-  .getElementById("halloween-toast")
-  .classList.remove("show");
-}
-
-/* =========================
-   АДМИН-ПАНЕЛЬ
-   ЛОГИКА СОХРАНЕНА
-========================= */
-
-function openAdminAuth() {
- document
-  .getElementById("admin-auth-modal")
-  .classList.add("active");
-}
-
-function checkAdminAuth() {
- const login = document.getElementById("admin-login").value;
- const pass = document.getElementById("admin-pass").value;
-
- /*
-  Внимание: это клиентская проверка,
-  а не настоящая серверная защита.
- */
-
- if (login === "Admin" && pass === "Aaa007!") {
-  closeModals();
-
-  document
-   .getElementById("admin-panel-modal")
-   .classList.add("active");
-
- } else {
-  alert("Неверный логин или пароль!");
- }
-}
-
-function closeModals() {
- document
-  .querySelectorAll(".modal-overlay")
-  .forEach(modal => modal.classList.remove("active"));
-}
-
-document.querySelectorAll(".modal-overlay").forEach(modal => {
- modal.addEventListener("click", event => {
-  if (event.target === modal) {
-   modal.classList.remove("active");
-  }
- });
-});
-
-document.addEventListener("keydown", event => {
- if (event.key === "Escape") {
-  closeModals();
- }
-});
-
-/* =========================
-   ИЗМЕНЕНИЕ ВЫСОТЫ ФОТО
-========================= */
-
-const heightSlider = document.getElementById("frame-height-slider");
-const heightValue = document.getElementById("height-val");
-
-function updateFrameHeight(value, save = true) {
- const height = Number(value);
-
- if (!Number.isFinite(height)) {
-  return;
- }
-
- document.querySelectorAll(".photo-frame").forEach(frame => {
-  frame.style.height = height + "px";
- });
-
- heightValue.textContent = height + "px";
-
- if (save) {
-  try {
-   localStorage.setItem(
-    "horizon_frame_height",
-    String(height)
-   );
-  } catch (error) {
-   console.warn("Настройка не сохранена.");
-  }
- }
-}
-
-heightSlider.addEventListener("input", event => {
- updateFrameHeight(event.target.value);
-});
-
-/* =========================
-   ЗАГРУЗКА СОХРАНЁННЫХ ФОТО
-========================= */
-
-function loadSavedImages() {
- ["img-1", "img-2", "img-3"].forEach(id => {
-  try {
-   const saved = localStorage.getItem("horizon_" + id);
-
-   if (saved) {
-    document.getElementById(id).src = saved;
-   }
-  } catch (error) {
-   console.warn("Не удалось загрузить сохранённое фото.");
-  }
- });
-
- try {
-  const height = localStorage.getItem("horizon_frame_height");
-
-  if (height) {
-   heightSlider.value = height;
-   updateFrameHeight(height, false);
-  }
- } catch (error) {
-  console.warn("Не удалось загрузить настройки.");
- }
-}
-
-/* =========================
-   ЗАГРУЗКА ФОТО ЧЕРЕЗ АДМИНКУ
-========================= */
-
-function uploadImage(event, targetId) {
- const file = event.target.files && event.target.files[0];
-
- if (!file) {
-  return;
- }
-
- if (!file.type.startsWith("image/")) {
-  alert("Выбери файл изображения.");
-  event.target.value = "";
-  return;
- }
-
- if (file.size > 2 * 1024 * 1024) {
-  alert("Размер изображения должен быть не больше 2 МБ.");
-  event.target.value = "";
-  return;
- }
-
- const reader = new FileReader();
-
- reader.onload = event => {
-  const imageData = event.target.result;
-
-  document.getElementById(targetId).src = imageData;
-
-  try {
-   localStorage.setItem("horizon_" + targetId, imageData);
-  } catch (error) {
-   alert(
-    "Фото показано, но не удалось сохранить его в браузере. " +
-    "Попробуй выбрать изображение меньшего размера."
-   );
-  }
+ const openChat=()=>{
+  const w=window.open(url,'_blank','noopener');
+  if(!w)location.href=url;
+  toast('Шаблон скопирован! Вставь его в чат Telegram и заполни данные.');
  };
 
- reader.onerror = () => {
-  alert("Не удалось прочитать изображение.");
- };
-
- reader.readAsDataURL(file);
+ if(navigator.clipboard && navigator.clipboard.writeText){
+  navigator.clipboard.writeText(message).then(openChat).catch(()=>{
+   window.open(shareURL,'_blank','noopener');
+   toast('Выбери чат в Telegram, чтобы отправить подготовленный шаблон.');
+  });
+ }else{
+  window.open(shareURL,'_blank','noopener');
+  toast('Выбери чат в Telegram, чтобы отправить подготовленный шаблон.');
+ }
 }
 
-document
- .getElementById("file-img-1")
- .addEventListener("change", event => uploadImage(event, "img-1"));
+document.addEventListener('DOMContentLoaded',()=>{
+ document.getElementById('login-tab').addEventListener('click',()=>setAuthMode('login'));
+ document.getElementById('register-tab').addEventListener('click',()=>setAuthMode('register'));
+ document.getElementById('auth-form').addEventListener('submit',submitAuth);
+ document.getElementById('logout-btn').addEventListener('click',logout);
+ document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>openPage(b.dataset.page)));
+ document.querySelectorAll('[data-rule]').forEach(b=>b.addEventListener('click',()=>{
+  const p=b.dataset.rule.split('|');showRule(p[0],p.slice(1).join('|'));
+ }));
+ document.querySelectorAll('[data-send]').forEach(b=>b.addEventListener('click',()=>sendToTelegram(b.dataset.send)));
+ document.getElementById('close-profile').addEventListener('click',closeProfile);
+ document.getElementById('profile-modal').addEventListener('click',e=>{if(e.target.id==='profile-modal')closeProfile()});
+ document.getElementById('promo-close').addEventListener('click',closePromo);
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeProfile();closePromo()}});
+ const me=currentAccount();
+ if(me){hideAuth();updateSession();renderProfileAndRanks();startLoader()}
+ else showAuth();
+});
 
-document
- .getElementById("file-img-2")
- .addEventListener("change", event => uploadImage(event, "img-2"));
-
-document
- .getElementById("file-img-3")
- .addEventListener("change", event => uploadImage(event, "img-3"));
-
-/* =========================
-   ИНИЦИАЛИЗАЦИЯ
-========================= */
-
-loadSavedImages();
-
+/* Частицы фона */
+(function(){
+ const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');
+ let particles=[];
+ function resize(){
+  const dpr=Math.min(window.devicePixelRatio||1,2);
+  canvas.width=window.innerWidth*dpr;canvas.height=window.innerHeight*dpr;
+  canvas.style.width=window.innerWidth+'px';canvas.style.height=window.innerHeight+'px';
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  particles=Array.from({length:Math.min(75,Math.max(25,Math.floor(window.innerWidth/15)))},()=>({
+   x:Math.random()*window.innerWidth,
+   y:Math.random()*window.innerHeight,
+   r:Math.random()*1.7+.4,
+   s:Math.random()*.35+.1,
+   a:Math.random()*.45+.1,
+   orange:Math.random()>.65
+  }));
+ }
+ function draw(){
+  ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+  for(const p of particles){
+   p.y-=p.s;
+   p.x+=Math.sin(p.y*.008)*.12;
+   if(p.y<-5){p.y=window.innerHeight+5;p.x=Math.random()*window.innerWidth}
+   ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+   ctx.fillStyle=p.orange?`rgba(255,118,43,${p.a})`:`rgba(255,35,70,${p.a})`;
+   ctx.fill();
+  }
+  requestAnimationFrame(draw);
+ }
+ resize();window.addEventListener('resize',resize);draw();
+})();
 </script>
-
 </body>
 </html>
