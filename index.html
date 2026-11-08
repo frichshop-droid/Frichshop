@@ -3,26 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#100306">
-<meta name="description" content="KORE RUSSIA — начни свою историю. Halloween Edition.">
-<title>KORE RUSSIA — Halloween Edition</title>
+<meta name="theme-color" content="#000000">
+<meta name="description" content="KORE RUSSIA — начни свою историю. Форум и сайт проекта.">
+<title>KORE RUSSIA — Сайт и Форум Проекта</title>
 
+<!-- FontAwesome & Google Fonts -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
+<!-- Supabase JS Client for Database & Storage Integration -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 <style>
 :root {
- --red:#ff1838;
- --red-light:#ff5369;
- --red-dark:#8f001b;
- --red-deep:#39000c;
- --black:#070306;
- --panel:rgba(23,5,11,.91);
- --white:#fff5f7;
- --muted:#c8aeb5;
+ --red:#FF0000;
+ --red-light:#FF3333;
+ --red-dark:#990000;
+ --black:#050001;
+ --panel:rgba(15, 2, 4, 0.96);
+ --white:#ffffff;
+ --muted:#e0d0d5;
  --green:#00f58a;
- --blue:#229cff;
 }
 
 * {
@@ -41,12 +44,38 @@ body {
  min-height:100vh;
  overflow-x:hidden;
  background:
-  radial-gradient(ellipse at 50% 0%,#600819 0%,transparent 48%),
-  radial-gradient(ellipse at 0% 55%,#30040e 0%,transparent 42%),
-  radial-gradient(ellipse at 100% 90%,#27020b 0%,transparent 40%),
+  radial-gradient(ellipse at 50% 0%,#660000 0%,transparent 50%),
+  radial-gradient(ellipse at 0% 55%,#330000 0%,transparent 45%),
   var(--black);
  color:var(--white);
  font-family:Inter,Arial,sans-serif;
+}
+
+/* ЯДРЕНЫЙ КРОВАВЫЙ ЭФФЕКТ НА ТЕКСТАХ */
+.blood-text {
+ position:relative;
+ display:inline-block;
+ color: #ffffff;
+ text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5);
+}
+
+.blood-text::after {
+ content:"";
+ position:absolute;
+ right:-10px;
+ top:-2px;
+ width:8px;
+ height:14px;
+ background:#FF0000;
+ border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
+ box-shadow:0 0 12px #FF0000, 0 0 20px #FF0000;
+ animation:bloodDrop 2.5s ease-in-out infinite;
+}
+
+@keyframes bloodDrop {
+ 0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
+ 70% { transform: translateY(10px) scale(0.8, 1.3); opacity: 1; }
+ 85% { transform: translateY(16px) scale(0.4, 0.4); opacity: 0; }
 }
 
 body::before {
@@ -55,91 +84,35 @@ body::before {
  inset:0;
  z-index:0;
  pointer-events:none;
- background:linear-gradient(115deg,transparent 35%,#ff183805 50%,transparent 65%);
+ background:linear-gradient(115deg,transparent 35%,rgba(255,0,0,0.06) 50%,transparent 65%);
  background-size:200% 100%;
  animation:backgroundSweep 12s linear infinite;
 }
 
-button,input {
- font:inherit;
-}
+button,input { font:inherit; }
+button,a { -webkit-tap-highlight-color:transparent; }
+button { color:inherit; background:none; border:none; cursor:pointer; }
+a { color:inherit; text-decoration:none; }
+::selection { background:#FF0000; color:white; }
 
-button,a {
- -webkit-tap-highlight-color:transparent;
-}
-
-button {
- color:inherit;
-}
-
-a {
- color:inherit;
-}
-
-::selection {
- background:var(--red);
- color:white;
-}
-
-#bg-canvas {
+#bg-canvas, #lantern-canvas {
  position:fixed;
  inset:0;
  width:100%;
  height:100%;
- z-index:0;
  pointer-events:none;
 }
+#bg-canvas { z-index:0; }
+#lantern-canvas { z-index:1; }
 
 .noise {
  position:fixed;
  inset:0;
  z-index:0;
  pointer-events:none;
- opacity:.07;
- background-image:radial-gradient(rgba(255,255,255,.15) .6px,transparent .6px);
+ opacity:.06;
+ background-image:radial-gradient(rgba(255,255,255,.25) .6px,transparent .6px);
  background-size:5px 5px;
-}
-
-.halloween-decor {
- position:fixed;
- inset:0;
- z-index:1;
- pointer-events:none;
- overflow:hidden;
-}
-
-.floating-pumpkin {
- position:absolute;
- font-size:clamp(25px,4vw,48px);
- opacity:.22;
- filter:drop-shadow(0 0 15px #ff1838);
- animation:pumpkinFloat 8s ease-in-out infinite;
-}
-
-.pumpkin-a {left:2%;top:18%}
-.pumpkin-b {right:3%;top:43%;animation-delay:-3s;font-size:clamp(30px,5vw,56px)}
-.pumpkin-c {left:5%;top:76%;animation-delay:-5s}
-.pumpkin-d {right:7%;top:82%;animation-delay:-2s;font-size:clamp(22px,3vw,38px)}
-
-.bat {
- position:absolute;
- font-size:25px;
- opacity:.28;
- animation:batFly 19s linear infinite;
-}
-
-.bat-a {top:16%;left:-50px}
-.bat-b {top:64%;left:-50px;animation-delay:-9s;font-size:19px}
-
-@keyframes pumpkinFloat {
- 0%,100% {transform:translate3d(0,0,0) rotate(-7deg)}
- 50% {transform:translate3d(12px,-24px,0) rotate(8deg)}
-}
-
-@keyframes batFly {
- 0% {transform:translateX(-60px) translateY(0)}
- 45% {transform:translateX(55vw) translateY(-35px) rotate(8deg)}
- 100% {transform:translateX(calc(100vw + 80px)) translateY(15px) rotate(-4deg)}
 }
 
 @keyframes backgroundSweep {
@@ -147,47 +120,314 @@ a {
  100% {background-position:-200% 0}
 }
 
-@keyframes redPulse {
- 0%,100% {filter:drop-shadow(0 0 8px #ff183829)}
- 50% {filter:drop-shadow(0 0 25px #ff18388c)}
-}
-
 @keyframes titleGlow {
- 0%,100% {text-shadow:0 0 15px #ff18382b}
- 50% {text-shadow:0 0 30px #ff183880,0 0 60px #ff001e30}
+ 0%,100% {text-shadow:0 0 15px rgba(255,0,0,0.5)}
+ 50% {text-shadow:0 0 35px rgba(255,0,0,1),0 0 60px rgba(255,0,0,0.6)}
 }
 
-@keyframes spin {
- to {transform:rotate(360deg)}
+@keyframes spin { to {transform:rotate(360deg)} }
+@keyframes spinReverse { from {transform:rotate(360deg)} to {transform:rotate(0deg)} }
+@keyframes pulse { from {transform:scale(.8)} to {transform:scale(1.15)} }
+@keyframes onlinePulse { to {opacity:.4;transform:scale(.75)} }
+
+/* =========================
+   ВЕРХНЯЯ ПАНЕЛЬ И НАВИГАЦИЯ
+========================= */
+
+.header-nav {
+ position:sticky;
+ top:0;
+ z-index:100;
+ background:rgba(10, 1, 3, 0.94);
+ backdrop-filter:blur(16px);
+ border-bottom:1px solid rgba(255, 0, 0, 0.5);
+ padding:14px 20px;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
 }
 
-@keyframes spinReverse {
- from {transform:rotate(360deg)}
- to {transform:rotate(0deg)}
+.header-container {
+ width:min(1100px, 100%);
+ margin:0 auto;
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
 }
 
-@keyframes pulse {
- from {transform:scale(.8)}
- to {transform:scale(1.15)}
+.logo-box {
+ display:flex;
+ align-items:center;
+ gap:12px;
+ cursor:pointer;
 }
 
-@keyframes onlinePulse {
- to {opacity:.4;transform:scale(.75)}
+.logo-crown {
+ width:44px;
+ height:44px;
+ border-radius:12px;
+ background:linear-gradient(135deg, #FF0000, #800000);
+ display:grid;
+ place-items:center;
+ font-size:22px;
+ color:white;
+ box-shadow:0 0 25px rgba(255, 0, 0, 0.8);
 }
 
-@keyframes borderGlow {
- 0%,100% {border-color:#ff18382e}
- 50% {border-color:#ff1838a1}
+.logo-text {
+ font-size:19px;
+ font-weight:900;
+ letter-spacing:1px;
+ text-transform:uppercase;
 }
 
-@keyframes shine {
- 0% {transform:translateX(-160%) skewX(-25deg)}
- 100% {transform:translateX(240%) skewX(-25deg)}
+.logo-text span { color:#FF3333; }
+
+.top-buttons {
+ display:flex;
+ align-items:center;
+ gap:10px;
 }
 
-@keyframes iconFloat {
- 0%,100% {transform:translateY(0) rotate(0)}
- 50% {transform:translateY(-4px) rotate(-4deg)}
+/* УВЕЛИЧЕННЫЕ БЕЛЫЕ КНОПКИ */
+.nav-quick-btn {
+ padding:11px 18px;
+ border-radius:14px;
+ border:2px solid #ffffff;
+ background:#ffffff;
+ color:#050001;
+ font-size:13px;
+ font-weight:800;
+ display:flex;
+ align-items:center;
+ gap:8px;
+ transition:all .25s;
+ box-shadow:0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+.nav-quick-btn:hover {
+ background:#FF0000;
+ border-color:#FF0000;
+ color:#ffffff;
+ transform:translateY(-2px);
+ box-shadow:0 6px 22px rgba(255, 0, 0, 0.7);
+}
+
+.sound-toggle-btn {
+ padding:10px 14px;
+ border-radius:12px;
+ border:2px solid rgba(255,255,255,0.3);
+ background:rgba(0,0,0,0.5);
+ font-size:12px;
+ font-weight:800;
+ display:flex;
+ align-items:center;
+ gap:6px;
+ color:var(--white);
+}
+
+.sound-toggle-btn.active { color:var(--green); border-color:var(--green); }
+
+.mobile-menu-btn {
+ display:none;
+ width:44px;
+ height:44px;
+ border-radius:12px;
+ border:2px solid #ffffff;
+ background:#ffffff;
+ color:#050001;
+ font-size:20px;
+ place-items:center;
+ cursor:pointer;
+ box-shadow:0 0 15px rgba(255,255,255,0.3);
+}
+
+/* =========================
+   БОКОВОЕ МЕНЮ (МОБИЛЬНОЕ)
+========================= */
+
+.drawer-backdrop {
+ position:fixed;
+ inset:0;
+ z-index:200;
+ background:rgba(0,0,0,0.85);
+ backdrop-filter:blur(8px);
+ opacity:0;
+ visibility:hidden;
+ transition:all .3s ease;
+}
+
+.drawer-backdrop.active {
+ opacity:1;
+ visibility:visible;
+}
+
+.mobile-drawer {
+ position:fixed;
+ top:0;
+ left:0;
+ width:300px;
+ max-width:82vw;
+ height:100%;
+ z-index:210;
+ background:linear-gradient(160deg, #1f0105, #050001);
+ border-right:2px solid #FF0000;
+ box-shadow:12px 0 40px rgba(0,0,0,0.95);
+ transform:translateX(-100%);
+ transition:transform .3s cubic-bezier(0.4, 0, 0.2, 1);
+ display:flex;
+ flex-direction:column;
+}
+
+.mobile-drawer.active { transform:translateX(0); }
+
+.drawer-header {
+ padding:20px;
+ border-bottom:1px solid rgba(255, 0, 0, 0.4);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+}
+
+.drawer-nav {
+ padding:15px;
+ display:flex;
+ flex-direction:column;
+ gap:8px;
+ overflow-y:auto;
+ flex:1;
+}
+
+.drawer-item {
+ padding:14px 18px;
+ border-radius:14px;
+ border:1px solid rgba(255,255,255,0.1);
+ background:rgba(255, 255, 255, 0.05);
+ font-size:14px;
+ font-weight:800;
+ display:flex;
+ align-items:center;
+ gap:12px;
+ color:var(--white);
+ transition:all .2s;
+}
+
+.drawer-item i {
+ width:24px;
+ text-align:center;
+ color:#FF0000;
+ font-size:16px;
+}
+
+.drawer-item:hover {
+ background:#FF0000;
+ border-color:#FF0000;
+ color:#ffffff;
+}
+
+/* =========================
+   РОЛИ И БЕЙДЖИ
+========================= */
+
+.badge-project-team {
+ background:linear-gradient(135deg, #FF0000, #990000);
+ box-shadow:0 0 15px rgba(255, 0, 0, 0.8);
+ border:1px solid rgba(255, 255, 255, 0.4);
+ color:white;
+ font-weight:900;
+ padding:4px 12px;
+ border-radius:6px;
+ font-size:11px;
+ display:inline-block;
+}
+
+.badge-forum-team {
+ background:linear-gradient(135deg, #ff7b00, #b35400);
+ box-shadow:0 0 15px rgba(255, 123, 0, 0.8);
+ border:1px solid rgba(255, 255, 255, 0.4);
+ color:white;
+ font-weight:900;
+ padding:4px 12px;
+ border-radius:6px;
+ font-size:11px;
+ display:inline-block;
+}
+
+.badge-developer {
+ background:linear-gradient(135deg, #b026ff, #5e0099);
+ box-shadow:0 0 15px rgba(176, 38, 255, 0.8);
+ border:1px solid rgba(255, 255, 255, 0.4);
+ color:white;
+ font-weight:900;
+ padding:4px 12px;
+ border-radius:6px;
+ font-size:11px;
+ display:inline-block;
+}
+
+/* =========================
+   ОФИЦИАЛЬНЫЙ ПОСТ
+========================= */
+
+.official-post {
+ border:2px solid rgba(255, 0, 0, 0.6);
+ border-radius:22px;
+ background:var(--panel);
+ overflow:hidden;
+ margin-top:20px;
+ box-shadow:0 20px 50px rgba(0,0,0,0.8);
+ backdrop-filter:blur(15px);
+}
+
+.post-user-header {
+ padding:20px 24px;
+ background:rgba(25, 2, 6, 0.98);
+ border-bottom:1px solid rgba(255, 0, 0, 0.4);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ flex-wrap:wrap;
+ gap:15px;
+}
+
+.post-user-info {
+ display:flex;
+ align-items:center;
+ gap:16px;
+}
+
+.post-avatar {
+ width:56px;
+ height:56px;
+ border-radius:16px;
+ border:2px solid #FF0000;
+ object-fit:cover;
+}
+
+.post-badges {
+ display:flex;
+ flex-wrap:wrap;
+ gap:8px;
+ margin-top:8px;
+}
+
+.post-content {
+ padding:24px;
+ font-size:14.5px;
+ line-height:1.9;
+ color:#f0e1e6;
+}
+
+.post-footer {
+ padding:16px 24px;
+ border-top:1px solid rgba(255, 0, 0, 0.3);
+ background:rgba(8, 0, 2, 0.9);
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ font-size:12px;
+ color:var(--muted);
 }
 
 /* =========================
@@ -202,8 +442,7 @@ a {
  align-items:center;
  justify-content:center;
  flex-direction:column;
- background:
-  radial-gradient(circle at center,#4a0616 0%,#19030a 42%,#050204 100%);
+ background:radial-gradient(circle at center,#330000 0%,#120002 50%,#050001 100%);
  transition:opacity .8s ease,visibility .8s ease;
 }
 
@@ -222,12 +461,12 @@ a {
 }
 
 .orb {
- width:120px;
- height:120px;
+ width:130px;
+ height:130px;
  position:relative;
  display:grid;
  place-items:center;
- margin-bottom:32px;
+ margin-bottom:28px;
 }
 
 .orb-ring {
@@ -238,70 +477,66 @@ a {
 
 .orb-ring.one {
  inset:0;
- border-top-color:var(--red);
- border-bottom-color:var(--red);
- box-shadow:0 0 30px #ff18384a;
+ border-top-color:#FF0000;
+ border-bottom-color:#FF0000;
+ box-shadow:0 0 40px rgba(255, 0, 0, 0.8);
  animation:spin 2s linear infinite;
 }
 
 .orb-ring.two {
- inset:13px;
+ inset:14px;
  border-left-color:white;
- border-right-color:var(--red-light);
+ border-right-color:#FF3333;
  animation:spinReverse 1.5s linear infinite;
 }
 
-.orb-ring.three {
- inset:27px;
- border:1px dashed var(--red-light);
- animation:spin 4s linear infinite;
-}
-
 .orb-center {
- font-size:32px;
- filter:drop-shadow(0 0 15px #ff1838);
+ font-size:40px;
+ font-weight:900;
+ letter-spacing:2px;
+ color:white;
+ text-shadow:0 0 25px #FF0000;
  animation:pulse 1s ease-in-out infinite alternate;
 }
 
 .loader-title {
- font-size:22px;
+ font-size:24px;
  font-weight:900;
  letter-spacing:2px;
- margin-bottom:11px;
- color:#ff5369;
- text-shadow:0 0 25px #ff1838;
- animation:titleGlow 3s infinite;
+ margin-bottom:8px;
+ color:#FF3333;
+ text-shadow:0 0 30px #FF0000;
 }
 
 .loader-subtitle {
- font-size:10px;
+ font-size:11px;
  letter-spacing:1.4px;
  line-height:1.8;
- color:#cbb7be;
+ color:#f0d5dd;
  margin-bottom:24px;
 }
 
 .loader-track {
  width:100%;
- height:5px;
+ height:6px;
  overflow:hidden;
  border-radius:50px;
- background:#ffffff12;
+ background:rgba(255,255,255,0.15);
 }
 
 .loader-progress {
  width:0;
  height:100%;
  border-radius:inherit;
- background:linear-gradient(90deg,#8f001b,#ff1838,#ffb0bd);
- box-shadow:0 0 20px var(--red);
+ background:linear-gradient(90deg,#990000,#FF0000,#ff9999);
+ box-shadow:0 0 25px #FF0000;
 }
 
 .loader-percent {
  margin-top:12px;
- font-size:13px;
+ font-size:14px;
  font-weight:900;
- color:var(--red-light);
+ color:#FF3333;
 }
 
 /* =========================
@@ -313,7 +548,7 @@ a {
  z-index:2;
  width:min(900px,100%);
  margin:0 auto;
- padding:35px 20px 65px;
+ padding:40px 20px 70px;
  opacity:0;
  transform:translateY(18px);
  transition:opacity .8s ease,transform .8s ease;
@@ -326,11 +561,11 @@ a {
 
 .top-line {
  width:100%;
- height:3px;
+ height:4px;
  border-radius:10px;
- margin-bottom:30px;
- background:linear-gradient(90deg,transparent,#ff1838,#ffb3bf,#ff1838,transparent);
- box-shadow:0 0 25px #ff183866;
+ margin-bottom:35px;
+ background:linear-gradient(90deg,transparent,#FF0000,#ffffff,#FF0000,transparent);
+ box-shadow:0 0 30px rgba(255, 0, 0, 0.8);
  position:relative;
  overflow:hidden;
 }
@@ -343,13 +578,11 @@ a {
  width:25%;
  height:100%;
  background:white;
- filter:blur(5px);
+ filter:blur(6px);
  animation:topLineMove 4s linear infinite;
 }
 
-@keyframes topLineMove {
- to {left:120%}
-}
+@keyframes topLineMove { to {left:120%} }
 
 .green-badge {
  display:flex;
@@ -359,79 +592,79 @@ a {
  width:fit-content;
  max-width:100%;
  margin:0 auto 25px;
- padding:10px 18px;
- border:1px solid #00f58a55;
+ padding:11px 20px;
+ border:2px solid rgba(0, 245, 138, 0.5);
  border-radius:50px;
- background:#00f58a0b;
- box-shadow:0 0 25px #00f58a0b;
+ background:rgba(0, 245, 138, 0.1);
+ box-shadow:0 0 30px rgba(0, 245, 138, 0.2);
 }
 
 .green-dot {
- width:8px;
- height:8px;
+ width:9px;
+ height:9px;
  flex-shrink:0;
  border-radius:50%;
  background:var(--green);
- box-shadow:0 0 12px var(--green);
+ box-shadow:0 0 15px var(--green);
  animation:onlinePulse 1.4s infinite alternate;
 }
 
 .green-badge-text {
- font-size:10px;
- font-weight:800;
+ font-size:11px;
+ font-weight:900;
  letter-spacing:1.3px;
  color:var(--green);
 }
 
 .hero-title {
  text-align:center;
- font-size:clamp(29px,5.5vw,49px);
+ font-size:clamp(32px, 6vw, 52px);
  font-weight:900;
  line-height:1.2;
  letter-spacing:-1.5px;
- margin-bottom:22px;
- background:linear-gradient(180deg,#ffffff 5%,#ffb7c1 42%,#ff1838 78%,#a40020 100%);
+ margin-bottom:24px;
+ background:linear-gradient(180deg,#ffffff 10%,#ff9999 50%,#FF0000 85%,#990000 100%);
  -webkit-background-clip:text;
  background-clip:text;
  color:transparent;
- filter:drop-shadow(0 0 22px #ff18382c);
+ filter:drop-shadow(0 0 25px rgba(255, 0, 0, 0.5));
  animation:titleGlow 4s ease-in-out infinite;
 }
 
 .hero-title .title-small {
  display:block;
- margin-top:10px;
- font-size:clamp(13px,2.5vw,19px);
+ margin-top:12px;
+ font-size:clamp(14px, 2.5vw, 20px);
  letter-spacing:5px;
- color:var(--red-light);
- -webkit-text-fill-color:var(--red-light);
+ color:#FF3333;
+ -webkit-text-fill-color:#FF3333;
 }
 
 .hero-description {
  max-width:750px;
  margin:0 auto 35px;
  text-align:center;
- color:#d8c9ce;
- font-size:14px;
- line-height:1.95;
- font-weight:500;
+ color:var(--muted);
+ font-size:15px;
+ line-height:2;
+ font-weight:600;
 }
 
 .section-label {
  text-align:center;
- color:var(--red-light);
- font-size:10px;
- font-weight:800;
+ color:#FF3333;
+ font-size:11px;
+ font-weight:900;
  letter-spacing:3px;
  margin-bottom:25px;
- text-shadow:0 0 15px #ff18384d;
+ text-shadow:0 0 20px rgba(255, 0, 0, 0.7);
 }
 
 .section-label::before,
 .section-label::after {
  content:"✦";
- margin:0 10px;
- color:var(--red);
+ margin:0 12px;
+ color:#FF0000;
 }
 
 /* =========================
@@ -441,16 +674,16 @@ a {
 .animated-card {
  position:relative;
  overflow:hidden;
- padding:28px;
- margin-bottom:24px;
- border-radius:23px;
- border:1px solid #ff18383b;
+ padding:32px;
+ margin-bottom:26px;
+ border-radius:24px;
+ border:2px solid rgba(255, 0, 0, 0.4);
  background:
-  radial-gradient(ellipse at 100% 0%,#ff18380b,transparent 50%),
-  linear-gradient(145deg,#250711ed,#0d0509f5);
+  radial-gradient(ellipse at 100% 0%,rgba(255, 0, 0, 0.12),transparent 50%),
+  linear-gradient(145deg,rgba(20, 2, 6, 0.98),rgba(5, 0, 1, 0.99));
  box-shadow:
-  0 15px 45px #00000050,
-  inset 0 1px 0 #ffffff08;
+  0 20px 50px rgba(0,0,0,0.7),
+  inset 0 1px 0 rgba(255,255,255,0.08);
  backdrop-filter:blur(15px);
  opacity:0;
  transform:translateY(30px) scale(.985);
@@ -467,72 +700,42 @@ a {
 }
 
 .animated-card:hover {
- border-color:#ff5369a3;
+ border-color:#FF0000;
  box-shadow:
-  0 18px 55px #ff183817,
-  0 15px 45px #00000055;
-}
-
-.animated-card::before {
- content:"";
- position:absolute;
- top:0;
- left:8%;
- width:35%;
- height:1px;
- background:linear-gradient(90deg,transparent,#ff5369,transparent);
-}
-
-.animated-card::after {
- content:"";
- position:absolute;
- right:-45px;
- top:-55px;
- width:130px;
- height:130px;
- border-radius:50%;
- background:#ff18380b;
- filter:blur(5px);
- pointer-events:none;
- transition:background .3s,transform .4s;
-}
-
-.animated-card:hover::after {
- background:#ff18381b;
- transform:scale(1.3);
+  0 22px 60px rgba(255, 0, 0, 0.35),
+  0 15px 45px rgba(0,0,0,0.8);
 }
 
 .card-title {
  display:flex;
  align-items:center;
- gap:12px;
- margin-bottom:15px;
- font-size:19px;
- font-weight:800;
+ gap:14px;
+ margin-bottom:16px;
+ font-size:20px;
+ font-weight:900;
  line-height:1.4;
- letter-spacing:-.3px;
+ color:#ffffff;
 }
 
 .card-title .icon {
  display:grid;
  place-items:center;
- width:43px;
- height:43px;
+ width:46px;
+ height:46px;
  flex-shrink:0;
  border-radius:14px;
- border:1px solid #ff18384f;
- background:linear-gradient(145deg,#ff18382b,#ff183808);
- font-size:20px;
- box-shadow:0 0 18px #ff18380b;
- animation:iconFloat 4s ease-in-out infinite;
+ border:2px solid rgba(255, 0, 0, 0.6);
+ background:linear-gradient(145deg,rgba(255, 0, 0, 0.3),rgba(255, 0, 0, 0.08));
+ font-size:22px;
+ box-shadow:0 0 20px rgba(255, 0, 0, 0.3);
 }
 
 .card-text {
  color:var(--muted);
- font-size:13px;
- line-height:1.95;
- font-weight:500;
- margin-bottom:19px;
+ font-size:14px;
+ line-height:2;
+ font-weight:600;
+ margin-bottom:20px;
 }
 
 /* =========================
@@ -541,21 +744,20 @@ a {
 
 .photo-frame {
  position:relative;
- height:340px;
- margin-top:18px;
+ height:350px;
+ margin-top:20px;
  overflow:hidden;
- border:1px solid #ff18385c;
- border-radius:17px;
- background:#14040a;
- box-shadow:0 10px 30px #00000055;
+ border:2px solid rgba(255, 0, 0, 0.5);
+ border-radius:18px;
+ background:#120003;
+ box-shadow:0 12px 35px rgba(0,0,0,0.7);
  cursor:pointer;
- isolation:isolate;
  transition:border-color .3s,box-shadow .3s,transform .3s;
 }
 
 .photo-frame:hover {
- border-color:var(--red-light);
- box-shadow:0 0 32px #ff183832;
+ border-color:#FF0000;
+ box-shadow:0 0 40px rgba(255, 0, 0, 0.5);
  transform:translateY(-2px);
 }
 
@@ -569,25 +771,7 @@ a {
 
 .photo-frame:hover img {
  transform:scale(1.055);
- filter:saturate(1.15);
-}
-
-.photo-frame::before {
- content:"";
- position:absolute;
- inset:0;
- z-index:1;
- pointer-events:none;
- background:linear-gradient(135deg,#ff18380c,transparent 40%,#08020430);
-}
-
-.photo-frame::after {
- content:"";
- position:absolute;
- inset:55% 0 0;
- z-index:1;
- pointer-events:none;
- background:linear-gradient(transparent,#08020455);
+ filter:saturate(1.2);
 }
 
 /* =========================
@@ -596,87 +780,74 @@ a {
 
 .promo-card {
  position:relative;
- padding:25px 18px;
- margin:20px 0;
+ padding:28px 20px;
+ margin:22px 0;
  text-align:center;
- border:1px dashed var(--red);
- border-radius:19px;
+ border:2px dashed #FF0000;
+ border-radius:20px;
  background:
-  radial-gradient(ellipse at top,#ff183826,transparent 75%),
-  #0d0509;
- box-shadow:inset 0 0 30px #ff183807;
- animation:borderGlow 4s ease-in-out infinite;
+  radial-gradient(ellipse at top,rgba(255, 0, 0, 0.2),transparent 75%),
+  #080002;
+ box-shadow:inset 0 0 35px rgba(255, 0, 0, 0.1);
 }
 
 .promo-caption {
- font-size:11px;
- color:#f1dce1;
- font-weight:800;
+ font-size:12px;
+ color:#ffccd5;
+ font-weight:900;
  letter-spacing:1px;
 }
 
 .promo-code-btn {
  position:relative;
  display:inline-block;
- margin:18px 0 12px;
- padding:12px 30px;
- border:1px solid #ffb1bc55;
- border-radius:12px;
- background:linear-gradient(135deg,#ff5369,#cf001f 60%,#850016);
+ margin:20px 0 14px;
+ padding:14px 34px;
+ border:2px solid rgba(255, 255, 255, 0.6);
+ border-radius:14px;
+ background:linear-gradient(135deg,#FF0000,#990000);
  color:white;
  font-family:Inter,Arial,sans-serif;
- font-size:28px;
+ font-size:30px;
  font-weight:900;
  cursor:pointer;
- box-shadow:0 0 30px #ff183847;
+ box-shadow:0 0 35px rgba(255, 0, 0, 0.7);
  transition:transform .25s,box-shadow .25s,filter .25s;
  user-select:none;
 }
 
 .promo-code-btn:hover {
  transform:translateY(-3px) scale(1.025);
- box-shadow:0 0 42px #ff183877;
- filter:brightness(1.1);
+ box-shadow:0 0 50px rgba(255, 0, 0, 1);
+ filter:brightness(1.15);
 }
 
-.promo-code-btn:active {
- transform:scale(.95);
-}
+.promo-code-btn:active { transform:scale(.95); }
 
-.promo-hint {
- color:#a9959c;
- font-size:10px;
-}
+.promo-hint { color:var(--muted); font-size:11px; }
 
 .bonus-list {
  display:grid;
  gap:10px;
- margin:20px auto 0;
+ margin:22px auto 0;
  width:fit-content;
  list-style:none;
  text-align:left;
 }
 
-.bonus-list li {
- color:#fff;
- font-size:13px;
- font-weight:700;
-}
-
-.bonus-list li span {
- color:var(--red-light);
-}
+.bonus-list li { color:#fff; font-size:14px; font-weight:800; }
+.bonus-list li span { color:#FF3333; }
 
 /* =========================
-   КНОПКИ
+   УВЕЛИЧЕННЫЕ БЕЛЫЕ КНОПКИ ДЕЙСТВИЙ
 ========================= */
 
 .btn-group {
  display:flex;
  flex-direction:column;
  align-items:center;
- gap:13px;
- margin-top:25px;
+ gap:15px;
+ margin-top:28px;
 }
 
 .btn-red {
@@ -684,136 +855,126 @@ a {
  display:flex;
  align-items:center;
  justify-content:center;
- gap:10px;
+ gap:12px;
  width:100%;
- max-width:420px;
- min-height:57px;
- padding:17px 20px;
+ max-width:440px;
+ min-height:62px;
+ padding:18px 24px;
  overflow:hidden;
- border:1px solid #ffb3bf38;
- border-radius:15px;
- background:linear-gradient(110deg,#ff2948,#bc001f 70%,#820017);
- box-shadow:0 8px 28px #ff18382b;
- color:white;
+ border:2px solid #ffffff;
+ border-radius:16px;
+ background:#ffffff;
+ color:#050001;
+ box-shadow:0 10px 30px rgba(255, 255, 255, 0.25);
  text-decoration:none;
  text-align:center;
- font-size:12px;
- font-weight:800;
+ font-size:14px;
+ font-weight:900;
  letter-spacing:.5px;
  cursor:pointer;
- transition:transform .25s,box-shadow .25s,filter .25s;
-}
-
-.btn-red::before {
- content:"";
- position:absolute;
- top:0;
- left:-120%;
- width:70%;
- height:100%;
- transform:skewX(-25deg);
- background:linear-gradient(90deg,transparent,#ffffff25,transparent);
-}
-
-.btn-red:hover::before {
- animation:shine .75s ease;
+ transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s;
 }
 
 .btn-red:hover {
  transform:translateY(-3px);
- box-shadow:0 12px 35px #ff18384a;
- filter:brightness(1.12);
+ background:#FF0000;
+ border-color:#FF0000;
+ color:#ffffff;
+ box-shadow:0 15px 45px rgba(255, 0, 0, 0.8);
 }
 
-.btn-red:active {
- transform:scale(.98);
-}
+.btn-red:active { transform:scale(.98); }
 
 .btn-telegram {
- border-color:#48baff50;
- background:linear-gradient(110deg,#168bd4,#07528f);
- box-shadow:0 8px 28px #168bd425;
+ border-color:#0ea5e9;
+ background:#0ea5e9;
+ color:white;
+ box-shadow:0 10px 30px rgba(14, 165, 233, 0.4);
+}
+.btn-telegram:hover {
+ background:#0284c7;
+ border-color:#0284c7;
+ color:white;
+ box-shadow:0 15px 45px rgba(14, 165, 233, 0.8);
 }
 
-.btn-support {
- background:linear-gradient(110deg,#ff5369,#9d001b);
+.btn-support { 
+ border-color:#FF0000;
+ background:#FF0000;
+ color:white;
+ box-shadow:0 10px 30px rgba(255, 0, 0, 0.4);
+}
+.btn-support:hover {
+ background:#990000;
+ border-color:#990000;
+ color:white;
 }
 
 .btn-secondary {
- background:linear-gradient(110deg,#292027,#171015);
- border-color:#ffffff19;
+ background:rgba(255, 255, 255, 0.08);
+ color:var(--white);
+ border-color:rgba(255, 255, 255, 0.3);
  box-shadow:none;
 }
-
-.btn-icon {
- font-size:19px;
- transition:transform .25s;
+.btn-secondary:hover {
+ background:rgba(255, 255, 255, 0.2);
+ border-color:white;
+ color:white;
 }
 
-.btn-red:hover .btn-icon {
- transform:scale(1.15) rotate(-5deg);
-}
+.btn-icon { font-size:20px; transition:transform .25s; }
+.btn-red:hover .btn-icon { transform:scale(1.15) rotate(-5deg); }
 
 /* =========================
-   ФИНАЛЬНАЯ КАРТОЧКА
+   ФИНАЛЬНАЯ КАРТОЧКА И FOOTER
 ========================= */
 
 .final-card {
  text-align:center;
  background:
-  radial-gradient(ellipse at top,#ff183822,transparent 70%),
-  linear-gradient(150deg,#280711,#0b0508);
+  radial-gradient(ellipse at top,rgba(255, 0, 0, 0.2),transparent 70%),
+  linear-gradient(150deg,#1f0105,#050001);
 }
 
-.final-title {
- justify-content:center;
- font-size:25px;
- color:var(--red-light);
- letter-spacing:1px;
-}
-
-.final-description {
- max-width:550px;
- margin:0 auto;
-}
+.final-title { justify-content:center; font-size:26px; color:#FF3333; letter-spacing:1px; }
+.final-description { max-width:550px; margin:0 auto; }
 
 .footer {
  position:relative;
  z-index:2;
- padding:20px 15px 35px;
+ padding:30px 15px 45px;
  text-align:center;
- color:#8b747c;
- font-size:10px;
- line-height:2;
+ color:var(--muted);
+ font-size:12px;
+ line-height:2.4;
 }
 
 .footer-brand {
- color:#ff8c9b;
+ color:#FF3333;
  font-weight:900;
  letter-spacing:3px;
- margin-bottom:5px;
- text-shadow:0 0 18px #ff18383b;
+ margin-bottom:6px;
+ text-shadow:0 0 20px rgba(255, 0, 0, 0.7);
 }
 
 .admin-secret-trigger {
  position:relative;
  z-index:10;
- width:9px;
- height:9px;
- margin:30px auto 0;
+ width:10px;
+ height:10px;
+ margin:35px auto 0;
  border-radius:50%;
- background:#ffffff0c;
+ background:rgba(255,255,255,0.1);
  cursor:pointer;
 }
 
 .admin-secret-trigger:hover {
- background:var(--red);
- box-shadow:0 0 12px var(--red);
+ background:#FF0000;
+ box-shadow:0 0 15px #FF0000;
 }
 
 /* =========================
    МОДАЛЬНЫЕ ОКНА
-   АДМИН-ПАНЕЛЬ СОХРАНЕНА
 ========================= */
 
 .modal-overlay {
@@ -824,7 +985,7 @@ a {
  align-items:center;
  justify-content:center;
  padding:18px;
- background:#000000d9;
+ background:rgba(0,0,0,0.88);
  backdrop-filter:blur(15px);
  opacity:0;
  visibility:hidden;
@@ -832,267 +993,164 @@ a {
  transition:opacity .25s,visibility .25s;
 }
 
-.modal-overlay.active {
- opacity:1;
- visibility:visible;
- pointer-events:auto;
-}
+.modal-overlay.active { opacity:1; visibility:visible; pointer-events:auto; }
 
 .admin-box {
  width:100%;
- max-width:440px;
+ max-width:480px;
  max-height:88vh;
  overflow-y:auto;
- padding:25px;
- border:1px solid #ff18386c;
- border-radius:22px;
- background:linear-gradient(145deg,#280711,#0b0508);
- box-shadow:0 0 60px #ff18381c;
+ padding:28px;
+ border:2px solid rgba(255, 0, 0, 0.6);
+ border-radius:24px;
+ background:linear-gradient(145deg,#1f0105,#050001);
+ box-shadow:0 0 70px rgba(255, 0, 0, 0.3);
 }
 
 .admin-heading {
- margin-bottom:20px;
- color:var(--red-light);
- font-size:17px;
+ margin-bottom:22px;
+ color:#FF3333;
+ font-size:18px;
  font-weight:900;
  text-align:center;
+ text-shadow:0 0 10px rgba(255,0,0,0.5);
 }
 
 .admin-input {
  width:100%;
- min-height:45px;
- padding:12px;
- margin-bottom:13px;
+ min-height:48px;
+ padding:14px;
+ margin-bottom:14px;
  outline:none;
- border:1px solid #ff183842;
- border-radius:11px;
- background:#ffffff08;
+ border:2px solid rgba(255, 0, 0, 0.4);
+ border-radius:12px;
+ background:rgba(255,255,255,0.05);
  color:white;
- font-size:13px;
+ font-size:14px;
 }
 
-.admin-input:focus {
- border-color:var(--red);
-}
-
-.admin-input::placeholder {
- color:#9b858d;
-}
+.admin-input:focus { border-color:#FF0000; box-shadow:0 0 15px rgba(255,0,0,0.4); }
+.admin-input::placeholder { color:var(--muted); }
 
 .admin-setting-item {
- padding:15px;
- margin-bottom:13px;
- border:1px solid #ffffff12;
- border-radius:13px;
- background:#ffffff05;
+ padding:16px;
+ margin-bottom:14px;
+ border:1px solid rgba(255,255,255,0.1);
+ border-radius:14px;
+ background:rgba(255,255,255,0.03);
 }
 
 .admin-setting-item label {
  display:block;
  margin-bottom:10px;
- color:#e8dce0;
- font-size:12px;
- font-weight:700;
+ color:#ffffff;
+ font-size:13px;
+ font-weight:800;
 }
 
-.admin-setting-item input[type=range] {
- width:100%;
- accent-color:var(--red);
-}
+.admin-setting-item input[type=range] { width:100%; accent-color:#FF0000; }
+.admin-setting-item input[type=file] { font-size:12px; color:var(--muted); }
 
-.admin-setting-item input[type=file] {
- font-size:11px;
-}
+#height-val { margin-top:8px; text-align:right; color:var(--muted); font-size:12px; }
 
-#height-val {
- margin-top:8px;
- text-align:right;
- color:#bcaab1;
- font-size:11px;
-}
-
-/* =========================
-   HALLOWEEN УВЕДОМЛЕНИЕ
-========================= */
-
-.halloween-toast {
- position:fixed;
- z-index:110000;
- right:20px;
- bottom:20px;
- width:min(390px,calc(100vw - 28px));
- padding:20px 48px 20px 20px;
- border:1px solid #ff5369a6;
- border-radius:18px;
- background:linear-gradient(135deg,#300711f5,#100408f8);
- box-shadow:0 15px 55px #0009,0 0 28px #ff183826;
- backdrop-filter:blur(18px);
- opacity:0;
- transform:translateY(25px) scale(.97);
- visibility:hidden;
- transition:opacity .4s,transform .4s,visibility .4s;
-}
-
-.halloween-toast.show {
- opacity:1;
- transform:translateY(0) scale(1);
- visibility:visible;
-}
-
-.toast-title {
- font-size:14px;
- font-weight:900;
- color:#ff7183;
- margin-bottom:7px;
-}
-
-.toast-text {
- font-size:12px;
- line-height:1.7;
- color:#e4d2d9;
-}
-
-.toast-close {
- position:absolute;
- right:12px;
- top:10px;
- width:29px;
- height:29px;
- border:1px solid #ffffff1c;
- border-radius:9px;
- background:#ffffff09;
- color:#fff;
- font-size:18px;
- cursor:pointer;
-}
-
-.toast-spark {
- position:absolute;
- right:17px;
- bottom:10px;
- font-size:22px;
- opacity:.75;
+@media(max-width:850px) {
+ .top-buttons { display:none; }
+ .mobile-menu-btn { display:grid; }
 }
 
 @media(max-width:600px) {
- .wrapper {
-  padding:22px 14px 45px;
- }
-
- .hero-title {
-  font-size:clamp(27px,8vw,39px);
-  letter-spacing:-.8px;
- }
-
- .hero-title .title-small {
-  letter-spacing:3px;
- }
-
- .hero-description {
-  font-size:13px;
- }
-
- .animated-card {
-  padding:19px;
-  border-radius:19px;
- }
-
- .card-title {
-  font-size:16px;
- }
-
- .card-title .icon {
-  width:39px;
-  height:39px;
- }
-
- .card-text {
-  font-size:12px;
- }
-
- .photo-frame {
-  height:230px;
-  border-radius:13px;
- }
-
- .promo-code-btn {
-  font-size:26px;
-  padding:12px 25px;
- }
-
- .btn-red {
-  min-height:54px;
-  padding:15px;
-  font-size:11px;
- }
-
- .green-badge-text {
-  font-size:9px;
-  letter-spacing:.7px;
- }
-
- .halloween-toast {
-  right:14px;
-  bottom:14px;
- }
-}
-
-@media(prefers-reduced-motion:reduce) {
- *,
- *::before,
- *::after {
-  animation-duration:.01ms!important;
-  animation-iteration-count:1!important;
-  scroll-behavior:auto!important;
-  transition-duration:.01ms!important;
- }
+ .wrapper { padding:24px 14px 50px; }
+ .hero-title { font-size:clamp(28px,8vw,42px); letter-spacing:-.8px; }
+ .hero-title .title-small { letter-spacing:3px; }
+ .hero-description { font-size:13.5px; }
+ .animated-card { padding:20px; border-radius:20px; }
+ .card-title { font-size:17px; }
+ .card-title .icon { width:40px; height:40px; }
+ .card-text { font-size:13px; }
+ .photo-frame { height:240px; border-radius:14px; }
+ .promo-code-btn { font-size:26px; padding:12px 25px; }
+ .btn-red { min-height:56px; padding:16px; font-size:13px; }
+ .green-badge-text { font-size:10px; letter-spacing:.7px; }
 }
 </style>
 </head>
 
 <body>
 
+<!-- ФОНАРЬ И ЗВЕЗДНЫЕ ХОЛСТЫ -->
+<div class="lantern-spotlight" id="lantern-glow"></div>
 <canvas id="bg-canvas"></canvas>
+<canvas id="lantern-canvas"></canvas>
 <div class="noise"></div>
 
-<div class="halloween-decor" aria-hidden="true">
- <span class="floating-pumpkin pumpkin-a">🎃</span>
- <span class="floating-pumpkin pumpkin-b">🎃</span>
- <span class="floating-pumpkin pumpkin-c">🎃</span>
- <span class="floating-pumpkin pumpkin-d">🕯️</span>
- <span class="bat bat-a">🦇</span>
- <span class="bat bat-b">🦇</span>
-</div>
+<!-- ВЕРХНЯЯ ПАНЕЛЬ И НАВИГАЦИЯ -->
+<header class="header-nav">
+ <div class="header-container">
+  <div class="logo-box" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+   <div class="logo-crown"><i class="fas fa-crown"></i></div>
+   <div class="logo-text"><span class="blood-text">KORE RUSSIA</span></div>
+  </div>
 
-<!-- ЭКРАН ЗАГРУЗКИ -->
+  <div class="top-buttons">
+   <button onclick="openModal('shop-modal')" class="nav-quick-btn">🛒 Магазин</button>
+   <button onclick="openModal('info-modal')" class="nav-quick-btn">ℹ️ Информация</button>
+   <button onclick="openModal('wheel-modal')" class="nav-quick-btn">🎁 Ежедневный приз</button>
+   <button onclick="openModal('manager-modal')" class="nav-quick-btn">👔 Менеджер проекта</button>
+   <button onclick="openModal('blogger-modal')" class="nav-quick-btn">🎬 Стать блогером</button>
+  </div>
 
+  <div style="display:flex; align-items:center; gap:10px;">
+   <button id="sound-btn" onclick="toggleSound()" class="sound-toggle-btn active">
+    <i id="sound-icon" class="fas fa-volume-up"></i>
+    <span id="sound-txt">Звук: Вкл</span>
+   </button>
+   
+   <button class="mobile-menu-btn" onclick="toggleDrawer()">
+    <i class="fas fa-bars"></i>
+   </button>
+  </div>
+ </div>
+</header>
+
+<!-- МОБИЛЬНОЕ ВЫДВИЖНОЕ МЕНЮ (8 ПУНКТОВ) -->
+<div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer()"></div>
+<aside class="mobile-drawer" id="mobile-drawer">
+ <div class="drawer-header">
+  <div style="display:flex; align-items:center; gap:10px;">
+   <i class="fas fa-crown" style="color:#FF0000"></i>
+   <strong style="font-size:16px;">KORE RUSSIA</strong>
+  </div>
+  <button onclick="toggleDrawer()"><i class="fas fa-times" style="font-size:20px; color:white;"></i></button>
+ </div>
+ <nav class="drawer-nav">
+  <button onclick="drawerAction('manager-modal')" class="drawer-item"><i class="fas fa-user-tie"></i> 1. Связаться с менеджером</button>
+  <button onclick="drawerAction('blogger-modal')" class="drawer-item"><i class="fas fa-question-circle"></i> 2. Кто такой блогер?</button>
+  <button onclick="drawerAction('blogger-modal')" class="drawer-item"><i class="fas fa-video"></i> 3. Как стать блогером?</button>
+  <button onclick="drawerAction('info-modal')" class="drawer-item"><i class="fas fa-info-circle"></i> 4. Информация проекта</button>
+  <button onclick="drawerAction('notif-modal', 'Уведомления', 'Официальные системные уведомления проекта и новости разработки.')" class="drawer-item"><i class="fas fa-bell"></i> 5. Уведомления</button>
+  <button onclick="drawerAction('msg-modal', 'Мои сообщения', 'У вас нет новых личных сообщений от администрации.')" class="drawer-item"><i class="fas fa-envelope"></i> 6. Мои сообщения</button>
+  <button onclick="drawerAction('profile-modal', 'Мой профиль', 'Информация об аккаунте, форумная статистика и привилегии.')" class="drawer-item"><i class="fas fa-user"></i> 7. Мой профиль</button>
+  <button onclick="drawerAction('settings-modal', 'Настройки аккаунта', 'Параметры безопасности, смена пароля и темы.')" class="drawer-item"><i class="fas fa-cog"></i> 8. Настройки аккаунта</button>
+ </nav>
+</aside>
+
+<!-- ЭКРАН ЗАГРУЗКИ (БУКВЫ FS ПО ЦЕНТРУ) -->
 <div id="loader-screen">
  <div class="loader-content">
   <div class="orb">
    <div class="orb-ring one"></div>
    <div class="orb-ring two"></div>
-   <div class="orb-ring three"></div>
-   <div class="orb-center">🎃</div>
+   <div class="orb-center">FS</div>
   </div>
-
   <div class="loader-title">KORE RUSSIA</div>
-
-  <div class="loader-subtitle" id="loader-status">
-   ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА...
-  </div>
-
-  <div class="loader-track">
-   <div class="loader-progress" id="loader-fill"></div>
-  </div>
-
+  <div class="loader-subtitle" id="loader-status">ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ...</div>
+  <div class="loader-track"><div class="loader-progress" id="loader-fill"></div></div>
   <div class="loader-percent" id="loader-num">0%</div>
  </div>
 </div>
 
 <!-- ОСНОВНОЙ САЙТ -->
-
 <main class="wrapper" id="main-content">
-
  <div class="top-line"></div>
 
  <div class="green-badge">
@@ -1102,554 +1160,515 @@ a {
 
  <header>
   <h1 class="hero-title">
-   KORE RUSSIA
+   <span class="blood-text">KORE RUSSIA</span>
    <span class="title-small">ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ</span>
   </h1>
-
   <p class="hero-description">
-   Добро пожаловать в KORE RUSSIA — мир, в котором ты сам решаешь,
-   кем стать и какой путь выбрать. Исследуй города, развивай персонажа,
-   знакомься с игроками и создавай собственную историю.
-   Готов выйти за горизонт?
+   Добро пожаловать в KORE RUSSIA — мир, в котором ты сам решаешь, кем стать и какой путь выбрать. Исследуй города, развивай персонажа, знакомься с игроками и создавай собственную историю.
   </p>
  </header>
 
- <div class="section-label">
-  🎃 ВОЗМОЖНОСТИ ПРОЕКТА 🎃
- </div>
+ <div class="section-label">✦ ВОЗМОЖНОСТИ ПРОЕКТА ✦</div>
 
  <!-- КАРТОЧКА 1 -->
-
  <section class="animated-card">
-
   <h2 class="card-title">
    <span class="icon">🚘</span>
    Огромный открытый мир
   </h2>
-
   <p class="card-text">
-   Исследуй города, покупай автомобили, обзаводись недвижимостью,
-   зарабатывай деньги и развивай своего персонажа.
-   Начни с нуля, достигай новых высот и докажи, что именно ты
-   способен стать настоящей легендой KORE RUSSIA.
+   Исследуй города, покупай автомобили, обзаводись недвижимостью, зарабатывай деньги и развивай своего персонажа. Начни с нуля, достигай новых высот и докажи, что именно ты способен стать настоящей легендой KORE RUSSIA.
   </p>
-
   <div class="photo-frame">
-   <img
-    id="img-1"
-    src="./images/photo1.jpg"
-    alt="Игровой мир KORE RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
+   <img id="img-1" src="./images/photo1.jpg" alt="Игровой мир KORE RUSSIA" loading="lazy">
   </div>
-
  </section>
 
  <!-- КАРТОЧКА 2 -->
-
  <section class="animated-card">
-
   <h2 class="card-title">
    <span class="icon">⚖️</span>
    Выбирай собственный путь
   </h2>
-
   <p class="card-text">
-   Служи закону, вступай в государственные организации, развивайся
-   по карьерной лестнице или выбирай совершенно другой путь.
-   Создавай свою команду, находи союзников и участвуй в событиях
-   игрового мира. Здесь каждый выбор может изменить твою историю.
+   Служи закону, вступай в государственные организации, развивайся по карьерной лестнице или выбирай совершенно другой путь. Создавай свою команду, находи союзников и участвуй в событиях игрового мира.
   </p>
-
   <div class="photo-frame">
-   <img
-    id="img-2"
-    src="./images/photo2.png"
-    alt="Организации и фракции KORE RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
+   <img id="img-2" src="./images/photo2.png" alt="Организации и фракции KORE RUSSIA" loading="lazy">
   </div>
-
  </section>
 
- <!-- КАРТОЧКА 3 -->
-
+ <!-- КАРТОЧКА 3 (ПРОМОКОД) -->
  <section class="animated-card">
-
   <h2 class="card-title">
    <span class="icon">🎁</span>
    Бонус для новичков
   </h2>
-
   <p class="card-text">
-   Начинать всегда приятнее с небольшим преимуществом.
-   Используй наш эксклюзивный промокод и забирай стартовые бонусы!
+   Начинать всегда приятнее с преимуществом. Используй эксклюзивный промокод и забирай стартовые бонусы!
   </p>
-
   <div class="promo-card">
-
-   <div class="promo-caption">
-    🎃 ЭКСКЛЮЗИВНЫЙ ПРОМОКОД ПРОЕКТА 🎃
-   </div>
-
-   <div
-    class="promo-code-btn"
-    id="promo-btn"
-    role="button"
-    tabindex="0"
-    onclick="copyPromo()"
-    onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();copyPromo();}"
-   >#Фарка</div>
-
-   <div class="promo-hint" id="promo-hint">
-    Нажми на промокод, чтобы скопировать
-   </div>
-
+   <div class="promo-caption">✦ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД ПРОЕКТА ✦</div>
+   <div class="promo-code-btn" id="promo-btn" role="button" tabindex="0" onclick="copyPromo()">#Фарка</div>
+   <div class="promo-hint" id="promo-hint">Нажми на промокод, чтобы скопировать</div>
    <ul class="bonus-list">
     <li>💎 <span>+1 000 BC</span></li>
     <li>💵 <span>+20 000 000</span> игровой валюты</li>
    </ul>
-
   </div>
-
   <div class="photo-frame">
-   <img
-    id="img-3"
-    src="./images/photo3.jpg"
-    alt="Бонусы и наборы KORE RUSSIA"
-    loading="lazy"
-    decoding="async"
-   >
+   <img id="img-3" src="./images/photo3.jpg" alt="Бонусы и наборы KORE RUSSIA" loading="lazy">
   </div>
-
  </section>
+
+ <!-- ОФИЦИАЛЬНЫЙ ПОСТ АДМИНИСТРАЦИИ -->
+ <div class="section-label">📢 ОФИЦИАЛЬНОЕ ОБЪЯВЛЕНИЕ 📢</div>
+ <div class="official-post animated-card">
+  <div class="post-user-header">
+   <div class="post-user-info">
+    <img src="https://placehold.co/120x120/120003/FF0000?text=KR" alt="Avatar" class="post-avatar">
+    <div>
+     <div style="font-weight:900; font-size:16px; color:white;">KORE RUSSIA | INFO <i class="fas fa-check-circle" style="color:#FF0000; font-size:12px;"></i></div>
+     <div style="font-size:11px; color:var(--muted);">Публикация ключевых новостей и регламентов проекта</div>
+     <div class="post-badges">
+      <span class="badge-project-team">Команда проекта</span>
+      <span class="badge-forum-team">Команда форума</span>
+      <span class="badge-developer">Разработчик сайта</span>
+     </div>
+    </div>
+   </div>
+   <div style="font-size:11px; color:var(--muted);">#1</div>
+  </div>
+  <div class="post-content">
+   <p style="margin-bottom:12px; font-weight:700; color:white;">Приветствую всех участников сообщества KORE RUSSIA!</p>
+   <p style="margin-bottom:12px;">Мы разрабатываем собственный CRMP Mobile-проект, в котором каждый сможет построить карьеру, добиться успеха, найти новых друзей и стать частью большого игрового мира.</p>
+   <div style="background:rgba(255,0,0,0.12); border-left:4px solid #FF0000; padding:12px; border-radius:8px; margin:14px 0;">
+    <strong style="color:white;">🎁 БОНУС ПРИ СТАРТЕ:</strong><br>
+    💰 100.000.000$<br>
+    💎 2.500 BC
+   </div>
+   <p>Ссылка на официальный Telegram-канал проекта: <br><a href="https://t.me/KoreCrmp" target="_blank" style="color:#FF3333; font-weight:800; text-decoration:underline;">https://t.me/KoreCrmp</a></p>
+  </div>
+  <div class="post-footer">
+   <div>👍 ❤️ 🔥 Stepan_Ruiz, Farich_Farichov и 455 других</div>
+   <button onclick="playSound('click')" style="color:#FF3333; font-weight:800;"><i class="far fa-thumbs-up"></i> Like</button>
+  </div>
+ </div>
 
  <!-- ФИНАЛЬНАЯ КАРТОЧКА -->
-
- <section class="animated-card final-card">
-
-  <h2 class="card-title final-title">
-   🎃 KORE RUSSIA 🎃
-  </h2>
-
+ <section class="animated-card final-card" style="margin-top:30px;">
+  <h2 class="card-title final-title"><span class="blood-text">KORE RUSSIA</span></h2>
   <p class="card-text final-description">
-   Твой мир. Твои решения. Твоя история.
-   Присоединяйся к проекту, знакомься с игроками и начинай
-   собственное приключение. Встретимся за горизонтом!
+   Твой мир. Твои решения. Твоя история. Присоединяйся к проекту, знакомься с игроками и начинай собственное приключение.
   </p>
-
   <div class="btn-group">
-
-   <a
-    href="https://t.me/FarichovskiyHub/45"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red"
-   >
-    <span class="btn-icon">📦</span>
-    <span>СКАЧАТЬ ИГРУ (APK)</span>
+   <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="btn-red">
+    <span class="btn-icon">📦</span><span>СКАЧАТЬ ИГРУ (APK)</span>
    </a>
-
-   <a
-    href="https://t.me/KoreCrmp"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red btn-telegram"
-   >
-    <span class="btn-icon">✈️</span>
-    <span>НАШ TELEGRAM-КАНАЛ</span>
+   <a href="https://t.me/KoreCrmp" target="_blank" rel="noopener noreferrer" class="btn-red btn-telegram">
+    <span class="btn-icon">✈️</span><span>НАШ TELEGRAM-КАНАЛ</span>
    </a>
-
-   <a
-    href="https://t.me/urtung"
-    target="_blank"
-    rel="noopener noreferrer"
-    class="btn-red btn-support"
-   >
-    <span class="btn-icon">🛠️</span>
-    <span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
+   <a href="https://t.me/urtung" target="_blank" rel="noopener noreferrer" class="btn-red btn-support">
+    <span class="btn-icon">🛠️</span><span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
    </a>
-
   </div>
-
  </section>
 
- <!-- СКРЫТЫЙ ВХОД В АДМИН-ПАНЕЛЬ -->
-
- <div
-  class="admin-secret-trigger"
-  onclick="openAdminAuth()"
-  title="Admin"
-  aria-label="Открыть вход в панель управления"
- ></div>
-
+ <div class="admin-secret-trigger" onclick="openAdminAuth()" title="Admin"></div>
 </main>
 
 <footer class="footer">
-
- <div class="footer-brand">KORE RUSSIA</div>
-
+ <div class="footer-brand"><span class="blood-text">KORE RUSSIA</span></div>
  <div>Играй. Развивайся. Создавай свою историю.</div>
-
- <div>🎃 HALLOWEEN EDITION 🎃</div>
-
- <div style="margin-top:8px;opacity:.6">
-  © KORE RUSSIA
+ <div style="margin-top:8px; opacity:.9; font-weight:700; color:var(--white);">
+  Купить дизайн такого же сайта можно тут: <a href="https://t.me/urtung" target="_blank" style="color:#FF3333; text-decoration:underline;">@urtung</a>
  </div>
-
+ <div style="margin-top:6px; color:#FF3333; font-weight:900; letter-spacing:1px;">B.y Farich</div>
+ <div style="margin-top:6px; opacity:.6">© KORE RUSSIA</div>
 </footer>
 
-<!-- HALLOWEEN УВЕДОМЛЕНИЕ -->
-
-<div
- class="halloween-toast"
- id="halloween-toast"
- role="status"
- aria-live="polite"
->
- <button
-  class="toast-close"
-  type="button"
-  onclick="closeHalloweenToast()"
-  aria-label="Закрыть"
- >×</button>
-
- <div class="toast-title">
-  🎃 ТЫ ПОПАЛ В KORE HALLOWEEN!
+<!-- МОДАЛЬНОЕ ОКНО: ИНФОРМАЦИЯ ПРОЕКТА -->
+<div class="modal-overlay" id="info-modal">
+ <div class="admin-box" style="max-width:560px;">
+  <h2 class="admin-heading">🚀 KORE RUSSIA — НОВАЯ ГЛАВА В МИРЕ CRMP!</h2>
+  <p style="font-size:13.5px; line-height:1.9; color:var(--muted); margin-bottom:15px;">
+   👋 <strong>Добро пожаловать на официальный канал KORE RUSSIA!</strong><br><br>
+   🏙 Мы разрабатываем собственный CRMP Mobile-проект, в котором каждый сможет построить карьеру, добиться успеха, найти новых друзей и стать частью большого игрового мира.
+  </p>
+  <div style="background:rgba(255,0,0,0.1); padding:14px; border-radius:12px; margin-bottom:15px; font-size:12.5px;">
+   <strong style="color:#FF3333;">🔥 ЧТО ВАС ЖДЁТ?</strong><br>
+   🚘 Атмосфера настоящей CRMP-жизни.<br>
+   🏢 Большой игровой мир и множество возможностей.<br>
+   👤 Развитие персонажа и полноценная RP-жизнь.<br>
+   ⚙️ Уникальные механики и собственные разработки.
+  </div>
+  <div style="background:linear-gradient(135deg, #1f0105, #050001); border:2px solid #FF0000; padding:16px; border-radius:14px; text-align:center; margin-bottom:15px;">
+   <div style="font-size:13px; font-weight:900; color:#FF3333;">🎁 БОНУС ПРИ СТАРТЕ!</div>
+   <div style="font-size:19px; font-weight:900; color:white; margin-top:6px;">💰 100.000.000$ | 💎 2.500 BC</div>
+  </div>
+  <p style="font-size:11.5px; color:var(--muted); margin-bottom:16px;">
+   👥 <strong>НАБОР В КОМАНДУ!</strong> Мы находимся в поиске активных и ответственных людей, которые хотят присоединиться к нашей команде!
+  </p>
+  <a href="https://t.me/KoreCrmp" target="_blank" class="btn-red btn-telegram" style="width:100%; text-decoration:none; max-width:none;">📲 ТЕЛЕГРАМ-КАНАЛ ПРОЕКТА</a>
+  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
  </div>
+</div>
 
- <div class="toast-text">
-  За горизонтом начинается новая история.
-  Пусть эта хэллоуинская ночь принесёт удачу,
-  редкие находки и незабываемые приключения!
+<!-- МОДАЛЬНОЕ ОКНО: ЕЖЕДНЕВНЫЙ ПРИЗ -->
+<div class="modal-overlay" id="wheel-modal">
+ <div class="admin-box" style="text-align:center;">
+  <h2 class="admin-heading">🎁 ЕЖЕДНЕВНЫЙ ПРИЗ</h2>
+  <div style="font-size:50px; margin:20px 0; animation:pulse 1s infinite alternate;">🎁</div>
+  <button onclick="claimPrize()" class="btn-red" style="width:100%; max-width:none;">ЗАБРАТЬ ПРИЗ</button>
+  <div id="prize-result" style="margin-top:14px; font-size:14px; font-weight:900; color:var(--green);"></div>
+  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
  </div>
+</div>
 
- <span class="toast-spark">🦇</span>
+<!-- МОДАЛЬНОЕ ОКНО: МЕНЕДЖЕР ПРОЕКТА -->
+<div class="modal-overlay" id="manager-modal">
+ <div class="admin-box">
+  <h2 class="admin-heading">👔 МЕНЕДЖЕР ПРОЕКТА</h2>
+  <p style="font-size:13.5px; color:var(--muted); text-align:center; margin-bottom:16px;">
+   Свяжитесь с официальным менеджером проекта по вопросам сотрудничества, рекламы или вступления в команду.
+  </p>
+  <a href="https://t.me/urtung" target="_blank" class="btn-red btn-support" style="width:100%; max-width:none;">💬 НАПИСАТЬ МЕНЕДЖЕРУ</a>
+  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
+ </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО: СТАТЬ БЛОГЕРОМ -->
+<div class="modal-overlay" id="blogger-modal">
+ <div class="admin-box">
+  <h2 class="admin-heading">🎬 СТАТЬ БЛОГЕРОМ</h2>
+  <p style="font-size:12.5px; color:var(--muted); margin-bottom:16px;">
+   Снимаешь контент по CRMP Mobile? Заполни форму и получи медиа-права и регулярные бонусы!
+  </p>
+  <input type="text" placeholder="Ваш никнейм" class="admin-input">
+  <input type="text" placeholder="Ссылка на YouTube / TikTok / Telegram" class="admin-input">
+  <button onclick="playSound('win'); alert('Заявка успешно отправлена!'); closeModals();" class="btn-red" style="width:100%; max-width:none;">ОТПРАВИТЬ ЗАЯВКУ</button>
+  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
+ </div>
+</div>
+
+<!-- МОДАЛЬНОЕ ОКНО: МАГАЗИН -->
+<div class="modal-overlay" id="shop-modal">
+ <div class="admin-box">
+  <h2 class="admin-heading">🛒 МАГАЗИН ПРОЕКТА</h2>
+  <div style="display:grid; gap:12px; margin-bottom:16px;">
+   <div style="padding:12px; background:rgba(255,255,255,0.04); border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,0,0,0.2);">
+    <span>VIP Статус (30 дн)</span> <strong style="color:#FF3333;">490 ₽</strong>
+   </div>
+   <div style="padding:12px; background:rgba(255,255,255,0.04); border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,0,0,0.2);">
+    <span>5.000 Black Coin</span> <strong style="color:#FF3333;">990 ₽</strong>
+   </div>
+  </div>
+  <button class="btn-red btn-secondary" style="width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
+ </div>
+</div>
+
+<!-- ДЕФОЛТНЫЙ ИНФО-МОДАЛ (ДЛЯ МЕНЮ) -->
+<div class="modal-overlay" id="generic-modal">
+ <div class="admin-box">
+  <h2 class="admin-heading" id="generic-title">УВЕДОМЛЕНИЕ</h2>
+  <p style="font-size:13.5px; color:var(--muted); text-align:center; margin-bottom:16px;" id="generic-text">Раздел находится в разработке.</p>
+  <button class="btn-red btn-secondary" style="width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
+ </div>
 </div>
 
 <!-- АВТОРИЗАЦИЯ АДМИНИСТРАТОРА -->
-
 <div class="modal-overlay" id="admin-auth-modal">
-
  <div class="admin-box">
-
   <h2 class="admin-heading">🔐 ПАНЕЛЬ УПРАВЛЕНИЯ</h2>
-
-  <input
-   type="text"
-   id="admin-login"
-   class="admin-input"
-   placeholder="Логин"
-   autocomplete="username"
-  >
-
-  <input
-   type="password"
-   id="admin-pass"
-   class="admin-input"
-   placeholder="Пароль"
-   autocomplete="current-password"
-  >
-
-  <button
-   type="button"
-   class="btn-red"
-   onclick="checkAdminAuth()"
-  >ВОЙТИ</button>
-
-  <button
-   type="button"
-   class="btn-red btn-secondary"
-   style="margin-top:10px"
-   onclick="closeModals()"
-  >ОТМЕНА</button>
-
+  <input type="text" id="admin-login" class="admin-input" placeholder="Логин" autocomplete="username">
+  <input type="password" id="admin-pass" class="admin-input" placeholder="Пароль" autocomplete="current-password">
+  <button type="button" class="btn-red" style="width:100%; max-width:none;" onclick="checkAdminAuth()">ВОЙТИ</button>
+  <button type="button" class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ОТМЕНА</button>
  </div>
-
 </div>
 
-<!-- АДМИН-ПАНЕЛЬ -->
-
+<!-- АДМИН-ПАНЕЛЬ С SUPABASE СИНХРОНИЗАЦИЕЙ -->
 <div class="modal-overlay" id="admin-panel-modal">
-
  <div class="admin-box">
-
-  <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА</h2>
-
+  <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА (SUPABASE)</h2>
   <div class="admin-setting-item">
-
-   <label for="frame-height-slider">
-    📏 Высота всех фотографий
-   </label>
-
-   <input
-    type="range"
-    id="frame-height-slider"
-    min="150"
-    max="600"
-    value="340"
-   >
-
-   <div id="height-val">340px</div>
-
+   <label for="frame-height-slider">📏 Высота всех фотографий</label>
+   <input type="range" id="frame-height-slider" min="150" max="600" value="350">
+   <div id="height-val">350px</div>
   </div>
-
   <div class="admin-setting-item">
-
-   <label for="file-img-1">
-    🖼 Фото №1 — игровой мир
-   </label>
-
-   <input
-    type="file"
-    id="file-img-1"
-    accept="image/*,.gif"
-    class="admin-input"
-   >
-
+   <label for="file-img-1">🖼 Фото №1 — игровой мир (Supabase Storage)</label>
+   <input type="file" id="file-img-1" accept="image/*,.gif" class="admin-input">
   </div>
-
   <div class="admin-setting-item">
-
-   <label for="file-img-2">
-    🖼 Фото №2 — организации
-   </label>
-
-   <input
-    type="file"
-    id="file-img-2"
-    accept="image/*,.gif"
-    class="admin-input"
-   >
-
+   <label for="file-img-2">🖼 Фото №2 — организации (Supabase Storage)</label>
+   <input type="file" id="file-img-2" accept="image/*,.gif" class="admin-input">
   </div>
-
   <div class="admin-setting-item">
-
-   <label for="file-img-3">
-    🖼 Фото №3 — бонусы
-   </label>
-
-   <input
-    type="file"
-    id="file-img-3"
-    accept="image/*,.gif"
-    class="admin-input"
-   >
-
+   <label for="file-img-3">🖼 Фото №3 — бонусы (Supabase Storage)</label>
+   <input type="file" id="file-img-3" accept="image/*,.gif" class="admin-input">
   </div>
-
-  <button
-   type="button"
-   class="btn-red"
-   onclick="closeModals()"
-  >СОХРАНИТЬ И ЗАКРЫТЬ</button>
-
+  <div id="supabase-status" style="margin-bottom:12px; font-size:12px; text-align:center; color:var(--green);"></div>
+  <button type="button" class="btn-red" style="width:100%; max-width:none;" onclick="closeModals()">СОХРАНИТЬ И ЗАКРЫТЬ</button>
  </div>
-
 </div>
 
 <script>
 "use strict";
 
+/* =========================================
+   SUPABASE ИНТЕГРАЦИЯ ДЛЯ БАЗЫ И ФОТОГРАФИЙ
+   Замените URL и Anon Key на ваши данные Supabase
+========================================= */
+const SUPABASE_URL = 'https://YOUR_SUPABASE_PROJECT.supabase.co';
+const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+let supabaseClient = null;
+
+try {
+ if (window.supabase && SUPABASE_URL.includes('supabase.co')) {
+  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+ }
+} catch(e) {
+ console.warn("Supabase client init skipped/failed, using localStorage fallback.");
+}
+
 /* =========================
-   ФОНОВЫЕ ЧАСТИЦЫ
+   ЗВУКОВОЙ ДВИЖОК (WEB AUDIO API)
 ========================= */
+let soundEnabled = true;
+let audioCtx = null;
 
-const canvas = document.getElementById("bg-canvas");
-const ctx = canvas.getContext("2d");
+function getAudioContext() {
+ if (!audioCtx) {
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+ }
+ return audioCtx;
+}
 
-let particles = [];
-let canvasWidth = 0;
-let canvasHeight = 0;
-let animationFrameId = null;
+function toggleSound() {
+ soundEnabled = !soundEnabled;
+ const icon = document.getElementById("sound-icon");
+ const txt = document.getElementById("sound-txt");
+ const btn = document.getElementById("sound-btn");
+ 
+ if (soundEnabled) {
+  icon.className = "fas fa-volume-up";
+  txt.textContent = "Звук: Вкл";
+  btn.classList.add("active");
+  playSound("click");
+ } else {
+  icon.className = "fas fa-volume-mute";
+  txt.textContent = "Звук: Выкл";
+  btn.classList.remove("active");
+ }
+}
 
-function resizeCanvas() {
+function playSound(type) {
+ if (!soundEnabled) return;
+ try {
+  const ctx = getAudioContext();
+  if (ctx.state === 'suspended') ctx.resume();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  if (type === 'click') {
+   osc.type = 'sine';
+   osc.frequency.setValueAtTime(520, ctx.currentTime);
+   osc.frequency.exponentialRampToValueAtTime(740, ctx.currentTime + 0.04);
+   gain.gain.setValueAtTime(0.08, ctx.currentTime);
+   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
+   osc.start();
+   osc.stop(ctx.currentTime + 0.04);
+  } else if (type === 'win') {
+   osc.type = 'triangle';
+   osc.frequency.setValueAtTime(523.25, ctx.currentTime);
+   osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
+   osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
+   gain.gain.setValueAtTime(0.12, ctx.currentTime);
+   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
+   osc.start();
+   osc.stop(ctx.currentTime + 0.4);
+  }
+ } catch(e){}
+}
+
+/* =========================
+   ФОНАРЬ И МЕРЦАЮЩИЕ ЗВЕЗДЫ
+========================= */
+const bgCanvas = document.getElementById("bg-canvas");
+const bgCtx = bgCanvas.getContext("2d");
+const lanternCanvas = document.getElementById("lantern-canvas");
+const lanternCtx = lanternCanvas.getContext("2d");
+
+let stars = [];
+let canvasWidth = 0, canvasHeight = 0;
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 3;
+let targetX = mouseX, targetY = mouseY;
+
+function resizeCanvases() {
  const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
  canvasWidth = window.innerWidth;
  canvasHeight = window.innerHeight;
 
- canvas.width = canvasWidth * dpr;
- canvas.height = canvasHeight * dpr;
+ bgCanvas.width = canvasWidth * dpr;
+ bgCanvas.height = canvasHeight * dpr;
+ bgCanvas.style.width = canvasWidth + "px";
+ bgCanvas.style.height = canvasHeight + "px";
+ bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
- canvas.style.width = canvasWidth + "px";
- canvas.style.height = canvasHeight + "px";
+ lanternCanvas.width = canvasWidth;
+ lanternCanvas.height = canvasHeight;
 
- ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
- createParticles();
+ initStars();
 }
 
-class Particle {
- constructor() {
-  this.reset(true);
- }
+window.addEventListener("mousemove", (e) => {
+ targetX = e.clientX;
+ targetY = e.clientY;
+});
 
- reset(initial = false) {
+class Star {
+ constructor() { this.reset(); }
+ reset() {
   this.x = Math.random() * canvasWidth;
-
-  this.y = initial
-   ? Math.random() * canvasHeight
-   : canvasHeight + 10;
-
-  this.size = Math.random() * 2 + 0.5;
-  this.speed = Math.random() * 0.65 + 0.15;
-  this.alpha = Math.random() * 0.48 + 0.12;
-  this.drift = (Math.random() - 0.5) * 0.35;
-  this.red = Math.random() > 0.2;
+  this.y = Math.random() * canvasHeight;
+  this.size = Math.random() * 1.8 + 0.4;
+  this.alpha = Math.random();
+  this.alphaSpeed = (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1);
  }
-
  update() {
-  this.y -= this.speed;
-  this.x += this.drift;
-
-  if (this.y < -10) {
-   this.reset();
-  }
-
-  if (this.x < -10) {
-   this.x = canvasWidth + 10;
-  }
-
-  if (this.x > canvasWidth + 10) {
-   this.x = -10;
+  this.alpha += this.alphaSpeed;
+  if (this.alpha <= 0.05 || this.alpha >= 1) {
+   this.alphaSpeed = -this.alphaSpeed;
   }
  }
-
  draw() {
-  ctx.fillStyle = this.red
-   ? `rgba(255,24,56,${this.alpha})`
-   : `rgba(255,205,215,${this.alpha})`;
-
-  ctx.beginPath();
-  ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-  ctx.fill();
+  bgCtx.fillStyle = `rgba(255, 0, 0, ${this.alpha})`;
+  bgCtx.beginPath();
+  bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+  bgCtx.fill();
  }
 }
 
-function createParticles() {
- const count = window.innerWidth < 600 ? 26 : 55;
-
- particles = Array.from(
-  { length: count },
-  () => new Particle()
- );
+function initStars() {
+ const count = window.innerWidth < 600 ? 40 : 80;
+ stars = Array.from({ length: count }, () => new Star());
 }
 
-function animateCanvas() {
- ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-
- for (const particle of particles) {
-  particle.update();
-  particle.draw();
+function animateCanvases() {
+ bgCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+ for (const star of stars) {
+  star.update();
+  star.draw();
  }
 
- animationFrameId = requestAnimationFrame(animateCanvas);
+ lanternCtx.clearRect(0, 0, canvasWidth, canvasHeight);
+ mouseX += (targetX - mouseX) * 0.04;
+ mouseY += (targetY - mouseY) * 0.04;
+
+ const gradient = lanternCtx.createRadialGradient(mouseX, mouseY, 10, mouseX, mouseY, 380);
+ gradient.addColorStop(0, 'rgba(255, 0, 0, 0.22)');
+ gradient.addColorStop(0.5, 'rgba(153, 0, 0, 0.08)');
+ gradient.addColorStop(1, 'rgba(5, 0, 1, 0)');
+
+ lanternCtx.fillStyle = gradient;
+ lanternCtx.beginPath();
+ lanternCtx.arc(mouseX, mouseY, 380, 0, Math.PI * 2);
+ lanternCtx.fill();
+
+ requestAnimationFrame(animateCanvases);
 }
 
-resizeCanvas();
-animateCanvas();
-
-window.addEventListener("resize", resizeCanvas);
+resizeCanvases();
+animateCanvases();
+window.addEventListener("resize", resizeCanvases);
 
 /* =========================
-   ЗАСТАВКА ЗАГРУЗКИ
+   МОБИЛЬНОЕ МЕНЮ
 ========================= */
+function toggleDrawer() {
+ playSound("click");
+ document.getElementById("mobile-drawer").classList.toggle("active");
+ document.getElementById("drawer-backdrop").classList.toggle("active");
+}
 
+function drawerAction(modalId, title, text) {
+ toggleDrawer();
+ if (modalId === 'generic-modal') {
+  document.getElementById('generic-title').innerText = title;
+  document.getElementById('generic-text').innerText = text;
+ }
+ openModal(modalId);
+}
+
+/* =========================
+   МОДАЛЬНЫЕ ОКНА УПРАВЛЕНИЕ
+========================= */
+function openModal(id) {
+ playSound("click");
+ closeModals();
+ const el = document.getElementById(id);
+ if (el) el.classList.add("active");
+}
+
+function closeModals() {
+ document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("active"));
+}
+
+document.querySelectorAll(".modal-overlay").forEach(m => {
+ m.addEventListener("click", e => { if (e.target === m) closeModals(); });
+});
+
+function claimPrize() {
+ playSound("win");
+ document.getElementById("prize-result").innerHTML = "🎉 ВЫ ВЫИГРАЛИ:<br>💰 100.000.000$ + 💎 2.500 BC!";
+}
+
+/* =========================
+   ЭКРАН ЗАГРУЗКИ (FS)
+========================= */
 const loaderScreen = document.getElementById("loader-screen");
 const loaderFill = document.getElementById("loader-fill");
 const loaderNum = document.getElementById("loader-num");
 const loaderStatus = document.getElementById("loader-status");
 const mainContent = document.getElementById("main-content");
-
-const loaderDuration = 4200;
+const loaderDuration = 2800;
 const loaderStart = performance.now();
 
 const loaderMessages = [
- {
-  progress: 0,
-  text: "ОТКРЫВАЕМ ВОРОТА ХЭЛЛОУИНА..."
- },
- {
-  progress: 20,
-  text: "ЗАГРУЖАЕМ KORE RUSSIA..."
- },
- {
-  progress: 45,
-  text: "ПРОБУЖДАЕМ ТЁМНЫЙ МИР..."
- },
- {
-  progress: 70,
-  text: "РАЗГОНЯЕМ ТУМАН..."
- },
- {
-  progress: 90,
-  text: "ПОЧТИ ГОТОВО..."
- }
+ { progress: 0, text: "ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ..." },
+ { progress: 35, text: "ПОДКЛЮЧЕНИЕ К SUPABASE БД..." },
+ { progress: 70, text: "ЗАГРУЗКА ИНТЕРФЕЙСА..." },
+ { progress: 95, text: "ГОТОВО..." }
 ];
 
 function finishLoading() {
  loaderScreen.classList.add("hide");
  mainContent.classList.add("visible");
-
  setTimeout(checkScrollAnimations, 100);
-
- setTimeout(() => {
-  const toast = document.getElementById("halloween-toast");
-
-  try {
-   if (!sessionStorage.getItem("kore_halloween_seen")) {
-    toast.classList.add("show");
-    sessionStorage.setItem("kore_halloween_seen", "1");
-   }
-  } catch (error) {
-   toast.classList.add("show");
-  }
- }, 8000);
 }
 
 function updateLoader(now) {
  const elapsed = now - loaderStart;
-
- const progress = Math.min(
-  100,
-  Math.floor(elapsed / loaderDuration * 100)
- );
-
+ const progress = Math.min(100, Math.floor(elapsed / loaderDuration * 100));
  loaderFill.style.width = progress + "%";
  loaderNum.textContent = progress + "%";
-
  let message = loaderMessages[0];
-
- for (const item of loaderMessages) {
-  if (progress >= item.progress) {
-   message = item;
-  }
- }
-
+ for (const item of loaderMessages) { if (progress >= item.progress) message = item; }
  loaderStatus.textContent = message.text;
-
- if (progress < 100) {
-  requestAnimationFrame(updateLoader);
- } else {
-  finishLoading();
- }
+ if (progress < 100) requestAnimationFrame(updateLoader);
+ else finishLoading();
 }
-
 requestAnimationFrame(updateLoader);
 
 /* =========================
    ПОЯВЛЕНИЕ КАРТОЧЕК
 ========================= */
-
 const animatedCards = document.querySelectorAll(".animated-card");
-
 function checkScrollAnimations() {
  const trigger = window.innerHeight * 0.92;
-
  animatedCards.forEach((card, index) => {
   if (card.getBoundingClientRect().top < trigger) {
    card.classList.add("in-view");
@@ -1657,239 +1676,147 @@ function checkScrollAnimations() {
   }
  });
 }
-
-window.addEventListener(
- "scroll",
- checkScrollAnimations,
- { passive: true }
-);
+window.addEventListener("scroll", checkScrollAnimations, { passive: true });
 
 /* =========================
    КОПИРОВАНИЕ ПРОМОКОДА
 ========================= */
-
 async function copyPromo() {
+ playSound("click");
  const promo = "#Фарка";
-
  const btn = document.getElementById("promo-btn");
  const hint = document.getElementById("promo-hint");
-
  try {
   if (navigator.clipboard && window.isSecureContext) {
    await navigator.clipboard.writeText(promo);
   } else {
    const textarea = document.createElement("textarea");
-
    textarea.value = promo;
    textarea.style.position = "fixed";
    textarea.style.opacity = "0";
-
    document.body.appendChild(textarea);
    textarea.select();
-
-   const copied = document.execCommand("copy");
-
+   document.execCommand("copy");
    textarea.remove();
-
-   if (!copied) {
-    throw new Error("Не удалось скопировать");
-   }
   }
-
   btn.textContent = "СКОПИРОВАНО!";
   hint.textContent = "Промокод скопирован в буфер обмена";
-
   setTimeout(() => {
    btn.textContent = "#Фарка";
    hint.textContent = "Нажми на промокод, чтобы скопировать";
   }, 1800);
-
- } catch (error) {
-  hint.textContent = "Промокод: #Фарка";
- }
+ } catch (error) { hint.textContent = "Промокод: #Фарка"; }
 }
 
 /* =========================
-   HALLOWEEN УВЕДОМЛЕНИЕ
+   АДМИН-ПАНЕЛЬ И SUPABASE ФОТО
 ========================= */
-
-function closeHalloweenToast() {
- document
-  .getElementById("halloween-toast")
-  .classList.remove("show");
-}
-
-/* =========================
-   АДМИН-ПАНЕЛЬ
-========================= */
-
-function openAdminAuth() {
- document
-  .getElementById("admin-auth-modal")
-  .classList.add("active");
-}
-
+function openAdminAuth() { openModal("admin-auth-modal"); }
 function checkAdminAuth() {
  const login = document.getElementById("admin-login").value;
  const pass = document.getElementById("admin-pass").value;
-
  if (login === "Admin" && pass === "Aaa007!") {
   closeModals();
-
-  document
-   .getElementById("admin-panel-modal")
-   .classList.add("active");
-
+  openModal("admin-panel-modal");
  } else {
   alert("Неверный логин или пароль!");
  }
 }
-
-function closeModals() {
- document
-  .querySelectorAll(".modal-overlay")
-  .forEach(modal => modal.classList.remove("active"));
-}
-
-document.querySelectorAll(".modal-overlay").forEach(modal => {
- modal.addEventListener("click", event => {
-  if (event.target === modal) {
-   modal.classList.remove("active");
-  }
- });
-});
-
-document.addEventListener("keydown", event => {
- if (event.key === "Escape") {
-  closeModals();
- }
-});
-
-/* =========================
-   ИЗМЕНЕНИЕ ВЫСОТЫ ФОТО
-========================= */
 
 const heightSlider = document.getElementById("frame-height-slider");
 const heightValue = document.getElementById("height-val");
 
 function updateFrameHeight(value, save = true) {
  const height = Number(value);
-
- if (!Number.isFinite(height)) {
-  return;
- }
-
- document.querySelectorAll(".photo-frame").forEach(frame => {
-  frame.style.height = height + "px";
- });
-
+ if (!Number.isFinite(height)) return;
+ document.querySelectorAll(".photo-frame").forEach(frame => { frame.style.height = height + "px"; });
  heightValue.textContent = height + "px";
-
  if (save) {
-  try {
-   localStorage.setItem(
-    "kore_frame_height",
-    String(height)
-   );
-  } catch (error) {
-   console.warn("Настройка не сохранена.");
-  }
+  try { localStorage.setItem("kore_frame_height", String(height)); } catch (e) {}
  }
 }
 
-heightSlider.addEventListener("input", event => {
- updateFrameHeight(event.target.value);
-});
+heightSlider.addEventListener("input", event => updateFrameHeight(event.target.value));
 
-/* =========================
-   ЗАГРУЗКА СОХРАНЁННЫХ ФОТО
-========================= */
-
-function loadSavedImages() {
+async function loadSavedImages() {
  ["img-1", "img-2", "img-3"].forEach(id => {
   try {
    const saved = localStorage.getItem("kore_" + id);
-
-   if (saved) {
-    document.getElementById(id).src = saved;
-   }
-  } catch (error) {
-   console.warn("Не удалось загрузить сохранённое фото.");
-  }
+   if (saved) document.getElementById(id).src = saved;
+  } catch (e) {}
  });
 
  try {
   const height = localStorage.getItem("kore_frame_height");
-
   if (height) {
    heightSlider.value = height;
    updateFrameHeight(height, false);
   }
- } catch (error) {
-  console.warn("Не удалось загрузить настройки.");
+ } catch (e) {}
+
+ // Загрузка из Supabase если подключено
+ if (supabaseClient) {
+  try {
+   const { data, error } = await supabaseClient.from('site_settings').select('*');
+   if (data && !error) {
+    data.forEach(item => {
+     if (item.key && item.value && document.getElementById(item.key)) {
+      document.getElementById(item.key).src = item.value;
+     }
+    });
+    document.getElementById("supabase-status").textContent = "Данные успешно загружены из Supabase!";
+   }
+  } catch(err) {
+   console.warn("Supabase fetch error:", err);
+  }
  }
 }
 
-/* =========================
-   ЗАГРУЗКА ФОТО/GIF ЧЕРЕЗ АДМИНКУ
-========================= */
-
-function uploadImage(event, targetId) {
+async function uploadImage(event, targetId) {
  const file = event.target.files && event.target.files[0];
+ if (!file || !file.type.startsWith("image/")) return;
+ 
+ const statusEl = document.getElementById("supabase-status");
+ statusEl.textContent = "Загрузка файла...";
 
- if (!file) {
-  return;
+ if (supabaseClient) {
+  try {
+   const fileName = targetId + "_" + Date.now() + "_" + file.name;
+   const { data, error } = await supabaseClient.storage.from('forum_images').upload(fileName, file);
+   if (!error) {
+    const { data: publicUrlData } = supabaseClient.storage.from('forum_images').getPublicUrl(fileName);
+    const publicUrl = publicUrlData.publicUrl;
+    
+    document.getElementById(targetId).src = publicUrl;
+    
+    // Сохранение ссылки в таблицу Supabase
+    await supabaseClient.from('site_settings').upsert({ key: targetId, value: publicUrl });
+    statusEl.textContent = "Успешно сохранено в Supabase!";
+    return;
+   }
+  } catch (err) {
+   console.warn("Supabase storage error, falling back to local storage:", err);
+  }
  }
 
- if (!file.type.startsWith("image/")) {
-  alert("Выбери файл изображения или GIF.");
-  event.target.value = "";
-  return;
- }
-
+ // Fallback через FileReader и localStorage
  const reader = new FileReader();
-
  reader.onload = event => {
   const imageData = event.target.result;
-
   document.getElementById(targetId).src = imageData;
-
-  try {
-   localStorage.setItem("kore_" + targetId, imageData);
-  } catch (error) {
-   alert(
-    "Файл показан, но из-за большого размера он не сохранится после перезагрузки. " +
-    "Попробуйте использовать GIF или изображение меньшего размера."
-   );
-  }
+  try { 
+   localStorage.setItem("kore_" + targetId, imageData); 
+   statusEl.textContent = "Сохранено локально (Supabase недоступен)";
+  } catch (e) {}
  };
-
- reader.onerror = () => {
-  alert("Не удалось прочитать файл.");
- };
-
  reader.readAsDataURL(file);
 }
 
-document
- .getElementById("file-img-1")
- .addEventListener("change", event => uploadImage(event, "img-1"));
-
-document
- .getElementById("file-img-2")
- .addEventListener("change", event => uploadImage(event, "img-2"));
-
-document
- .getElementById("file-img-3")
- .addEventListener("change", event => uploadImage(event, "img-3"));
-
-/* =========================
-   ИНИЦИАЛИЗАЦИЯ
-========================= */
+document.getElementById("file-img-1").addEventListener("change", e => uploadImage(e, "img-1"));
+document.getElementById("file-img-2").addEventListener("change", e => uploadImage(e, "img-2"));
+document.getElementById("file-img-3").addEventListener("change", e => uploadImage(e, "img-3"));
 
 loadSavedImages();
-
 </script>
-
 </body>
 </html>
