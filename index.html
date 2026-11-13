@@ -3,1820 +3,3310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#000000">
-<meta name="description" content="KORE RUSSIA — начни свою историю. Форум и сайт проекта.">
-<title>KORE RUSSIA — Сайт и Форум Проекта</title>
+<meta name="theme-color" content="#08080a">
+<meta name="description" content="KORE RUSSIA — игра, где всё по-настоящему. Твоя история начинается здесь.">
+<title>KORE RUSSIA — Твой мир. Твои решения.</title>
 
 <!-- FontAwesome & Google Fonts -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Inter:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
 
-<!-- Supabase JS Client for Database & Storage Integration -->
+<!-- Supabase JS Client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
 :root {
- --red:#FF0000;
- --red-light:#FF3333;
- --red-dark:#990000;
- --black:#050001;
- --panel:rgba(15, 2, 4, 0.96);
- --white:#ffffff;
- --muted:#e0d0d5;
- --green:#00f58a;
+  --bg-main: #08080a;
+  --bg-card: #121215;
+  --bg-card-hover: #18181c;
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --accent-yellow: #f7b500;
+  --accent-yellow-hover: #ffca2c;
+  --accent-red: #d92626;
+  --accent-green: #22c55e;
+  --text-white: #ffffff;
+  --text-muted: #9ca3af;
+  --text-dim: #6b7280;
+  --font-display: 'Oswald', sans-serif;
+  --font-hand: 'Caveat', cursive;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 * {
- box-sizing:border-box;
- margin:0;
- padding:0;
- -webkit-tap-highlight-color:transparent;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
 }
 
 html {
- scroll-behavior:smooth;
- scroll-padding-top:20px;
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
 }
 
 body {
- min-height:100vh;
- overflow-x:hidden;
- background:
-  radial-gradient(ellipse at 50% 0%,#660000 0%,transparent 50%),
-  radial-gradient(ellipse at 0% 55%,#330000 0%,transparent 45%),
-  var(--black);
- color:var(--white);
- font-family:Inter,Arial,sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: var(--bg-main);
+  background-size: 100% auto;
+  background-position: top center;
+  background-repeat: repeat-y;
+  color: var(--text-white);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ЯДРЕНЫЙ КРОВАВЫЙ ЭФФЕКТ НА ТЕКСТАХ */
-.blood-text {
- position:relative;
- display:inline-block;
- color: #ffffff;
- text-shadow: 0 0 10px rgba(255, 0, 0, 0.8), 0 0 20px rgba(255, 0, 0, 0.5);
+button, input, select {
+  font: inherit;
+  color: inherit;
 }
 
-.blood-text::after {
- content:"";
- position:absolute;
- right:-10px;
- top:-2px;
- width:8px;
- height:14px;
- background:#FF0000;
- border-radius:50% 50% 50% 50% / 60% 60% 40% 40%;
- box-shadow:0 0 12px #FF0000, 0 0 20px #FF0000;
- animation:bloodDrop 2.5s ease-in-out infinite;
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 
-@keyframes bloodDrop {
- 0%, 100% { transform: translateY(0) scale(1); opacity: 0.9; }
- 70% { transform: translateY(10px) scale(0.8, 1.3); opacity: 1; }
- 85% { transform: translateY(16px) scale(0.4, 0.4); opacity: 0; }
+a {
+  color: inherit;
+  text-decoration: none;
 }
 
-body::before {
- content:"";
- position:fixed;
- inset:0;
- z-index:0;
- pointer-events:none;
- background:linear-gradient(115deg,transparent 35%,rgba(255,0,0,0.06) 50%,transparent 65%);
- background-size:200% 100%;
- animation:backgroundSweep 12s linear infinite;
-}
-
-button,input { font:inherit; }
-button,a { -webkit-tap-highlight-color:transparent; }
-button { color:inherit; background:none; border:none; cursor:pointer; }
-a { color:inherit; text-decoration:none; }
-::selection { background:#FF0000; color:white; }
-
-#bg-canvas, #lantern-canvas {
- position:fixed;
- inset:0;
- width:100%;
- height:100%;
- pointer-events:none;
-}
-#bg-canvas { z-index:0; }
-#lantern-canvas { z-index:1; }
-
-.noise {
- position:fixed;
- inset:0;
- z-index:0;
- pointer-events:none;
- opacity:.06;
- background-image:radial-gradient(rgba(255,255,255,.25) .6px,transparent .6px);
- background-size:5px 5px;
-}
-
-@keyframes backgroundSweep {
- 0% {background-position:200% 0}
- 100% {background-position:-200% 0}
-}
-
-@keyframes titleGlow {
- 0%,100% {text-shadow:0 0 15px rgba(255,0,0,0.5)}
- 50% {text-shadow:0 0 35px rgba(255,0,0,1),0 0 60px rgba(255,0,0,0.6)}
-}
-
-@keyframes spin { to {transform:rotate(360deg)} }
-@keyframes spinReverse { from {transform:rotate(360deg)} to {transform:rotate(0deg)} }
-@keyframes pulse { from {transform:scale(.8)} to {transform:scale(1.15)} }
-@keyframes onlinePulse { to {opacity:.4;transform:scale(.75)} }
-
-/* =========================
-   ВЕРХНЯЯ ПАНЕЛЬ И НАВИГАЦИЯ
-========================= */
-
-.header-nav {
- position:sticky;
- top:0;
- z-index:100;
- background:rgba(10, 1, 3, 0.94);
- backdrop-filter:blur(16px);
- border-bottom:1px solid rgba(255, 0, 0, 0.5);
- padding:14px 20px;
- display:flex;
- align-items:center;
- justify-content:space-between;
-}
-
-.header-container {
- width:min(1100px, 100%);
- margin:0 auto;
- display:flex;
- align-items:center;
- justify-content:space-between;
- gap:15px;
-}
-
-.logo-box {
- display:flex;
- align-items:center;
- gap:12px;
- cursor:pointer;
-}
-
-.logo-crown {
- width:44px;
- height:44px;
- border-radius:12px;
- background:linear-gradient(135deg, #FF0000, #800000);
- display:grid;
- place-items:center;
- font-size:22px;
- color:white;
- box-shadow:0 0 25px rgba(255, 0, 0, 0.8);
-}
-
-.logo-text {
- font-size:19px;
- font-weight:900;
- letter-spacing:1px;
- text-transform:uppercase;
-}
-
-.logo-text span { color:#FF3333; }
-
-.top-buttons {
- display:flex;
- align-items:center;
- gap:10px;
-}
-
-/* УВЕЛИЧЕННЫЕ БЕЛЫЕ КНОПКИ */
-.nav-quick-btn {
- padding:11px 18px;
- border-radius:14px;
- border:2px solid #ffffff;
- background:#ffffff;
- color:#050001;
- font-size:13px;
- font-weight:800;
- display:flex;
- align-items:center;
- gap:8px;
- transition:all .25s;
- box-shadow:0 4px 15px rgba(255, 255, 255, 0.2);
-}
-
-.nav-quick-btn:hover {
- background:#FF0000;
- border-color:#FF0000;
- color:#ffffff;
- transform:translateY(-2px);
- box-shadow:0 6px 22px rgba(255, 0, 0, 0.7);
-}
-
-.sound-toggle-btn {
- padding:10px 14px;
- border-radius:12px;
- border:2px solid rgba(255,255,255,0.3);
- background:rgba(0,0,0,0.5);
- font-size:12px;
- font-weight:800;
- display:flex;
- align-items:center;
- gap:6px;
- color:var(--white);
-}
-
-.sound-toggle-btn.active { color:var(--green); border-color:var(--green); }
-
-.mobile-menu-btn {
- display:none;
- width:44px;
- height:44px;
- border-radius:12px;
- border:2px solid #ffffff;
- background:#ffffff;
- color:#050001;
- font-size:20px;
- place-items:center;
- cursor:pointer;
- box-shadow:0 0 15px rgba(255,255,255,0.3);
+::selection {
+  background: var(--accent-yellow);
+  color: #000000;
 }
 
 /* =========================
-   БОКОВОЕ МЕНЮ (МОБИЛЬНОЕ)
+   1. ЭКРАН ЗАГРУЗКИ (PRELOADER) С УЛУЧШЕННОЙ РАМКОЙ
 ========================= */
-
-.drawer-backdrop {
- position:fixed;
- inset:0;
- z-index:200;
- background:rgba(0,0,0,0.85);
- backdrop-filter:blur(8px);
- opacity:0;
- visibility:hidden;
- transition:all .3s ease;
+#preloader-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background-color: #000000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: opacity, visibility;
 }
 
-.drawer-backdrop.active {
- opacity:1;
- visibility:visible;
+#preloader-screen.fade-out {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
 
-.mobile-drawer {
- position:fixed;
- top:0;
- left:0;
- width:300px;
- max-width:82vw;
- height:100%;
- z-index:210;
- background:linear-gradient(160deg, #1f0105, #050001);
- border-right:2px solid #FF0000;
- box-shadow:12px 0 40px rgba(0,0,0,0.95);
- transform:translateX(-100%);
- transition:transform .3s cubic-bezier(0.4, 0, 0.2, 1);
- display:flex;
- flex-direction:column;
+.preloader-logo-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  opacity: 0;
+  transform: scale(0.92);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+  will-change: opacity, transform;
 }
 
-.mobile-drawer.active { transform:translateX(0); }
-
-.drawer-header {
- padding:20px;
- border-bottom:1px solid rgba(255, 0, 0, 0.4);
- display:flex;
- align-items:center;
- justify-content:space-between;
+.preloader-logo-container.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
-.drawer-nav {
- padding:15px;
- display:flex;
- flex-direction:column;
- gap:8px;
- overflow-y:auto;
- flex:1;
+.preloader-logo-container.hiding {
+  opacity: 0;
+  transform: scale(1.05);
+  transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
-.drawer-item {
- padding:14px 18px;
- border-radius:14px;
- border:1px solid rgba(255,255,255,0.1);
- background:rgba(255, 255, 255, 0.05);
- font-size:14px;
- font-weight:800;
- display:flex;
- align-items:center;
- gap:12px;
- color:var(--white);
- transition:all .2s;
+.preloader-animated-frame {
+  position: absolute;
+  inset: 0;
+  border-radius: 24px;
+  background: linear-gradient(135deg, rgba(247, 181, 0, 0.8), rgba(217, 38, 38, 0.2), rgba(247, 181, 0, 0.9));
+  background-size: 300% 300%;
+  animation: borderGlowFrame 4s ease infinite;
+  z-index: 1;
+  filter: drop-shadow(0 0 15px rgba(247, 181, 0, 0.35));
 }
 
-.drawer-item i {
- width:24px;
- text-align:center;
- color:#FF0000;
- font-size:16px;
+.preloader-animated-frame::before {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  background: #0d0d12;
+  border-radius: 22px;
+  z-index: 2;
 }
 
-.drawer-item:hover {
- background:#FF0000;
- border-color:#FF0000;
- color:#ffffff;
+@keyframes borderGlowFrame {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.preloader-content-inner {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 20px;
+}
+
+#preloader-custom-img {
+  max-width: 140px;
+  max-height: 140px;
+  object-fit: contain;
+  display: none;
+}
+
+.preloader-emblem {
+  width: 54px;
+  height: 54px;
+  background: linear-gradient(135deg, #f7b500 0%, #b37e00 100%);
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 700;
+  color: #08080a;
+  font-style: italic;
+  box-shadow: 0 8px 24px rgba(247, 181, 0, 0.3);
+}
+
+.preloader-wordmark {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.preloader-wordmark span {
+  color: var(--accent-yellow);
 }
 
 /* =========================
-   РОЛИ И БЕЙДЖИ
+   2. ОКНО ВЫБОРА ЗВУКА ПРИ ВХОДЕ
 ========================= */
-
-.badge-project-team {
- background:linear-gradient(135deg, #FF0000, #990000);
- box-shadow:0 0 15px rgba(255, 0, 0, 0.8);
- border:1px solid rgba(255, 255, 255, 0.4);
- color:white;
- font-weight:900;
- padding:4px 12px;
- border-radius:6px;
- font-size:11px;
- display:inline-block;
+.sound-choice-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
 }
 
-.badge-forum-team {
- background:linear-gradient(135deg, #ff7b00, #b35400);
- box-shadow:0 0 15px rgba(255, 123, 0, 0.8);
- border:1px solid rgba(255, 255, 255, 0.4);
- color:white;
- font-weight:900;
- padding:4px 12px;
- border-radius:6px;
- font-size:11px;
- display:inline-block;
+.sound-choice-backdrop.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-.badge-developer {
- background:linear-gradient(135deg, #b026ff, #5e0099);
- box-shadow:0 0 15px rgba(176, 38, 255, 0.8);
- border:1px solid rgba(255, 255, 255, 0.4);
- color:white;
- font-weight:900;
- padding:4px 12px;
- border-radius:6px;
- font-size:11px;
- display:inline-block;
+.sound-choice-card {
+  width: 100%;
+  max-width: 440px;
+  background: #121216;
+  border: 1px solid rgba(247, 181, 0, 0.35);
+  border-radius: 22px;
+  padding: 30px 24px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  transform: translateY(20px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sound-choice-backdrop.active .sound-choice-card {
+  transform: translateY(0);
+}
+
+.sound-choice-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 18px;
+  background: rgba(247, 181, 0, 0.15);
+  border: 1px solid rgba(247, 181, 0, 0.3);
+  display: grid;
+  place-items: center;
+  font-size: 26px;
+  color: var(--accent-yellow);
+}
+
+.sound-choice-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-style: italic;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  color: #ffffff;
+}
+
+.sound-choice-text {
+  font-size: 14px;
+  color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.sound-choice-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* ПЛАВАЮЩАЯ КНОПКА ЗВУКА */
+.floating-audio-widget {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px 10px 12px;
+  background: var(--floating-bg, rgba(18, 18, 22, 0.92));
+  border: 1px solid var(--floating-border, rgba(247, 181, 0, 0.35));
+  border-radius: 999px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transform: translateY(80px);
+  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, visibility 0.4s ease;
+}
+
+.floating-audio-widget.visible {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+}
+
+.floating-audio-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent-yellow);
+  color: #08080a;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  transition: transform 0.2s, background 0.2s;
+  box-shadow: 0 4px 14px rgba(247, 181, 0, 0.4);
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.floating-audio-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.floating-audio-btn:hover {
+  transform: scale(1.08);
+  background: var(--accent-yellow-hover);
+}
+
+.floating-audio-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.floating-audio-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-style: italic;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.floating-audio-status {
+  font-size: 11px;
+  color: var(--text-muted);
 }
 
 /* =========================
-   ОФИЦИАЛЬНЫЙ ПОСТ
+   3. ВЕРХНЯЯ ПАНЕЛЬ (HEADER)
 ========================= */
-
-.official-post {
- border:2px solid rgba(255, 0, 0, 0.6);
- border-radius:22px;
- background:var(--panel);
- overflow:hidden;
- margin-top:20px;
- box-shadow:0 20px 50px rgba(0,0,0,0.8);
- backdrop-filter:blur(15px);
+.top-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8, 8, 10, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 12px 16px;
 }
 
-.post-user-header {
- padding:20px 24px;
- background:rgba(25, 2, 6, 0.98);
- border-bottom:1px solid rgba(255, 0, 0, 0.4);
- display:flex;
- align-items:center;
- justify-content:space-between;
- flex-wrap:wrap;
- gap:15px;
+.header-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
-.post-user-info {
- display:flex;
- align-items:center;
- gap:16px;
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.post-avatar {
- width:56px;
- height:56px;
- border-radius:16px;
- border:2px solid #FF0000;
- object-fit:cover;
+.brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.post-badges {
- display:flex;
- flex-wrap:wrap;
- gap:8px;
- margin-top:8px;
+.brand-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  background: linear-gradient(135deg, #f7b500, #a87600);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  font-size: 19px;
+  color: #08080a;
+  overflow: hidden;
+  flex-shrink: 0;
 }
 
-.post-content {
- padding:24px;
- font-size:14.5px;
- line-height:1.9;
- color:#f0e1e6;
+.brand-icon-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 
-.post-footer {
- padding:16px 24px;
- border-top:1px solid rgba(255, 0, 0, 0.3);
- background:rgba(8, 0, 2, 0.9);
- display:flex;
- align-items:center;
- justify-content:space-between;
- font-size:12px;
- color:var(--muted);
+.status-pill {
+  background: var(--accent-green);
+  color: #08080a;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.online-counter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  font-style: italic;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.online-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-green);
+  box-shadow: 0 0 8px var(--accent-green);
+}
+
+.online-counter i {
+  font-size: 12px;
+  color: #d1d5db;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.desktop-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-right: 6px;
+}
+
+.desktop-nav-links button {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+
+.desktop-nav-links button:hover {
+  color: #ffffff;
+}
+
+.btn-play-header {
+  background: var(--accent-yellow);
+  color: #08080a;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 999px;
+  transition: transform 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+
+.btn-play-header:hover {
+  background: var(--accent-yellow-hover);
+  transform: translateY(-1px);
+}
+
+.burger-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.burger-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.burger-btn span {
+  display: block;
+  width: 20px;
+  height: 2px;
+  background: #ffffff;
+  border-radius: 2px;
 }
 
 /* =========================
-   ЗАГРУЗКА
+   4. МИНИМАЛИСТИЧНОЕ БУРГЕР-МЕНЮ
 ========================= */
-
-#loader-screen {
- position:fixed;
- inset:0;
- z-index:99999;
- display:flex;
- align-items:center;
- justify-content:center;
- flex-direction:column;
- background:radial-gradient(circle at center,#330000 0%,#120002 50%,#050001 100%);
- transition:opacity .8s ease,visibility .8s ease;
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
-#loader-screen.hide {
- opacity:0;
- visibility:hidden;
- pointer-events:none;
+.menu-overlay.active {
+  opacity: 1;
+  visibility: visible;
 }
 
-.loader-content {
- width:min(340px,88vw);
- display:flex;
- flex-direction:column;
- align-items:center;
- text-align:center;
+.side-menu {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 380px;
+  max-width: 100vw;
+  height: 100dvh;
+  z-index: 260;
+  background: #0b0b0d;
+  border-left: 1px solid var(--border-subtle);
+  transform: translateX(100%);
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
 }
 
-.orb {
- width:130px;
- height:130px;
- position:relative;
- display:grid;
- place-items:center;
- margin-bottom:28px;
+.side-menu.active {
+  transform: translateX(0);
 }
 
-.orb-ring {
- position:absolute;
- border-radius:50%;
- border:2px solid transparent;
+.menu-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border-subtle);
 }
 
-.orb-ring.one {
- inset:0;
- border-top-color:#FF0000;
- border-bottom-color:#FF0000;
- box-shadow:0 0 40px rgba(255, 0, 0, 0.8);
- animation:spin 2s linear infinite;
+.menu-close-btn {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 20px;
+  color: #ffffff;
+  border-radius: 8px;
 }
 
-.orb-ring.two {
- inset:14px;
- border-left-color:white;
- border-right-color:#FF3333;
- animation:spinReverse 1.5s linear infinite;
+.menu-close-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
 }
 
-.orb-center {
- font-size:40px;
- font-weight:900;
- letter-spacing:2px;
- color:white;
- text-shadow:0 0 25px #FF0000;
- animation:pulse 1s ease-in-out infinite alternate;
+.menu-body {
+  padding: 20px 18px 28px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
 }
 
-.loader-title {
- font-size:24px;
- font-weight:900;
- letter-spacing:2px;
- margin-bottom:8px;
- color:#FF3333;
- text-shadow:0 0 30px #FF0000;
+.menu-brand-center {
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-.loader-subtitle {
- font-size:11px;
- letter-spacing:1.4px;
- line-height:1.8;
- color:#f0d5dd;
- margin-bottom:24px;
+.menu-brand-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1px;
 }
 
-.loader-track {
- width:100%;
- height:6px;
- overflow:hidden;
- border-radius:50px;
- background:rgba(255,255,255,0.15);
+.menu-brand-title span {
+  color: var(--accent-yellow);
 }
 
-.loader-progress {
- width:0;
- height:100%;
- border-radius:inherit;
- background:linear-gradient(90deg,#990000,#FF0000,#ff9999);
- box-shadow:0 0 25px #FF0000;
+.menu-brand-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
 }
 
-.loader-percent {
- margin-top:12px;
- font-size:14px;
- font-weight:900;
- color:#FF3333;
+.menu-download-primary {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 14px;
+  background: linear-gradient(90deg, rgba(247, 181, 0, 0.16) 0%, rgba(247, 181, 0, 0.05) 100%);
+  border: 1px solid rgba(247, 181, 0, 0.25);
+  margin-bottom: 10px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.menu-download-primary:hover {
+  border-color: var(--accent-yellow);
+  transform: translateY(-1px);
+}
+
+.menu-dl-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #0ea5e9;
+  color: #ffffff;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.menu-dl-meta small {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--accent-yellow);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.menu-dl-meta strong {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-style: italic;
+  letter-spacing: 0.5px;
+}
+
+.menu-dl-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.menu-dl-mini {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 12px;
+  background: #141418;
+  border: 1px solid var(--border-subtle);
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.5px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.menu-dl-mini:hover {
+  background: #1c1c22;
+  border-color: var(--border-strong);
+}
+
+.menu-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menu-nav-item {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px;
+  border-radius: 13px;
+  background: #141418;
+  border: 1px solid var(--border-subtle);
+  transition: background 0.2s, border-color 0.2s;
+  text-align: left;
+  position: relative;
+}
+
+.menu-nav-item:hover {
+  background: #1b1b20;
+  border-color: var(--border-strong);
+}
+
+.menu-nav-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.menu-nav-icon {
+  width: 26px;
+  height: 26px;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #d1d5db;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+}
+
+.menu-nav-label {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: #ffffff;
+}
+
+.menu-nav-arrow {
+  color: var(--text-dim);
+  font-size: 12px;
+}
+
+.menu-nav-item.accent-gold {
+  background: linear-gradient(90deg, rgba(247, 181, 0, 0.16) 0%, rgba(247, 181, 0, 0.06) 100%);
+  border-color: rgba(247, 181, 0, 0.28);
+}
+
+.menu-nav-item.accent-gold .menu-nav-icon {
+  background: rgba(247, 181, 0, 0.2);
+  color: var(--accent-yellow);
+}
+
+.menu-nav-item.accent-gold .menu-nav-label {
+  color: var(--accent-yellow);
+}
+
+/* ПЛАШКА «В РАЗРАБОТКЕ» ДЛЯ НОВОГО РАЗДЕЛА */
+.dev-badge-corner {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  background: rgba(217, 38, 38, 0.2);
+  border: 1px solid rgba(217, 38, 38, 0.4);
+  color: #ef4444;
+  font-family: var(--font-display);
+  font-size: 9px;
+  font-weight: 700;
+  font-style: italic;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.menu-footer-secret {
+  margin-top: auto;
+  padding-top: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-dot-trigger {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  cursor: pointer;
+  transition: background 0.25s, transform 0.25s;
+}
+
+.admin-dot-trigger:hover {
+  background: rgba(247, 181, 0, 0.65);
+  transform: scale(1.4);
 }
 
 /* =========================
-   ОСНОВНОЙ САЙТ
+   5. ТИПОГРАФИКА И СЕКЦИИ САЙТА
 ========================= */
-
-.wrapper {
- position:relative;
- z-index:2;
- width:min(900px,100%);
- margin:0 auto;
- padding:40px 20px 70px;
- opacity:0;
- transform:translateY(18px);
- transition:opacity .8s ease,transform .8s ease;
+.main-wrapper {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 24px 16px 80px;
 }
 
-.wrapper.visible {
- opacity:1;
- transform:translateY(0);
+.section-block {
+  margin-bottom: 64px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-.top-line {
- width:100%;
- height:4px;
- border-radius:10px;
- margin-bottom:35px;
- background:linear-gradient(90deg,transparent,#FF0000,#ffffff,#FF0000,transparent);
- box-shadow:0 0 30px rgba(255, 0, 0, 0.8);
- position:relative;
- overflow:hidden;
+.section-block.visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
-.top-line::after {
- content:"";
- position:absolute;
- top:0;
- left:-30%;
- width:25%;
- height:100%;
- background:white;
- filter:blur(6px);
- animation:topLineMove 4s linear infinite;
+.section-header-center {
+  text-align: center;
+  margin-bottom: 28px;
 }
 
-@keyframes topLineMove { to {left:120%} }
-
-.green-badge {
- display:flex;
- align-items:center;
- justify-content:center;
- gap:10px;
- width:fit-content;
- max-width:100%;
- margin:0 auto 25px;
- padding:11px 20px;
- border:2px solid rgba(0, 245, 138, 0.5);
- border-radius:50px;
- background:rgba(0, 245, 138, 0.1);
- box-shadow:0 0 30px rgba(0, 245, 138, 0.2);
+.handwritten-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-hand);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+  position: relative;
 }
 
-.green-dot {
- width:9px;
- height:9px;
- flex-shrink:0;
- border-radius:50%;
- background:var(--green);
- box-shadow:0 0 15px var(--green);
- animation:onlinePulse 1.4s infinite alternate;
+.handwritten-tag.yellow { color: var(--accent-yellow); }
+.handwritten-tag.red { color: #ef4444; }
+.handwritten-tag.purple { color: #a855f7; }
+.handwritten-tag.cyan { color: #38bdf8; }
+
+.handwritten-underline {
+  display: block;
+  width: 160px;
+  height: 6px;
+  margin: -4px auto 10px;
 }
 
-.green-badge-text {
- font-size:11px;
- font-weight:900;
- letter-spacing:1.3px;
- color:var(--green);
+.display-heading {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 7vw, 56px);
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.02;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #ffffff;
 }
 
-.hero-title {
- text-align:center;
- font-size:clamp(32px, 6vw, 52px);
- font-weight:900;
- line-height:1.2;
- letter-spacing:-1.5px;
- margin-bottom:24px;
- background:linear-gradient(180deg,#ffffff 10%,#ff9999 50%,#FF0000 85%,#990000 100%);
- -webkit-background-clip:text;
- background-clip:text;
- color:transparent;
- filter:drop-shadow(0 0 25px rgba(255, 0, 0, 0.5));
- animation:titleGlow 4s ease-in-out infinite;
+.section-lead {
+  max-width: 600px;
+  margin: 14px auto 0;
+  font-size: 14.5px;
+  color: #d1d5db;
+  line-height: 1.65;
 }
 
-.hero-title .title-small {
- display:block;
- margin-top:12px;
- font-size:clamp(14px, 2.5vw, 20px);
- letter-spacing:5px;
- color:#FF3333;
- -webkit-text-fill-color:#FF3333;
+/* HERO + СТАТИСТИКА + CTA */
+.hero-section {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  padding: 44px 20px 32px;
+  background:
+    linear-gradient(180deg, rgba(8, 8, 10, 0.35) 0%, rgba(8, 8, 10, 0.96) 92%),
+    url('./images/photo1.jpg') center/cover no-repeat;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 56px;
 }
 
-.hero-description {
- max-width:750px;
- margin:0 auto 35px;
- text-align:center;
- color:var(--muted);
- font-size:15px;
- line-height:2;
- font-weight:600;
+.stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  max-width: 680px;
+  margin: 28px auto 24px;
 }
 
-.section-label {
- text-align:center;
- color:#FF3333;
- font-size:11px;
- font-weight:900;
- letter-spacing:3px;
- margin-bottom:25px;
- text-shadow:0 0 20px rgba(255, 0, 0, 0.7);
+.stat-banner-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background: rgba(18, 18, 22, 0.9);
+  border: 1px solid var(--border-subtle);
 }
 
-.section-label::before,
-.section-label::after {
- content:"✦";
- margin:0 12px;
- color:#FF0000;
+.stat-banner-top {
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  font-style: italic;
+}
+
+.stat-banner-bottom {
+  padding: 8px 16px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+
+.stat-banner-card.amber .stat-banner-bottom {
+  background: rgba(180, 95, 6, 0.32);
+  color: #f59e0b;
+}
+
+.stat-banner-card.green .stat-banner-bottom {
+  background: rgba(22, 101, 52, 0.38);
+  color: #4ade80;
+}
+
+.cta-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 440px;
+  margin: 0 auto;
+}
+
+.btn-primary-yellow {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: var(--accent-yellow);
+  color: #08080a;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.btn-primary-yellow:hover {
+  background: var(--accent-yellow-hover);
+  transform: translateY(-2px);
+}
+
+.btn-dark-outline {
+  width: 100%;
+  min-height: 54px;
+  padding: 14px 24px;
+  border-radius: 14px;
+  background: #121215;
+  border: 1px solid var(--border-strong);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.btn-dark-outline:hover {
+  background: #1b1b20;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* СЛАЙДЕР РОЛЕЙ */
+.role-showcase {
+  position: relative;
+  border-radius: 24px;
+  background: linear-gradient(180deg, #141210 0%, #0a0a0c 100%);
+  border: 1px solid var(--border-subtle);
+  padding: 28px 20px 32px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.role-visual-stage {
+  position: relative;
+  max-width: 440px;
+  height: 330px;
+  margin: 0 auto 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.role-visual-stage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 18px;
+  mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
+}
+
+.role-arrow-btn {
+  position: absolute;
+  bottom: 18px;
+  z-index: 5;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #08080a;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s, background 0.2s;
+}
+
+.role-arrow-btn:hover {
+  transform: scale(1.08);
+  background: var(--accent-yellow);
+}
+
+.role-arrow-btn.prev { left: 10px; }
+.role-arrow-btn.next { right: 10px; }
+
+.role-icon-badge {
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.role-name {
+  font-family: var(--font-display);
+  font-size: 40px;
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 16px;
+}
+
+.voice-player-bar {
+  max-width: 440px;
+  margin: 0 auto 16px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: #18181c;
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.voice-play-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: grid;
+  place-items: center;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+.voice-time {
+  font-size: 14px;
+  font-weight: 600;
+  color: #d1d5db;
+  font-variant-numeric: tabular-nums;
+}
+
+.voice-waves {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3px;
+  height: 20px;
+}
+
+.voice-waves span {
+  display: block;
+  width: 2.5px;
+  background: #6b7280;
+  border-radius: 2px;
+  transition: height 0.2s, background 0.2s;
+}
+
+.voice-player-bar.playing .voice-waves span {
+  background: var(--accent-yellow);
+  animation: waveAnim 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes waveAnim {
+  from { transform: scaleY(0.45); }
+  to { transform: scaleY(1.25); }
+}
+
+.role-quote-box {
+  max-width: 480px;
+  margin: 0 auto 14px;
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: rgba(247, 181, 0, 0.1);
+  border: 1px solid rgba(247, 181, 0, 0.2);
+  color: var(--accent-yellow);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.role-desc-text {
+  max-width: 480px;
+  margin: 0 auto;
+  font-size: 13.5px;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* МИР В ДЕТАЛЯХ */
+.details-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.detail-card {
+  position: relative;
+  height: 320px;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border-subtle);
+  background: #121215;
+  cursor: pointer;
+  transition: transform 0.3s, border-color 0.3s;
+}
+
+.detail-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.25);
+}
+
+.detail-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.detail-card:hover img {
+  transform: scale(1.05);
+}
+
+.detail-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(8, 8, 10, 0.94) 100%);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.detail-card-sub {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.detail-card-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  font-style: italic;
+  text-transform: uppercase;
+  line-height: 1.1;
+  margin-top: 2px;
+  padding-right: 36px;
+}
+
+.detail-plus-btn {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #08080a;
+  display: grid;
+  place-items: center;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+/* ПРЯМО СЕЙЧАС В ИГРЕ */
+.live-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.live-stat-card {
+  position: relative;
+  padding: 20px;
+  border-radius: 18px;
+  background: #111114;
+  border: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 132px;
+}
+
+.live-stat-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.live-stat-tag {
+  font-family: var(--font-hand);
+  font-size: 21px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.rec-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: 0.6px;
+}
+
+.rec-badge::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #ef4444;
+  animation: pulseRec 1.2s infinite alternate;
+}
+
+@keyframes pulseRec {
+  from { opacity: 0.4; }
+  to { opacity: 1; }
+}
+
+.live-stat-num {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 700;
+  font-style: italic;
+  line-height: 1.1;
+}
+
+.live-stat-desc {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-style: italic;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+}
+
+.faction-bar-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.faction-bar-track {
+  height: 8px;
+  border-radius: 999px;
+  background: #2563eb;
+  overflow: hidden;
+  display: flex;
+}
+
+.faction-bar-crim {
+  width: 75%;
+  background: #ef4444;
+}
+
+/* ПРОМОКОД И НОВОСТИ */
+.promo-banner-card {
+  border-radius: 22px;
+  background: linear-gradient(135deg, #16161b 0%, #101013 100%);
+  border: 1px solid var(--border-subtle);
+  padding: 28px 22px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.promo-code-pill {
+  padding: 14px 28px;
+  border-radius: 14px;
+  background: var(--accent-yellow);
+  color: #08080a;
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1px;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.promo-code-pill:hover {
+  background: var(--accent-yellow-hover);
+  transform: scale(1.03);
+}
+
+.news-post-card {
+  border-radius: 22px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.news-post-head {
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.news-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: #1c1c22;
+  border: 1px solid var(--border-strong);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-style: italic;
+  color: var(--accent-yellow);
+}
+
+.role-chip {
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+}
+
+.role-chip.gold {
+  background: rgba(247, 181, 0, 0.16);
+  color: var(--accent-yellow);
+}
+
+.news-post-body {
+  padding: 22px;
+  font-size: 14px;
+  color: #d1d5db;
+  line-height: 1.75;
+}
+
+.news-post-foot {
+  padding: 14px 22px;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(0, 0, 0, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12.5px;
+  color: var(--text-muted);
+}
+
+/* ПРИСОЕДИНЯЙСЯ К ИГРЕ */
+.join-showcase-card {
+  border-radius: 24px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  padding: 28px 20px 34px;
+  text-align: center;
+}
+
+.device-mockup-frame {
+  position: relative;
+  max-width: 520px;
+  height: 220px;
+  margin: 0 auto 22px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 2px solid #27272a;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65);
+}
+
+.device-mockup-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.device-mockup-caption {
+  position: absolute;
+  bottom: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(8, 8, 10, 0.85);
+  padding: 4px 14px;
+  border-radius: 8px;
+  font-family: var(--font-hand);
+  font-size: 22px;
+  color: var(--accent-yellow);
+  white-space: nowrap;
 }
 
 /* =========================
-   КАРТОЧКИ
+   МАГАЗИН (KORE RUSSIA SHOP) С ИКОНКОЙ «НОВОЕ»
 ========================= */
-
-.animated-card {
- position:relative;
- overflow:hidden;
- padding:32px;
- margin-bottom:26px;
- border-radius:24px;
- border:2px solid rgba(255, 0, 0, 0.4);
- background:
-  radial-gradient(ellipse at 100% 0%,rgba(255, 0, 0, 0.12),transparent 50%),
-  linear-gradient(145deg,rgba(20, 2, 6, 0.98),rgba(5, 0, 1, 0.99));
- box-shadow:
-  0 20px 50px rgba(0,0,0,0.7),
-  inset 0 1px 0 rgba(255,255,255,0.08);
- backdrop-filter:blur(15px);
- opacity:0;
- transform:translateY(30px) scale(.985);
- transition:
-  opacity .7s ease,
-  transform .7s cubic-bezier(.2,.7,.2,1),
-  border-color .35s ease,
-  box-shadow .35s ease;
+.shop-overlay-page {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background-color: var(--bg-main);
+  background-size: 100% auto;
+  background-position: top center;
+  background-repeat: repeat-y;
+  overflow-y: auto;
+  display: none;
+  padding: 24px 16px 80px;
 }
 
-.animated-card.in-view {
- opacity:1;
- transform:translateY(0) scale(1);
+.shop-overlay-page.active {
+  display: block;
 }
 
-.animated-card:hover {
- border-color:#FF0000;
- box-shadow:
-  0 22px 60px rgba(255, 0, 0, 0.35),
-  0 15px 45px rgba(0,0,0,0.8);
+.shop-inner {
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-.card-title {
- display:flex;
- align-items:center;
- gap:14px;
- margin-bottom:16px;
- font-size:20px;
- font-weight:900;
- line-height:1.4;
- color:#ffffff;
+.shop-top-banner {
+  position: relative;
+  padding: 34px 22px;
+  border-radius: 22px;
+  background: #121216;
+  border: 1px solid var(--border-subtle);
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.card-title .icon {
- display:grid;
- place-items:center;
- width:46px;
- height:46px;
- flex-shrink:0;
- border-radius:14px;
- border:2px solid rgba(255, 0, 0, 0.6);
- background:linear-gradient(145deg,rgba(255, 0, 0, 0.3),rgba(255, 0, 0, 0.08));
- font-size:22px;
- box-shadow:0 0 20px rgba(255, 0, 0, 0.3);
+.shop-top-banner h1 {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 5vw, 44px);
+  font-style: italic;
+  text-transform: uppercase;
 }
 
-.card-text {
- color:var(--muted);
- font-size:14px;
- line-height:2;
- font-weight:600;
- margin-bottom:20px;
+.shop-top-banner p {
+  max-width: 580px;
+  margin: 10px auto 0;
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+.shop-close-x {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+}
+
+.shop-close-x:hover {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.shop-category-heading {
+  position: relative;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-style: italic;
+  text-transform: uppercase;
+  margin: 32px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-subtle);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Квадратная иконка «НОВОЕ» в верхней части раздела доната */
+.shop-new-section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent-yellow);
+  color: #08080a;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.8px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 10px rgba(247, 181, 0, 0.4);
+}
+
+.shop-items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 14px;
+}
+
+.shop-item-card {
+  position: relative;
+  background: #121216;
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  transition: transform 0.22s, border-color 0.22s, background 0.22s;
+}
+
+.shop-item-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-yellow);
+  background: #17171c;
+}
+
+.shop-discount-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--accent-red);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-style: italic;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.shop-item-card img {
+  width: 100%;
+  height: 126px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 12px;
+  background: #0a0a0c;
+}
+
+.shop-item-title {
+  font-size: 14.5px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.shop-item-bottom {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.shop-item-price {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-style: italic;
+  color: var(--accent-yellow);
+}
+
+.shop-cart-pill {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.07);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+}
+
+.shop-item-card:hover .shop-cart-pill {
+  background: var(--accent-yellow);
+  color: #08080a;
 }
 
 /* =========================
-   ФОТОГРАФИИ
+   МОДАЛЬНЫЕ ОКНА И АДМИН-ПАНЕЛЬ
 ========================= */
-
-.photo-frame {
- position:relative;
- height:350px;
- margin-top:20px;
- overflow:hidden;
- border:2px solid rgba(255, 0, 0, 0.5);
- border-radius:18px;
- background:#120003;
- box-shadow:0 12px 35px rgba(0,0,0,0.7);
- cursor:pointer;
- transition:border-color .3s,box-shadow .3s,transform .3s;
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.22s, visibility 0.22s;
 }
 
-.photo-frame:hover {
- border-color:#FF0000;
- box-shadow:0 0 40px rgba(255, 0, 0, 0.5);
- transform:translateY(-2px);
+.modal-backdrop.active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
 }
 
-.photo-frame img {
- display:block;
- width:100%;
- height:100%;
- object-fit:cover;
- transition:transform .65s cubic-bezier(.2,.7,.2,1),filter .4s;
+.modal-card {
+  width: 100%;
+  max-width: 480px;
+  max-height: 88dvh;
+  overflow-y: auto;
+  background: #121216;
+  border: 1px solid var(--border-strong);
+  border-radius: 22px;
+  padding: 26px;
 }
 
-.photo-frame:hover img {
- transform:scale(1.055);
- filter:saturate(1.2);
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-style: italic;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+  color: #ffffff;
 }
 
-/* =========================
-   ПРОМОКОД
-========================= */
-
-.promo-card {
- position:relative;
- padding:28px 20px;
- margin:22px 0;
- text-align:center;
- border:2px dashed #FF0000;
- border-radius:20px;
- background:
-  radial-gradient(ellipse at top,rgba(255, 0, 0, 0.2),transparent 75%),
-  #080002;
- box-shadow:inset 0 0 35px rgba(255, 0, 0, 0.1);
+.field-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 6px;
 }
 
-.promo-caption {
- font-size:12px;
- color:#ffccd5;
- font-weight:900;
- letter-spacing:1px;
+.field-input {
+  width: 100%;
+  min-height: 46px;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border-radius: 11px;
+  background: #0a0a0d;
+  border: 1px solid var(--border-strong);
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
 }
 
-.promo-code-btn {
- position:relative;
- display:inline-block;
- margin:20px 0 14px;
- padding:14px 34px;
- border:2px solid rgba(255, 255, 255, 0.6);
- border-radius:14px;
- background:linear-gradient(135deg,#FF0000,#990000);
- color:white;
- font-family:Inter,Arial,sans-serif;
- font-size:30px;
- font-weight:900;
- cursor:pointer;
- box-shadow:0 0 35px rgba(255, 0, 0, 0.7);
- transition:transform .25s,box-shadow .25s,filter .25s;
- user-select:none;
+.field-input:focus {
+  border-color: var(--accent-yellow);
 }
 
-.promo-code-btn:hover {
- transform:translateY(-3px) scale(1.025);
- box-shadow:0 0 50px rgba(255, 0, 0, 1);
- filter:brightness(1.15);
+.error-hint {
+  color: #ef4444;
+  font-size: 12px;
+  margin: -6px 0 10px;
+  display: none;
 }
 
-.promo-code-btn:active { transform:scale(.95); }
-
-.promo-hint { color:var(--muted); font-size:11px; }
-
-.bonus-list {
- display:grid;
- gap:10px;
- margin:22px auto 0;
- width:fit-content;
- list-style:none;
- text-align:left;
+.error-hint.active {
+  display: block;
 }
 
-.bonus-list li { color:#fff; font-size:14px; font-weight:800; }
-.bonus-list li span { color:#FF3333; }
-
-/* =========================
-   УВЕЛИЧЕННЫЕ БЕЛЫЕ КНОПКИ ДЕЙСТВИЙ
-========================= */
-
-.btn-group {
- display:flex;
- flex-direction:column;
- align-items:center;
- gap:15px;
- margin-top:28px;
+.admin-block {
+  padding: 14px;
+  border-radius: 14px;
+  background: #0b0b0e;
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 14px;
 }
 
-.btn-red {
- position:relative;
- display:flex;
- align-items:center;
- justify-content:center;
- gap:12px;
- width:100%;
- max-width:440px;
- min-height:62px;
- padding:18px 24px;
- overflow:hidden;
- border:2px solid #ffffff;
- border-radius:16px;
- background:#ffffff;
- color:#050001;
- box-shadow:0 10px 30px rgba(255, 255, 255, 0.25);
- text-decoration:none;
- text-align:center;
- font-size:14px;
- font-weight:900;
- letter-spacing:.5px;
- cursor:pointer;
- transition:transform .25s,box-shadow .25s,background .25s,color .25s,border-color .25s;
+.admin-block-title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-style: italic;
+  text-transform: uppercase;
+  color: var(--accent-yellow);
+  margin-bottom: 10px;
 }
 
-.btn-red:hover {
- transform:translateY(-3px);
- background:#FF0000;
- border-color:#FF0000;
- color:#ffffff;
- box-shadow:0 15px 45px rgba(255, 0, 0, 0.8);
+.admin-mini-btn {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--border-subtle);
+  font-size: 12.5px;
+  font-weight: 600;
+  margin-top: 6px;
+  transition: background 0.2s;
 }
 
-.btn-red:active { transform:scale(.98); }
-
-.btn-telegram {
- border-color:#0ea5e9;
- background:#0ea5e9;
- color:white;
- box-shadow:0 10px 30px rgba(14, 165, 233, 0.4);
-}
-.btn-telegram:hover {
- background:#0284c7;
- border-color:#0284c7;
- color:white;
- box-shadow:0 15px 45px rgba(14, 165, 233, 0.8);
+.admin-mini-btn:hover {
+  background: rgba(255, 255, 255, 0.14);
 }
 
-.btn-support { 
- border-color:#FF0000;
- background:#FF0000;
- color:white;
- box-shadow:0 10px 30px rgba(255, 0, 0, 0.4);
-}
-.btn-support:hover {
- background:#990000;
- border-color:#990000;
- color:white;
+.site-footer {
+  border-top: 1px solid var(--border-subtle);
+  padding: 32px 16px 48px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
 }
 
-.btn-secondary {
- background:rgba(255, 255, 255, 0.08);
- color:var(--white);
- border-color:rgba(255, 255, 255, 0.3);
- box-shadow:none;
-}
-.btn-secondary:hover {
- background:rgba(255, 255, 255, 0.2);
- border-color:white;
- color:white;
+@media (max-width: 820px) {
+  .desktop-nav-links { display: none; }
+  .details-grid { grid-template-columns: 1fr; }
 }
 
-.btn-icon { font-size:20px; transition:transform .25s; }
-.btn-red:hover .btn-icon { transform:scale(1.15) rotate(-5deg); }
-
-/* =========================
-   ФИНАЛЬНАЯ КАРТОЧКА И FOOTER
-========================= */
-
-.final-card {
- text-align:center;
- background:
-  radial-gradient(ellipse at top,rgba(255, 0, 0, 0.2),transparent 70%),
-  linear-gradient(150deg,#1f0105,#050001);
-}
-
-.final-title { justify-content:center; font-size:26px; color:#FF3333; letter-spacing:1px; }
-.final-description { max-width:550px; margin:0 auto; }
-
-.footer {
- position:relative;
- z-index:2;
- padding:30px 15px 45px;
- text-align:center;
- color:var(--muted);
- font-size:12px;
- line-height:2.4;
-}
-
-.footer-brand {
- color:#FF3333;
- font-weight:900;
- letter-spacing:3px;
- margin-bottom:6px;
- text-shadow:0 0 20px rgba(255, 0, 0, 0.7);
-}
-
-.admin-secret-trigger {
- position:relative;
- z-index:10;
- width:10px;
- height:10px;
- margin:35px auto 0;
- border-radius:50%;
- background:rgba(255,255,255,0.1);
- cursor:pointer;
-}
-
-.admin-secret-trigger:hover {
- background:#FF0000;
- box-shadow:0 0 15px #FF0000;
-}
-
-/* =========================
-   МОДАЛЬНЫЕ ОКНА
-========================= */
-
-.modal-overlay {
- position:fixed;
- inset:0;
- z-index:100000;
- display:flex;
- align-items:center;
- justify-content:center;
- padding:18px;
- background:rgba(0,0,0,0.88);
- backdrop-filter:blur(15px);
- opacity:0;
- visibility:hidden;
- pointer-events:none;
- transition:opacity .25s,visibility .25s;
-}
-
-.modal-overlay.active { opacity:1; visibility:visible; pointer-events:auto; }
-
-.admin-box {
- width:100%;
- max-width:480px;
- max-height:88vh;
- overflow-y:auto;
- padding:28px;
- border:2px solid rgba(255, 0, 0, 0.6);
- border-radius:24px;
- background:linear-gradient(145deg,#1f0105,#050001);
- box-shadow:0 0 70px rgba(255, 0, 0, 0.3);
-}
-
-.admin-heading {
- margin-bottom:22px;
- color:#FF3333;
- font-size:18px;
- font-weight:900;
- text-align:center;
- text-shadow:0 0 10px rgba(255,0,0,0.5);
-}
-
-.admin-input {
- width:100%;
- min-height:48px;
- padding:14px;
- margin-bottom:14px;
- outline:none;
- border:2px solid rgba(255, 0, 0, 0.4);
- border-radius:12px;
- background:rgba(255,255,255,0.05);
- color:white;
- font-size:14px;
-}
-
-.admin-input:focus { border-color:#FF0000; box-shadow:0 0 15px rgba(255,0,0,0.4); }
-.admin-input::placeholder { color:var(--muted); }
-
-.admin-setting-item {
- padding:16px;
- margin-bottom:14px;
- border:1px solid rgba(255,255,255,0.1);
- border-radius:14px;
- background:rgba(255,255,255,0.03);
-}
-
-.admin-setting-item label {
- display:block;
- margin-bottom:10px;
- color:#ffffff;
- font-size:13px;
- font-weight:800;
-}
-
-.admin-setting-item input[type=range] { width:100%; accent-color:#FF0000; }
-.admin-setting-item input[type=file] { font-size:12px; color:var(--muted); }
-
-#height-val { margin-top:8px; text-align:right; color:var(--muted); font-size:12px; }
-
-@media(max-width:850px) {
- .top-buttons { display:none; }
- .mobile-menu-btn { display:grid; }
-}
-
-@media(max-width:600px) {
- .wrapper { padding:24px 14px 50px; }
- .hero-title { font-size:clamp(28px,8vw,42px); letter-spacing:-.8px; }
- .hero-title .title-small { letter-spacing:3px; }
- .hero-description { font-size:13.5px; }
- .animated-card { padding:20px; border-radius:20px; }
- .card-title { font-size:17px; }
- .card-title .icon { width:40px; height:40px; }
- .card-text { font-size:13px; }
- .photo-frame { height:240px; border-radius:14px; }
- .promo-code-btn { font-size:26px; padding:12px 25px; }
- .btn-red { min-height:56px; padding:16px; font-size:13px; }
- .green-badge-text { font-size:10px; letter-spacing:.7px; }
+@media (max-width: 580px) {
+  .stat-cards-grid,
+  .live-stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .shop-items-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+  .shop-item-card img {
+    height: 98px;
+  }
 }
 </style>
 </head>
-
 <body>
 
-<!-- ФОНАРЬ И ЗВЕЗДНЫЕ ХОЛСТЫ -->
-<div class="lantern-spotlight" id="lantern-glow"></div>
-<canvas id="bg-canvas"></canvas>
-<canvas id="lantern-canvas"></canvas>
-<div class="noise"></div>
+<!-- АУДИОПЛЕЕР ДЛЯ ФОНОВОЙ МУЗЫКИ -->
+<audio id="bg-music-player" src="./music/bg_track.mp4" loop preload="auto"></audio>
 
-<!-- ВЕРХНЯЯ ПАНЕЛЬ И НАВИГАЦИЯ -->
-<header class="header-nav">
- <div class="header-container">
-  <div class="logo-box" onclick="window.scrollTo({top:0, behavior:'smooth'})">
-   <div class="logo-crown"><i class="fas fa-crown"></i></div>
-   <div class="logo-text"><span class="blood-text">KORE RUSSIA</span></div>
+<!-- 1. ЭКРАН ЗАГРУЗКИ (PRELOADER) С ИДЕАЛЬНОЙ РАМКОЙ -->
+<div id="preloader-screen">
+  <div class="preloader-logo-container" id="preloader-logo-wrap">
+    <div class="preloader-animated-frame"></div>
+    <div class="preloader-content-inner">
+      <img id="preloader-custom-img" src="" alt="KORE RUSSIA">
+      <div class="preloader-default-mark" id="preloader-default-mark">
+        <div class="preloader-emblem">K</div>
+        <div class="preloader-wordmark">KORE <span>RUSSIA</span></div>
+      </div>
+    </div>
   </div>
+</div>
 
-  <div class="top-buttons">
-   <button onclick="openModal('shop-modal')" class="nav-quick-btn">🛒 Магазин</button>
-   <button onclick="openModal('info-modal')" class="nav-quick-btn">ℹ️ Информация</button>
-   <button onclick="openModal('wheel-modal')" class="nav-quick-btn">🎁 Ежедневный приз</button>
-   <button onclick="openModal('manager-modal')" class="nav-quick-btn">👔 Менеджер проекта</button>
-   <button onclick="openModal('blogger-modal')" class="nav-quick-btn">🎬 Стать блогером</button>
+<!-- 2. ОКНО ВЫБОРА ЗВУКА ПРИ ВХОДЕ НА САЙТ -->
+<div class="sound-choice-backdrop" id="sound-choice-modal">
+  <div class="sound-choice-card">
+    <div class="sound-choice-icon">
+      <i class="fas fa-volume-high"></i>
+    </div>
+    <h3 class="sound-choice-title">Атмосфера KORE RUSSIA</h3>
+    <p class="sound-choice-text">
+      «Хочешь сделать пребывание на KORE RUSSIA ещё атмосфернее? Включи звуковое сопровождение и наслаждайся проектом в полной мере!»
+    </p>
+    <div class="sound-choice-buttons">
+      <button type="button" class="btn-primary-yellow" onclick="handleSoundChoice(true)">ДА</button>
+      <button type="button" class="btn-dark-outline" onclick="handleSoundChoice(false)">НЕТ</button>
+    </div>
   </div>
+</div>
 
-  <div style="display:flex; align-items:center; gap:10px;">
-   <button id="sound-btn" onclick="toggleSound()" class="sound-toggle-btn active">
-    <i id="sound-icon" class="fas fa-volume-up"></i>
-    <span id="sound-txt">Звук: Вкл</span>
-   </button>
-   
-   <button class="mobile-menu-btn" onclick="toggleDrawer()">
-    <i class="fas fa-bars"></i>
-   </button>
+<!-- ПЛАВАЮЩАЯ КНОПКА ЗВУКА -->
+<div class="floating-audio-widget" id="floating-audio-widget">
+  <button type="button" class="floating-audio-btn" id="floating-audio-btn" onclick="toggleBgAudio()" title="Включить / Выключить звук">
+    <i class="fas fa-volume-xmark" id="floating-audio-icon"></i>
+  </button>
+  <div class="floating-audio-meta">
+    <span class="floating-audio-title" id="floating-audio-title-text">ФОНОВЫЙ ЗВУК</span>
+    <span class="floating-audio-status" id="floating-audio-status-text">Нажмите для включения</span>
   </div>
- </div>
+</div>
+
+<!-- 3. ШАПКА САЙТА -->
+<header class="top-header">
+  <div class="header-inner">
+    <div class="header-left">
+      <div class="brand-logo" onclick="closeShopPage(); window.scrollTo({top:0, behavior:'smooth'})">
+        <div class="brand-icon-box" id="header-logo-box">K</div>
+      </div>
+      <div class="status-pill">СЕРВЕР ОНЛАЙН</div>
+      <div class="online-counter">
+        <span class="online-dot"></span>
+        <i class="fas fa-users"></i>
+        <span id="header-online-num">4</span>
+      </div>
+    </div>
+
+    <div class="header-right">
+      <nav class="desktop-nav-links">
+        <button type="button" onclick="scrollToSection('roles-sec')">Роли</button>
+        <button type="button" onclick="scrollToSection('world-sec')">Мир в деталях</button>
+        <button type="button" onclick="scrollToSection('live-sec')">Онлайн</button>
+        <button type="button" onclick="openModal('preregistration-modal')">Предрегистрация</button>
+        <button type="button" onclick="openShopPage()">Магазин</button>
+      </nav>
+      <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="btn-play-header">ИГРАТЬ</a>
+      <button type="button" class="burger-btn" onclick="toggleSideMenu()" aria-label="Открыть меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
 </header>
 
-<!-- МОБИЛЬНОЕ ВЫДВИЖНОЕ МЕНЮ (8 ПУНКТОВ) -->
-<div class="drawer-backdrop" id="drawer-backdrop" onclick="toggleDrawer()"></div>
-<aside class="mobile-drawer" id="mobile-drawer">
- <div class="drawer-header">
-  <div style="display:flex; align-items:center; gap:10px;">
-   <i class="fas fa-crown" style="color:#FF0000"></i>
-   <strong style="font-size:16px;">KORE RUSSIA</strong>
+<!-- 4. МИНИМАЛИСТИЧНОЕ БУРГЕР-МЕНЮ (С НОВЫМ РАЗДЕЛОМ «АПГРЕЙДЕР») -->
+<div class="menu-overlay" id="menu-overlay" onclick="toggleSideMenu()"></div>
+<aside class="side-menu" id="side-menu">
+  <div class="menu-top-bar">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div class="brand-icon-box" id="menu-header-logo" style="width:32px; height:32px; font-size:16px;">K</div>
+      <div class="status-pill">СЕРВЕР ОНЛАЙН</div>
+      <div class="online-counter" style="font-size:13px;">
+        <span class="online-dot"></span>
+        <i class="fas fa-users"></i>
+        <span>4</span>
+      </div>
+    </div>
+    <button type="button" class="menu-close-btn" onclick="toggleSideMenu()" aria-label="Закрыть меню">
+      <i class="fas fa-times"></i>
+    </button>
   </div>
-  <button onclick="toggleDrawer()"><i class="fas fa-times" style="font-size:20px; color:white;"></i></button>
- </div>
- <nav class="drawer-nav">
-  <button onclick="drawerAction('manager-modal')" class="drawer-item"><i class="fas fa-user-tie"></i> 1. Связаться с менеджером</button>
-  <button onclick="drawerAction('blogger-modal')" class="drawer-item"><i class="fas fa-question-circle"></i> 2. Кто такой блогер?</button>
-  <button onclick="drawerAction('blogger-modal')" class="drawer-item"><i class="fas fa-video"></i> 3. Как стать блогером?</button>
-  <button onclick="drawerAction('info-modal')" class="drawer-item"><i class="fas fa-info-circle"></i> 4. Информация проекта</button>
-  <button onclick="drawerAction('notif-modal', 'Уведомления', 'Официальные системные уведомления проекта и новости разработки.')" class="drawer-item"><i class="fas fa-bell"></i> 5. Уведомления</button>
-  <button onclick="drawerAction('msg-modal', 'Мои сообщения', 'У вас нет новых личных сообщений от администрации.')" class="drawer-item"><i class="fas fa-envelope"></i> 6. Мои сообщения</button>
-  <button onclick="drawerAction('profile-modal', 'Мой профиль', 'Информация об аккаунте, форумная статистика и привилегии.')" class="drawer-item"><i class="fas fa-user"></i> 7. Мой профиль</button>
-  <button onclick="drawerAction('settings-modal', 'Настройки аккаунта', 'Параметры безопасности, смена пароля и темы.')" class="drawer-item"><i class="fas fa-cog"></i> 8. Настройки аккаунта</button>
- </nav>
+
+  <div class="menu-body">
+    <div class="menu-brand-center">
+      <div class="menu-brand-title">
+        <div class="brand-icon-box" id="menu-center-logo" style="width:34px; height:34px; font-size:18px;">K</div>
+        KORE <span>RUSSIA</span>
+      </div>
+      <p class="menu-brand-sub">Твоя история начинается здесь. Доступно на мобильных устройствах.</p>
+    </div>
+
+    <!-- Кнопка скачивания APK -->
+    <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="menu-download-primary">
+      <div class="menu-dl-icon"><i class="fas fa-download"></i></div>
+      <div class="menu-dl-meta">
+        <small>ОФИЦИАЛЬНЫЙ ЛАУНЧЕР</small>
+        <strong>СКАЧАТЬ APK ИГРУ</strong>
+      </div>
+    </a>
+
+    <div class="menu-dl-row">
+      <a href="https://t.me/KoreCrmp" target="_blank" rel="noopener noreferrer" class="menu-dl-mini">
+        <i class="fab fa-telegram" style="color:#38bdf8;"></i> TELEGRAM
+      </a>
+      <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="menu-dl-mini">
+        <i class="fas fa-gamepad"></i> ИГРАТЬ
+      </a>
+    </div>
+
+    <nav class="menu-nav-list">
+      <button type="button" class="menu-nav-item" onclick="menuGoSection('top')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-home"></i></span>
+          <span class="menu-nav-label">ГЛАВНАЯ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuOpenModal('preregistration-modal')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-gamepad"></i></span>
+          <span class="menu-nav-label">ПРЕДРЕГИСТРАЦИЯ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <!-- ПУНКТ 5: НОВЫЙ РАЗДЕЛ «АПГРЕЙДЕР» -->
+      <button type="button" class="menu-nav-item" onclick="openDevNoticeModal('Апгрейдер')">
+        <span class="dev-badge-corner">В разработке</span>
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-lock"></i></span>
+          <span class="menu-nav-label">АПГРЕЙДЕР</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuOpenModal('wheel-modal')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-gift"></i></span>
+          <span class="menu-nav-label">ЕЖЕДНЕВНЫЙ ПРИЗ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuGoSection('news-sec')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-newspaper"></i></span>
+          <span class="menu-nav-label">СВЕЖАК С УЛИЦ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuOpenModal('info-modal')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-info-circle"></i></span>
+          <span class="menu-nav-label">ИНФОРМАЦИЯ ПРОЕКТА</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuOpenModal('blogger-modal')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-video"></i></span>
+          <span class="menu-nav-label">СТАТЬ БЛОГЕРОМ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item" onclick="menuOpenModal('manager-modal')">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-question-circle"></i></span>
+          <span class="menu-nav-label">ПОМОЩЬ И МЕНЕДЖЕР</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+
+      <button type="button" class="menu-nav-item accent-gold" onclick="toggleSideMenu(); openShopPage();">
+        <span class="menu-nav-left">
+          <span class="menu-nav-icon"><i class="fas fa-coins"></i></span>
+          <span class="menu-nav-label">МАГАЗИН / ПОПОЛНИТЬ СЧЁТ</span>
+        </span>
+        <i class="fas fa-arrow-right menu-nav-arrow"></i>
+      </button>
+    </nav>
+
+    <div class="menu-footer-secret">
+      <button type="button" class="admin-dot-trigger" onclick="toggleSideMenu(); openAdminAuth();" aria-label="Панель управления"></button>
+    </div>
+  </div>
 </aside>
 
-<!-- ЭКРАН ЗАГРУЗКИ (БУКВЫ FS ПО ЦЕНТРУ) -->
-<div id="loader-screen">
- <div class="loader-content">
-  <div class="orb">
-   <div class="orb-ring one"></div>
-   <div class="orb-ring two"></div>
-   <div class="orb-center">FS</div>
-  </div>
-  <div class="loader-title">KORE RUSSIA</div>
-  <div class="loader-subtitle" id="loader-status">ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ...</div>
-  <div class="loader-track"><div class="loader-progress" id="loader-fill"></div></div>
-  <div class="loader-percent" id="loader-num">0%</div>
- </div>
-</div>
+<!-- 5. ОСНОВНОЙ КОНТЕНТ САЙТА -->
+<main class="main-wrapper" id="main-site-content">
 
-<!-- ОСНОВНОЙ САЙТ -->
-<main class="wrapper" id="main-content">
- <div class="top-line"></div>
-
- <div class="green-badge">
-  <span class="green-dot"></span>
-  <span class="green-badge-text">СЕРВЕР АКТИВЕН / ОНЛАЙН</span>
- </div>
-
- <header>
-  <h1 class="hero-title">
-   <span class="blood-text">KORE RUSSIA</span>
-   <span class="title-small">ТВОЯ ИСТОРИЯ НАЧИНАЕТСЯ ЗДЕСЬ</span>
-  </h1>
-  <p class="hero-description">
-   Добро пожаловать в KORE RUSSIA — мир, в котором ты сам решаешь, кем стать и какой путь выбрать. Исследуй города, развивай персонажа, знакомься с игроками и создавай собственную историю.
-  </p>
- </header>
-
- <div class="section-label">✦ ВОЗМОЖНОСТИ ПРОЕКТА ✦</div>
-
- <!-- КАРТОЧКА 1 -->
- <section class="animated-card">
-  <h2 class="card-title">
-   <span class="icon">🚘</span>
-   Огромный открытый мир
-  </h2>
-  <p class="card-text">
-   Исследуй города, покупай автомобили, обзаводись недвижимостью, зарабатывай деньги и развивай своего персонажа. Начни с нуля, достигай новых высот и докажи, что именно ты способен стать настоящей легендой KORE RUSSIA.
-  </p>
-  <div class="photo-frame">
-   <img id="img-1" src="./images/photo1.jpg" alt="Игровой мир KORE RUSSIA" loading="lazy">
-  </div>
- </section>
-
- <!-- КАРТОЧКА 2 -->
- <section class="animated-card">
-  <h2 class="card-title">
-   <span class="icon">⚖️</span>
-   Выбирай собственный путь
-  </h2>
-  <p class="card-text">
-   Служи закону, вступай в государственные организации, развивайся по карьерной лестнице или выбирай совершенно другой путь. Создавай свою команду, находи союзников и участвуй в событиях игрового мира.
-  </p>
-  <div class="photo-frame">
-   <img id="img-2" src="./images/photo2.png" alt="Организации и фракции KORE RUSSIA" loading="lazy">
-  </div>
- </section>
-
- <!-- КАРТОЧКА 3 (ПРОМОКОД) -->
- <section class="animated-card">
-  <h2 class="card-title">
-   <span class="icon">🎁</span>
-   Бонус для новичков
-  </h2>
-  <p class="card-text">
-   Начинать всегда приятнее с преимуществом. Используй эксклюзивный промокод и забирай стартовые бонусы!
-  </p>
-  <div class="promo-card">
-   <div class="promo-caption">✦ ЭКСКЛЮЗИВНЫЙ ПРОМОКОД ПРОЕКТА ✦</div>
-   <div class="promo-code-btn" id="promo-btn" role="button" tabindex="0" onclick="copyPromo()">#Фарка</div>
-   <div class="promo-hint" id="promo-hint">Нажми на промокод, чтобы скопировать</div>
-   <ul class="bonus-list">
-    <li>💎 <span>+1 000 BC</span></li>
-    <li>💵 <span>+20 000 000</span> игровой валюты</li>
-   </ul>
-  </div>
-  <div class="photo-frame">
-   <img id="img-3" src="./images/photo3.jpg" alt="Бонусы и наборы KORE RUSSIA" loading="lazy">
-  </div>
- </section>
-
- <!-- ОФИЦИАЛЬНЫЙ ПОСТ АДМИНИСТРАЦИИ -->
- <div class="section-label">📢 ОФИЦИАЛЬНОЕ ОБЪЯВЛЕНИЕ 📢</div>
- <div class="official-post animated-card">
-  <div class="post-user-header">
-   <div class="post-user-info">
-    <img src="https://placehold.co/120x120/120003/FF0000?text=KR" alt="Avatar" class="post-avatar">
-    <div>
-     <div style="font-weight:900; font-size:16px; color:white;">KORE RUSSIA | INFO <i class="fas fa-check-circle" style="color:#FF0000; font-size:12px;"></i></div>
-     <div style="font-size:11px; color:var(--muted);">Публикация ключевых новостей и регламентов проекта</div>
-     <div class="post-badges">
-      <span class="badge-project-team">Команда проекта</span>
-      <span class="badge-forum-team">Команда форума</span>
-      <span class="badge-developer">Разработчик сайта</span>
-     </div>
+  <section class="hero-section" id="hero-bg-box">
+    <div class="section-header-center">
+      <div class="handwritten-tag yellow">✌️ ИГРА, ГДЕ ВСЁ ПО-НАСТОЯЩЕМУ</div>
+      <svg class="handwritten-underline" viewBox="0 0 200 10" fill="none">
+        <path d="M4 7C55 2 145 2 196 7" stroke="#f7b500" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h1 class="display-heading">ВЫБЕРИ<br>СВОЮ РОЛЬ</h1>
+      <p class="section-lead">
+        Виртуальный город, где у каждого своя роль. Торгуй, патрулируй, командуй — и строй жизнь вместе с другими игроками в KORE RUSSIA.
+      </p>
     </div>
-   </div>
-   <div style="font-size:11px; color:var(--muted);">#1</div>
-  </div>
-  <div class="post-content">
-   <p style="margin-bottom:12px; font-weight:700; color:white;">Приветствую всех участников сообщества KORE RUSSIA!</p>
-   <p style="margin-bottom:12px;">Мы разрабатываем собственный CRMP Mobile-проект, в котором каждый сможет построить карьеру, добиться успеха, найти новых друзей и стать частью большого игрового мира.</p>
-   <div style="background:rgba(255,0,0,0.12); border-left:4px solid #FF0000; padding:12px; border-radius:8px; margin:14px 0;">
-    <strong style="color:white;">🎁 БОНУС ПРИ СТАРТЕ:</strong><br>
-    💰 100.000.000$<br>
-    💎 2.500 BC
-   </div>
-   <p>Ссылка на официальный Telegram-канал проекта: <br><a href="https://t.me/KoreCrmp" target="_blank" style="color:#FF3333; font-weight:800; text-decoration:underline;">https://t.me/KoreCrmp</a></p>
-  </div>
-  <div class="post-footer">
-   <div>👍 ❤️ 🔥 Stepan_Ruiz, Farich_Farichov и 455 других</div>
-   <button onclick="playSound('click')" style="color:#FF3333; font-weight:800;"><i class="far fa-thumbs-up"></i> Like</button>
-  </div>
- </div>
 
- <!-- ФИНАЛЬНАЯ КАРТОЧКА -->
- <section class="animated-card final-card" style="margin-top:30px;">
-  <h2 class="card-title final-title"><span class="blood-text">KORE RUSSIA</span></h2>
-  <p class="card-text final-description">
-   Твой мир. Твои решения. Твоя история. Присоединяйся к проекту, знакомься с игроками и начинай собственное приключение.
-  </p>
-  <div class="btn-group">
-   <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="btn-red">
-    <span class="btn-icon">📦</span><span>СКАЧАТЬ ИГРУ (APK)</span>
-   </a>
-   <a href="https://t.me/KoreCrmp" target="_blank" rel="noopener noreferrer" class="btn-red btn-telegram">
-    <span class="btn-icon">✈️</span><span>НАШ TELEGRAM-КАНАЛ</span>
-   </a>
-   <a href="https://t.me/urtung" target="_blank" rel="noopener noreferrer" class="btn-red btn-support">
-    <span class="btn-icon">🛠️</span><span>ТЕХНИЧЕСКАЯ ПОДДЕРЖКА</span>
-   </a>
-  </div>
- </section>
+    <div class="stat-cards-grid">
+      <div class="stat-banner-card amber">
+        <div class="stat-banner-top">
+          <i class="fas fa-users" style="font-size:18px;"></i>
+          <span>БОЛЕЕ 66 ТЫС</span>
+        </div>
+        <div class="stat-banner-bottom">УНИКАЛЬНЫХ ИГРОКОВ В СУТКИ</div>
+      </div>
 
- <div class="admin-secret-trigger" onclick="openAdminAuth()" title="Admin"></div>
+      <div class="stat-banner-card green">
+        <div class="stat-banner-top">
+          <span class="online-dot"></span>
+          <i class="fas fa-users" style="font-size:18px;"></i>
+          <span id="hero-online-num">4</span>
+        </div>
+        <div class="stat-banner-bottom">ТЕКУЩИЙ ОНЛАЙН</div>
+      </div>
+    </div>
+
+    <div class="cta-stack">
+      <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="btn-primary-yellow">
+        <i class="fas fa-download"></i> СКАЧАТЬ APK ИГРУ / ИГРАТЬ
+      </a>
+      <button type="button" class="btn-dark-outline" onclick="openModal('preregistration-modal')">
+        <i class="fas fa-user-check"></i> ПРОЙТИ ПРЕДРЕГИСТРАЦИЮ
+      </button>
+    </div>
+  </section>
+
+  <!-- СЛАЙДЕР РОЛЕЙ -->
+  <section class="section-block" id="roles-sec">
+    <div class="role-showcase">
+      <div class="role-visual-stage">
+        <button type="button" class="role-arrow-btn prev" onclick="switchRole(-1)" aria-label="Предыдущая роль">
+          <i class="fas fa-arrow-left"></i>
+        </button>
+        <img id="role-character-img" src="./images/photo2.png" alt="Персонаж KORE RUSSIA">
+        <button type="button" class="role-arrow-btn next" onclick="switchRole(1)" aria-label="Следующая роль">
+          <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="role-icon-badge" id="role-icon"><i class="fas fa-gun"></i></div>
+      <div class="role-name" id="role-title">БАНДИТ</div>
+
+      <div class="voice-player-bar" id="voice-player-bar" onclick="toggleVoiceSample()">
+        <button type="button" class="voice-play-circle" id="voice-play-icon">
+          <i class="fas fa-play"></i>
+        </button>
+        <span class="voice-time" id="voice-duration">00:24</span>
+        <div class="voice-waves" id="voice-waves"></div>
+      </div>
+
+      <div class="role-quote-box" id="role-quote">« Сила, страх и уважение — моя валюта »</div>
+      <p class="role-desc-text" id="role-desc">
+        Закон? Это для тех, кто не может договориться по-хорошему. Я предпочитаю брать своё здесь и сейчас, собирать свою банду и диктовать правила улиц.
+      </p>
+    </div>
+  </section>
+
+  <!-- МИР В ДЕТАЛЯХ -->
+  <section class="section-block" id="world-sec">
+    <div class="section-header-center">
+      <div class="handwritten-tag red">👑 КРИМИНАЛЬНЫЙ РОЛЕВОЙ МИР</div>
+      <svg class="handwritten-underline" viewBox="0 0 200 10" fill="none">
+        <path d="M4 7C55 2 145 2 196 7" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2 class="display-heading">МИР В ДЕТАЛЯХ</h2>
+      <p class="section-lead">
+        Бесплатный многопользовательский симулятор жизни, в котором нет готовых сценариев: твоя история пишется поступками, случайными встречами и умением находить общий язык с самыми разными людьми.
+      </p>
+    </div>
+
+    <div class="details-grid">
+      <article class="detail-card" onclick="openDetailCardModal(0)">
+        <img id="img-1" src="./images/photo1.jpg" alt="Открытый мир KORE RUSSIA">
+        <div class="detail-card-overlay">
+          <div class="detail-card-sub">ОГРОМНЫЙ ОТКРЫТЫЙ МИР</div>
+          <h3 class="detail-card-title">ВЫДАЮЩАЯСЯ ГРАФИКА</h3>
+        </div>
+        <div class="detail-plus-btn">+</div>
+      </article>
+
+      <article class="detail-card" onclick="openDetailCardModal(1)">
+        <img id="img-2" src="./images/photo2.png" alt="Фракции и автопарк">
+        <div class="detail-card-overlay">
+          <div class="detail-card-sub">СОБСТВЕННЫЙ ПУТЬ</div>
+          <h3 class="detail-card-title">ФРАКЦИИ И АВТОПАРК</h3>
+        </div>
+        <div class="detail-plus-btn">+</div>
+      </article>
+
+      <article class="detail-card" onclick="openDetailCardModal(2)">
+        <img id="img-3" src="./images/photo3.jpg" alt="Стартовые бонусы">
+        <div class="detail-card-overlay">
+          <div class="detail-card-sub">ПРЕИМУЩЕСТВО НА СТАРТЕ</div>
+          <h3 class="detail-card-title">БОНУС НОВИЧКАМ</h3>
+        </div>
+        <div class="detail-plus-btn">+</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ПРОМОКОД -->
+  <section class="section-block">
+    <div class="promo-banner-card">
+      <div>
+        <div class="handwritten-tag yellow" style="font-size:20px;">🎁 СТАРТОВЫЙ ПАКЕТ</div>
+        <h3 class="display-heading" style="font-size:30px;">ЭКСКЛЮЗИВНЫЙ ПРОМОКОД</h3>
+        <p style="font-size:13.5px; color:var(--text-muted); margin-top:6px;">
+          Активируй в игре и получи <strong style="color:#ffffff;">+1 000 BC</strong> и <strong style="color:#ffffff;">+20 000 000$</strong> игровой валюты.
+        </p>
+      </div>
+      <div style="text-align:center;">
+        <button type="button" class="promo-code-pill" id="promo-btn" onclick="copyPromo()">#Фарка</button>
+        <div id="promo-hint" style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">Нажми, чтобы скопировать</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРЯМО СЕЙЧАС В ИГРЕ -->
+  <section class="section-block" id="live-sec">
+    <div class="section-header-center">
+      <div class="handwritten-tag purple">💎 ПОГРУЖЕНИЕ В МИР</div>
+      <svg class="handwritten-underline" viewBox="0 0 200 10" fill="none">
+        <path d="M4 7C55 2 145 2 196 7" stroke="#a855f7" stroke-width="3" stroke-linecap="round"/>
+      </svg>
+      <h2 class="display-heading">ПРЯМО СЕЙЧАС В ИГРЕ</h2>
+      <p style="font-family:var(--font-display); font-size:12px; font-style:italic; color:var(--text-muted); margin-top:8px;">
+        ПОСЛЕДНЕЕ ОБНОВЛЕНИЕ ИНФОРМАЦИИ <span style="color:var(--accent-green);">ТОЛЬКО ЧТО</span>
+      </p>
+    </div>
+
+    <div class="live-stats-grid">
+      <div class="live-stat-card">
+        <div class="live-stat-top">
+          <span class="live-stat-tag" style="color:#4ade80;">ДВИЖУХА</span>
+          <span class="rec-badge">REC</span>
+        </div>
+        <div>
+          <div class="live-stat-num">4</div>
+          <div class="live-stat-desc">ИГРОКОВ В МИРЕ ИГРЫ</div>
+        </div>
+      </div>
+
+      <div class="live-stat-card">
+        <div class="live-stat-top">
+          <span class="live-stat-tag" style="color:#f43f5e;">ЖАРКИЙ АЗАРТ</span>
+        </div>
+        <div>
+          <div class="live-stat-num">1</div>
+          <div class="live-stat-desc">ИГРОКОВ В АЗАРТНЫХ ИГРАХ</div>
+        </div>
+      </div>
+
+      <div class="live-stat-card">
+        <div class="live-stat-top">
+          <span class="live-stat-tag" style="color:#60a5fa;">БОРЬБА ЗА ВЛИЯНИЕ</span>
+        </div>
+        <div>
+          <div class="live-stat-num">1 ЗАХВАТ</div>
+          <div class="live-stat-desc">KORE SQUAD — ЛИДЕР ВЛИЯНИЯ</div>
+        </div>
+      </div>
+
+      <div class="live-stat-card">
+        <div class="live-stat-top">
+          <span class="live-stat-tag" style="color:#fb923c;">ГОРОД, КОТОРЫЙ НЕ СПИТ</span>
+          <span class="rec-badge">REC</span>
+        </div>
+        <div>
+          <div class="faction-bar-labels">
+            <span>КРИМИНАЛ (3)</span>
+            <span>ГОСУДАРСТВО (1)</span>
+          </div>
+          <div class="faction-bar-track">
+            <div class="faction-bar-crim" style="width:75%;"></div>
+          </div>
+          <div class="live-stat-desc" style="margin-top:8px;">ПРОТИВОСТОЯНИЕ ИГРОКОВ В РАЗНЫХ ФРАКЦИЯХ</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ОФИЦИАЛЬНЫЙ ПОСТ -->
+  <section class="section-block" id="news-sec">
+    <div class="section-header-center">
+      <div class="handwritten-tag cyan">📡 СВЕЖАК С УЛИЦ</div>
+      <h2 class="display-heading" style="font-size:34px;">ОФИЦИАЛЬНОЕ ОБЪЯВЛЕНИЕ</h2>
+    </div>
+
+    <div class="news-post-card">
+      <div class="news-post-head">
+        <div style="display:flex; align-items:center; gap:12px;">
+          <div class="news-avatar">KR</div>
+          <div>
+            <div style="font-weight:700; font-size:15px;">KORE RUSSIA | INFO <i class="fas fa-check-circle" style="color:var(--accent-yellow); font-size:12px;"></i></div>
+            <div style="display:flex; flex-wrap:wrap; gap:6px; margin-top:5px;">
+              <span class="role-chip gold">Команда проекта</span>
+              <span class="role-chip">Команда форума</span>
+              <span class="role-chip">Разработчик сайта</span>
+            </div>
+          </div>
+        </div>
+        <span style="font-size:12px; color:var(--text-dim);">#1</span>
+      </div>
+
+      <div class="news-post-body">
+        <p style="margin-bottom:10px; color:#ffffff; font-weight:600;">Приветствую всех участников сообщества KORE RUSSIA!</p>
+        <p style="margin-bottom:12px;">Мы разрабатываем собственный CRMP Mobile-проект, в котором каждый сможет построить карьеру, добиться успеха, найти новых друзей и стать частью большого игрового мира.</p>
+        <div style="background:rgba(247,181,0,0.08); border-left:3px solid var(--accent-yellow); padding:12px 14px; border-radius:8px; margin:14px 0;">
+          <strong style="color:#ffffff;">🎁 БОНУС ПРИ СТАРТЕ:</strong><br>
+          💰 100.000.000$ &nbsp;|&nbsp; 💎 2.500 BC
+        </div>
+        <p>Официальный Telegram-канал: <a href="https://t.me/KoreCrmp" target="_blank" style="color:var(--accent-yellow); font-weight:600;">https://t.me/KoreCrmp</a></p>
+      </div>
+
+      <div class="news-post-foot">
+        <span>👍 ❤️ 🔥 Stepan_Ruiz, Farich_Farichov и 455 других</span>
+        <button type="button" onclick="this.style.color='#f7b500'" style="font-weight:600;"><i class="far fa-thumbs-up"></i> Нравится</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ПРИСОЕДИНЯЙСЯ К ИГРЕ -->
+  <section class="section-block">
+    <div class="join-showcase-card">
+      <div class="device-mockup-frame">
+        <img id="img-join-banner" src="./images/photo1.jpg" alt="KORE RUSSIA на смартфоне">
+        <div class="device-mockup-caption">📱 ЖДЁМ ТЕБЯ!</div>
+      </div>
+
+      <h2 class="display-heading">ПРИСОЕДИНЯЙСЯ<br>К ИГРЕ!</h2>
+      <p class="section-lead" style="margin-bottom:24px;">
+        Не привязывайся к месту. Начал дома — продолжил в дороге. Один аккаунт работает на всех устройствах без потери прогресса.
+      </p>
+
+      <div class="cta-stack">
+        <a href="https://t.me/FarichovskiyHub/45" target="_blank" rel="noopener noreferrer" class="btn-primary-yellow">
+          <i class="fas fa-download"></i> СКАЧАТЬ ЛАУНЧЕР APK (ИГРАТЬ)
+        </a>
+        <a href="https://t.me/KoreCrmp" target="_blank" rel="noopener noreferrer" class="btn-dark-outline">
+          <i class="fab fa-telegram-plane"></i> НАШ TELEGRAM-КАНАЛ
+        </a>
+        <a href="https://t.me/urtung" target="_blank" rel="noopener noreferrer" class="btn-dark-outline">
+          <i class="fas fa-headset"></i> ТЕХНИЧЕСКАЯ ПОДДЕРЖКА
+        </a>
+      </div>
+    </div>
+  </section>
+
 </main>
 
-<footer class="footer">
- <div class="footer-brand"><span class="blood-text">KORE RUSSIA</span></div>
- <div>Играй. Развивайся. Создавай свою историю.</div>
- <div style="margin-top:8px; opacity:.9; font-weight:700; color:var(--white);">
-  Купить дизайн такого же сайта можно тут: <a href="https://t.me/urtung" target="_blank" style="color:#FF3333; text-decoration:underline;">@urtung</a>
- </div>
- <div style="margin-top:6px; color:#FF3333; font-weight:900; letter-spacing:1px;">B.y Farich</div>
- <div style="margin-top:6px; opacity:.6">© KORE RUSSIA</div>
+<!-- =========================================
+   СТРАНИЦА МАГАЗИНА (KORE RUSSIA SHOP) С ИКОНКОЙ «НОВОЕ»
+========================================= -->
+<div id="shop-page" class="shop-overlay-page">
+  <div class="shop-inner">
+    <div class="shop-top-banner">
+      <button type="button" class="shop-close-x" onclick="closeShopPage()" aria-label="Закрыть магазин">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="handwritten-tag yellow" style="font-size:20px;">🛒 ОФИЦИАЛЬНЫЙ ДОНАТ-МАГАЗИН</div>
+      <h1>KORE RUSSIA SHOP</h1>
+      <p>Приобретай донат-валюту, эксклюзивные автомобили, уникальные скины и игровую валюту с быстрой выдачей на аккаунт.</p>
+    </div>
+
+    <!-- ПУНКТ 4: РАЗДЕЛ ДОНАТА С КВАДРАТНОЙ ИКОНКОЙ «НОВОЕ» -->
+    <h2 class="shop-category-heading">
+      💸 Донат валюта (BC) 
+      <span class="shop-new-section-badge">НОВОЕ</span>
+    </h2>
+    <div class="shop-items-grid" id="cat-donate"></div>
+
+    <h2 class="shop-category-heading">💎 Эксклюзивный транспорт</h2>
+    <div class="shop-items-grid" id="cat-cars"></div>
+
+    <h2 class="shop-category-heading">🎀 Персональные скины</h2>
+    <div class="shop-items-grid" id="cat-skins"></div>
+
+    <h2 class="shop-category-heading">💰 Игровая валюта (Вирты)</h2>
+    <div class="shop-items-grid" id="cat-virts"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div style="font-family:var(--font-display); font-size:20px; font-style:italic; color:#ffffff; letter-spacing:1px; margin-bottom:6px;">
+    KORE <span style="color:var(--accent-yellow);">RUSSIA</span>
+  </div>
+  <div>Играй. Развивайся. Создавай свою историю.</div>
+  <div style="margin-top:8px;">
+    Разработка и дизайн: <a href="https://t.me/urtung" target="_blank" style="color:var(--accent-yellow);">@urtung</a> &bull; B.y Farich
+  </div>
 </footer>
 
-<!-- МОДАЛЬНОЕ ОКНО: ИНФОРМАЦИЯ ПРОЕКТА -->
-<div class="modal-overlay" id="info-modal">
- <div class="admin-box" style="max-width:560px;">
-  <h2 class="admin-heading">🚀 KORE RUSSIA — НОВАЯ ГЛАВА В МИРЕ CRMP!</h2>
-  <p style="font-size:13.5px; line-height:1.9; color:var(--muted); margin-bottom:15px;">
-   👋 <strong>Добро пожаловать на официальный канал KORE RUSSIA!</strong><br><br>
-   🏙 Мы разрабатываем собственный CRMP Mobile-проект, в котором каждый сможет построить карьеру, добиться успеха, найти новых друзей и стать частью большого игрового мира.
-  </p>
-  <div style="background:rgba(255,0,0,0.1); padding:14px; border-radius:12px; margin-bottom:15px; font-size:12.5px;">
-   <strong style="color:#FF3333;">🔥 ЧТО ВАС ЖДЁТ?</strong><br>
-   🚘 Атмосфера настоящей CRMP-жизни.<br>
-   🏢 Большой игровой мир и множество возможностей.<br>
-   👤 Развитие персонажа и полноценная RP-жизнь.<br>
-   ⚙️ Уникальные механики и собственные разработки.
+<!-- =========================================
+   МОДАЛЬНЫЕ ОКНА
+========================================= -->
+
+<div class="modal-backdrop" id="detail-card-modal">
+  <div class="modal-card">
+    <h3 class="modal-title" id="detail-modal-title">ЗАГОЛОВОК</h3>
+    <img id="detail-modal-img" src="" alt="" style="width:100%; height:200px; object-fit:cover; border-radius:14px; margin-bottom:14px;">
+    <p id="detail-modal-desc" style="font-size:14px; color:#d1d5db; line-height:1.65; margin-bottom:18px;"></p>
+    <button type="button" class="btn-dark-outline" onclick="closeModals()">ЗАКРЫТЬ</button>
   </div>
-  <div style="background:linear-gradient(135deg, #1f0105, #050001); border:2px solid #FF0000; padding:16px; border-radius:14px; text-align:center; margin-bottom:15px;">
-   <div style="font-size:13px; font-weight:900; color:#FF3333;">🎁 БОНУС ПРИ СТАРТЕ!</div>
-   <div style="font-size:19px; font-weight:900; color:white; margin-top:6px;">💰 100.000.000$ | 💎 2.500 BC</div>
-  </div>
-  <p style="font-size:11.5px; color:var(--muted); margin-bottom:16px;">
-   👥 <strong>НАБОР В КОМАНДУ!</strong> Мы находимся в поиске активных и ответственных людей, которые хотят присоединиться к нашей команде!
-  </p>
-  <a href="https://t.me/KoreCrmp" target="_blank" class="btn-red btn-telegram" style="width:100%; text-decoration:none; max-width:none;">📲 ТЕЛЕГРАМ-КАНАЛ ПРОЕКТА</a>
-  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
 </div>
 
-<!-- МОДАЛЬНОЕ ОКНО: ЕЖЕДНЕВНЫЙ ПРИЗ -->
-<div class="modal-overlay" id="wheel-modal">
- <div class="admin-box" style="text-align:center;">
-  <h2 class="admin-heading">🎁 ЕЖЕДНЕВНЫЙ ПРИЗ</h2>
-  <div style="font-size:50px; margin:20px 0; animation:pulse 1s infinite alternate;">🎁</div>
-  <button onclick="claimPrize()" class="btn-red" style="width:100%; max-width:none;">ЗАБРАТЬ ПРИЗ</button>
-  <div id="prize-result" style="margin-top:14px; font-size:14px; font-weight:900; color:var(--green);"></div>
-  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО: МЕНЕДЖЕР ПРОЕКТА -->
-<div class="modal-overlay" id="manager-modal">
- <div class="admin-box">
-  <h2 class="admin-heading">👔 МЕНЕДЖЕР ПРОЕКТА</h2>
-  <p style="font-size:13.5px; color:var(--muted); text-align:center; margin-bottom:16px;">
-   Свяжитесь с официальным менеджером проекта по вопросам сотрудничества, рекламы или вступления в команду.
-  </p>
-  <a href="https://t.me/urtung" target="_blank" class="btn-red btn-support" style="width:100%; max-width:none;">💬 НАПИСАТЬ МЕНЕДЖЕРУ</a>
-  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО: СТАТЬ БЛОГЕРОМ -->
-<div class="modal-overlay" id="blogger-modal">
- <div class="admin-box">
-  <h2 class="admin-heading">🎬 СТАТЬ БЛОГЕРОМ</h2>
-  <p style="font-size:12.5px; color:var(--muted); margin-bottom:16px;">
-   Снимаешь контент по CRMP Mobile? Заполни форму и получи медиа-права и регулярные бонусы!
-  </p>
-  <input type="text" placeholder="Ваш никнейм" class="admin-input">
-  <input type="text" placeholder="Ссылка на YouTube / TikTok / Telegram" class="admin-input">
-  <button onclick="playSound('win'); alert('Заявка успешно отправлена!'); closeModals();" class="btn-red" style="width:100%; max-width:none;">ОТПРАВИТЬ ЗАЯВКУ</button>
-  <button class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
-</div>
-
-<!-- МОДАЛЬНОЕ ОКНО: МАГАЗИН -->
-<div class="modal-overlay" id="shop-modal">
- <div class="admin-box">
-  <h2 class="admin-heading">🛒 МАГАЗИН ПРОЕКТА</h2>
-  <div style="display:grid; gap:12px; margin-bottom:16px;">
-   <div style="padding:12px; background:rgba(255,255,255,0.04); border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,0,0,0.2);">
-    <span>VIP Статус (30 дн)</span> <strong style="color:#FF3333;">490 ₽</strong>
-   </div>
-   <div style="padding:12px; background:rgba(255,255,255,0.04); border-radius:12px; display:flex; justify-content:space-between; align-items:center; border:1px solid rgba(255,0,0,0.2);">
-    <span>5.000 Black Coin</span> <strong style="color:#FF3333;">990 ₽</strong>
-   </div>
+<!-- Модальное уведомление для разделов в разработке -->
+<div class="modal-backdrop" id="dev-notice-modal">
+  <div class="modal-card" style="text-align:center;">
+    <div style="font-size:42px; color:var(--accent-yellow); margin-bottom:14px;"><i class="fas fa-tools"></i></div>
+    <h3 class="modal-title" id="dev-notice-title">РАЗДЕЛ В РАЗРАБОТКЕ</h3>
+    <p style="font-size:14px; color:var(--text-muted); margin-bottom:20px;" id="dev-notice-desc">
+      Этот функционал находится в активной разработке и скоро будет доступен в KORE RUSSIA. Следите за обновлениями!
+    </p>
+    <button type="button" class="btn-primary-yellow" onclick="closeModals()">ПОНЯТНО</button>
   </div>
-  <button class="btn-red btn-secondary" style="width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
 </div>
 
-<!-- ДЕФОЛТНЫЙ ИНФО-МОДАЛ (ДЛЯ МЕНЮ) -->
-<div class="modal-overlay" id="generic-modal">
- <div class="admin-box">
-  <h2 class="admin-heading" id="generic-title">УВЕДОМЛЕНИЕ</h2>
-  <p style="font-size:13.5px; color:var(--muted); text-align:center; margin-bottom:16px;" id="generic-text">Раздел находится в разработке.</p>
-  <button class="btn-red btn-secondary" style="width:100%; max-width:none;" onclick="closeModals()">ЗАКРЫТЬ</button>
- </div>
+<div class="modal-backdrop" id="preregistration-modal">
+  <div class="modal-card">
+    <h3 class="modal-title">ПРЕДРЕГИСТРАЦИЯ АККАУНТА</h3>
+    <p style="font-size:13px; color:var(--text-muted); text-align:center; margin-bottom:16px;">
+      Забронируй игровой никнейм заранее и получи стартовый бонус в день открытия.
+    </p>
+    <form id="prereg-form" onsubmit="handlePreregistration(event)">
+      <label class="field-label">Игровой никнейм (например, Nick_Name):</label>
+      <input type="text" id="prereg-nick" class="field-input" placeholder="Игровой никнейм" required autocomplete="off">
+
+      <label class="field-label">Повторите никнейм:</label>
+      <input type="text" id="prereg-nick-repeat" class="field-input" placeholder="Повторите никнейм" required autocomplete="off">
+      <div id="nick-error" class="error-hint">Никнеймы не совпадают!</div>
+
+      <label class="field-label">Пароль:</label>
+      <input type="password" id="prereg-pass" class="field-input" placeholder="Придумайте пароль" required autocomplete="new-password">
+
+      <label class="field-label">Повторите пароль:</label>
+      <input type="password" id="prereg-pass-repeat" class="field-input" placeholder="Повторите пароль" required autocomplete="new-password">
+      <div id="pass-error" class="error-hint">Пароли не совпадают!</div>
+
+      <label class="field-label">Электронная почта:</label>
+      <input type="email" id="prereg-email" class="field-input" placeholder="example@mail.ru" required autocomplete="email">
+
+      <label class="field-label">Промокод (опционально):</label>
+      <input type="text" id="prereg-promo" class="field-input" value="#Фарка">
+
+      <button type="submit" class="btn-primary-yellow" style="margin-top:6px;">ЗАРЕГИСТРИРОВАТЬ АККАУНТ</button>
+      <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ОТМЕНА</button>
+    </form>
+  </div>
 </div>
 
-<!-- АВТОРИЗАЦИЯ АДМИНИСТРАТОРА -->
-<div class="modal-overlay" id="admin-auth-modal">
- <div class="admin-box">
-  <h2 class="admin-heading">🔐 ПАНЕЛЬ УПРАВЛЕНИЯ</h2>
-  <input type="text" id="admin-login" class="admin-input" placeholder="Логин" autocomplete="username">
-  <input type="password" id="admin-pass" class="admin-input" placeholder="Пароль" autocomplete="current-password">
-  <button type="button" class="btn-red" style="width:100%; max-width:none;" onclick="checkAdminAuth()">ВОЙТИ</button>
-  <button type="button" class="btn-red btn-secondary" style="margin-top:10px; width:100%; max-width:none;" onclick="closeModals()">ОТМЕНА</button>
- </div>
+<div class="modal-backdrop" id="product-modal">
+  <div class="modal-card" style="text-align:center;">
+    <h3 class="modal-title" id="prod-modal-title">ТОВАР</h3>
+    <img id="prod-modal-img" src="" alt="Товар" style="width:100%; height:190px; object-fit:cover; border-radius:14px; margin-bottom:14px; background:#08080a;">
+    <div id="prod-modal-price" style="font-family:var(--font-display); font-size:26px; font-style:italic; color:var(--accent-yellow); margin-bottom:12px;">0 ₽</div>
+    <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:18px;">
+      Официальный товар KORE RUSSIA SHOP. Для оформления заказа перейдите в диалог с менеджером проекта.
+    </p>
+    <a id="prod-modal-buy-btn" href="#" target="_blank" class="btn-primary-yellow">ОФОРМИТЬ ЗАКАЗ В TELEGRAM</a>
+    <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ЗАКРЫТЬ</button>
+  </div>
 </div>
 
-<!-- АДМИН-ПАНЕЛЬ С SUPABASE СИНХРОНИЗАЦИЕЙ -->
-<div class="modal-overlay" id="admin-panel-modal">
- <div class="admin-box">
-  <h2 class="admin-heading">⚙️ НАСТРОЙКИ САЙТА (SUPABASE)</h2>
-  <div class="admin-setting-item">
-   <label for="frame-height-slider">📏 Высота всех фотографий</label>
-   <input type="range" id="frame-height-slider" min="150" max="600" value="350">
-   <div id="height-val">350px</div>
+<div class="modal-backdrop" id="info-modal">
+  <div class="modal-card">
+    <h3 class="modal-title">О ПРОЕКТЕ KORE RUSSIA</h3>
+    <p style="font-size:13.5px; color:#d1d5db; line-height:1.7; margin-bottom:14px;">
+      <strong>KORE RUSSIA</strong> — мобильный CRMP-проект с открытым миром, продуманной экономикой, государственными и криминальными организациями.
+    </p>
+    <div style="background:#0a0a0d; border:1px solid var(--border-subtle); padding:14px; border-radius:12px; font-size:13px; margin-bottom:16px;">
+      <strong style="color:var(--accent-yellow);">🎁 СТАРТОВЫЙ БОНУС:</strong><br>
+      💰 100.000.000$ и 💎 2.500 BC при входе на сервер.
+    </div>
+    <a href="https://t.me/KoreCrmp" target="_blank" class="btn-primary-yellow">ПЕРЕЙТИ В TELEGRAM-КАНАЛ</a>
+    <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ЗАКРЫТЬ</button>
   </div>
-  <div class="admin-setting-item">
-   <label for="file-img-1">🖼 Фото №1 — игровой мир (Supabase Storage)</label>
-   <input type="file" id="file-img-1" accept="image/*,.gif" class="admin-input">
+</div>
+
+<!-- ЕЖЕДНЕВНЫЙ ПРИЗ (МОДАЛКА С ЗАЩИЩЕННЫМ ТАЙМЕРОМ НА 5 BC) -->
+<div class="modal-backdrop" id="wheel-modal">
+  <div class="modal-card" style="text-align:center;">
+    <h3 class="modal-title">ЕЖЕДНЕВНАЯ НАГРАДА</h3>
+    <div style="font-size:44px; margin:14px 0;">🎁</div>
+    <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:16px;">
+      Забирайте ежедневную награду — <strong style="color:var(--accent-yellow);">5 BC</strong> на свой счёт каждые 24 часа!
+    </p>
+    
+    <div id="daily-reward-action-box">
+      <button type="button" id="claim-prize-btn" onclick="claimDailyPrize()" class="btn-primary-yellow">ЗАБРАТЬ 5 BC</button>
+    </div>
+    
+    <div id="daily-timer-box" style="display:none; margin:16px 0; padding:14px; background:#18181c; border-radius:12px; border:1px solid var(--border-subtle);">
+      <div style="font-size:11.5px; color:var(--text-muted); text-transform:uppercase; margin-bottom:6px;">СЛЕДУЮЩАЯ НАГРАДА БУДЕТ ДОСТУПНА ЧЕРЕЗ:</div>
+      <div id="daily-countdown-timer" style="font-family:var(--font-display); font-size:24px; font-style:italic; color:var(--accent-yellow);">24:00:00</div>
+    </div>
+
+    <div id="prize-result" style="margin-top:12px; font-size:14px; font-weight:700; color:var(--accent-green);"></div>
+    <button type="button" class="btn-dark-outline" style="margin-top:14px;" onclick="closeModals()">ЗАКРЫТЬ</button>
   </div>
-  <div class="admin-setting-item">
-   <label for="file-img-2">🖼 Фото №2 — организации (Supabase Storage)</label>
-   <input type="file" id="file-img-2" accept="image/*,.gif" class="admin-input">
+</div>
+
+<div class="modal-backdrop" id="manager-modal">
+  <div class="modal-card" style="text-align:center;">
+    <h3 class="modal-title">МЕНЕДЖЕР ПРОЕКТА</h3>
+    <p style="font-size:13.5px; color:var(--text-muted); margin-bottom:18px;">
+      По вопросам сотрудничества, рекламы, багов или вступления в команду напишите официальному менеджеру.
+    </p>
+    <a href="https://t.me/urtung" target="_blank" class="btn-primary-yellow">НАПИСАТЬ МЕНЕДЖЕРУ</a>
+    <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ЗАКРЫТЬ</button>
   </div>
-  <div class="admin-setting-item">
-   <label for="file-img-3">🖼 Фото №3 — бонусы (Supabase Storage)</label>
-   <input type="file" id="file-img-3" accept="image/*,.gif" class="admin-input">
+</div>
+
+<div class="modal-backdrop" id="blogger-modal">
+  <div class="modal-card">
+    <h3 class="modal-title">СТАТЬ БЛОГЕРОМ</h3>
+    <p style="font-size:13px; color:var(--text-muted); margin-bottom:14px;">
+      Снимаешь ролики или стримы по CRMP Mobile? Оставь заявку и получи медиа-статус на проекте.
+    </p>
+    <input type="text" placeholder="Ваш игровой никнейм" class="field-input">
+    <input type="text" placeholder="Ссылка на YouTube / TikTok / Telegram" class="field-input">
+    <button type="button" onclick="alert('Заявка успешно отправлена!'); closeModals();" class="btn-primary-yellow">ОТПРАВИТЬ ЗАЯВКУ</button>
+    <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ЗАКРЫТЬ</button>
   </div>
-  <div id="supabase-status" style="margin-bottom:12px; font-size:12px; text-align:center; color:var(--green);"></div>
-  <button type="button" class="btn-red" style="width:100%; max-width:none;" onclick="closeModals()">СОХРАНИТЬ И ЗАКРЫТЬ</button>
- </div>
+</div>
+
+<div class="modal-backdrop" id="admin-auth-modal">
+  <div class="modal-card">
+    <h3 class="modal-title">ПАНЕЛЬ УПРАВЛЕНИЯ</h3>
+    <input type="text" id="admin-login" class="field-input" placeholder="Логин" autocomplete="username">
+    <input type="password" id="admin-pass" class="field-input" placeholder="Пароль" autocomplete="current-password">
+    <button type="button" class="btn-primary-yellow" onclick="checkAdminAuth()">ВОЙТИ</button>
+    <button type="button" class="btn-dark-outline" style="margin-top:10px;" onclick="closeModals()">ОТМЕНА</button>
+  </div>
+</div>
+
+<!-- АДМИН-ПАНЕЛЬ -->
+<div class="modal-backdrop" id="admin-panel-modal">
+  <div class="modal-card" style="max-width:540px;">
+    <h3 class="modal-title">НАСТРОЙКИ САЙТА И МЕДИА</h3>
+
+    <div class="admin-block">
+      <div class="admin-block-title">⚙️ Управление кнопкой звука (Нижний виджет)</div>
+      <label class="field-label">Цвет фона виджета:</label>
+      <input type="text" id="admin-audio-bg" class="field-input" value="rgba(18, 18, 22, 0.92)">
+      <label class="field-label">Цвет рамки виджета:</label>
+      <input type="text" id="admin-audio-border" class="field-input" value="rgba(247, 181, 0, 0.35)">
+      <label class="field-label">Загрузить иконку:</label>
+      <input type="file" id="file-audio-icon" accept="image/*,.gif,.svg" class="field-input">
+      <button type="button" class="admin-mini-btn" onclick="resetAudioWidgetIcon()">Сбросить иконку</button>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">1. Логотип проекта</div>
+      <input type="file" id="file-logo" accept="image/*,.gif,.svg" class="field-input">
+      <button type="button" class="admin-mini-btn" onclick="removeLogo()">Сбросить логотип</button>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">2. Главный фон сайта</div>
+      <input type="file" id="file-site-bg" accept="image/*,.gif" class="field-input">
+      <label class="field-label" style="margin-top:8px;">Затемнение фона (<span id="bg-darken-val">0.45</span>):</label>
+      <input type="range" id="bg-darken-slider" min="0" max="0.95" step="0.05" value="0.45" style="width:100%; accent-color:#f7b500;">
+      <button type="button" class="admin-mini-btn" onclick="removeSiteBg()">Удалить фон</button>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">3. Фоновая музыка</div>
+      <input type="file" id="file-bg-audio" accept="audio/*,video/*" class="field-input">
+      <button type="button" class="admin-mini-btn" onclick="resetBgAudio()">Вернуть стандартный трек</button>
+    </div>
+
+    <div class="admin-block">
+      <div class="admin-block-title">4. База данных и сброс кэша</div>
+      <button type="button" class="admin-mini-btn" onclick="viewPreregisteredUsers()">Показать список предрегистраций</button>
+      <div id="admin-users-list" style="display:none; margin-top:10px; max-height:150px; overflow-y:auto; font-size:11.5px; color:#d1d5db;"></div>
+      <button type="button" class="admin-mini-btn" style="margin-top:10px; color:#f7b500;" onclick="forceCacheReset()">Принудительно обновить кэш сайта</button>
+    </div>
+
+    <div id="admin-save-status" style="text-align:center; font-size:12.5px; color:var(--accent-green); margin-bottom:12px;"></div>
+    <button type="button" class="btn-primary-yellow" onclick="saveAdminSettings(); closeModals();">СОХРАНИТЬ И ЗАКРЫТЬ</button>
+  </div>
 </div>
 
 <script>
 "use strict";
 
 /* =========================================
-   SUPABASE ИНТЕГРАЦИЯ ДЛЯ БАЗЫ И ФОТОГРАФИЙ
-   Замените URL и Anon Key на ваши данные Supabase
+   0. СИСТЕМА ВЕРСИОНИРОВАНИЯ И ЗАЩИТА ОТ КЭША
 ========================================= */
-const SUPABASE_URL = 'https://YOUR_SUPABASE_PROJECT.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-let supabaseClient = null;
+const APP_VERSION = 'v5.0_kore_russia_final';
 
-try {
- if (window.supabase && SUPABASE_URL.includes('supabase.co')) {
-  supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
- }
-} catch(e) {
- console.warn("Supabase client init skipped/failed, using localStorage fallback.");
+(function checkAppVersion() {
+  try {
+    const savedVer = localStorage.getItem('kore_app_version');
+    if (savedVer !== APP_VERSION) {
+      localStorage.setItem('kore_app_version', APP_VERSION);
+      if ('caches' in window) {
+        caches.keys().then(names => names.forEach(name => caches.delete(name)));
+      }
+    }
+  } catch (e) {}
+})();
+
+function forceCacheReset() {
+  try {
+    localStorage.setItem('kore_app_version', APP_VERSION + '_' + Date.now());
+  } catch (e) {}
+  window.location.reload(true);
 }
 
-/* =========================
-   ЗВУКОВОЙ ДВИЖОК (WEB AUDIO API)
-========================= */
-let soundEnabled = true;
-let audioCtx = null;
-
-function getAudioContext() {
- if (!audioCtx) {
-  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
- }
- return audioCtx;
-}
-
-function toggleSound() {
- soundEnabled = !soundEnabled;
- const icon = document.getElementById("sound-icon");
- const txt = document.getElementById("sound-txt");
- const btn = document.getElementById("sound-btn");
- 
- if (soundEnabled) {
-  icon.className = "fas fa-volume-up";
-  txt.textContent = "Звук: Вкл";
-  btn.classList.add("active");
-  playSound("click");
- } else {
-  icon.className = "fas fa-volume-mute";
-  txt.textContent = "Звук: Выкл";
-  btn.classList.remove("active");
- }
-}
-
-function playSound(type) {
- if (!soundEnabled) return;
- try {
-  const ctx = getAudioContext();
-  if (ctx.state === 'suspended') ctx.resume();
-  const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  osc.connect(gain);
-  gain.connect(ctx.destination);
-
-  if (type === 'click') {
-   osc.type = 'sine';
-   osc.frequency.setValueAtTime(520, ctx.currentTime);
-   osc.frequency.exponentialRampToValueAtTime(740, ctx.currentTime + 0.04);
-   gain.gain.setValueAtTime(0.08, ctx.currentTime);
-   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-   osc.start();
-   osc.stop(ctx.currentTime + 0.04);
-  } else if (type === 'win') {
-   osc.type = 'triangle';
-   osc.frequency.setValueAtTime(523.25, ctx.currentTime);
-   osc.frequency.setValueAtTime(659.25, ctx.currentTime + 0.1);
-   osc.frequency.setValueAtTime(783.99, ctx.currentTime + 0.2);
-   gain.gain.setValueAtTime(0.12, ctx.currentTime);
-   gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.4);
-   osc.start();
-   osc.stop(ctx.currentTime + 0.4);
+const MediaDB = {
+  dbName: 'KoreRussiaLocalMedia',
+  storeName: 'assets',
+  open() {
+    return new Promise((resolve, reject) => {
+      if (!window.indexedDB) return reject('No IndexedDB');
+      const req = indexedDB.open(this.dbName, 1);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(this.storeName)) {
+          db.createObjectStore(this.storeName);
+        }
+      };
+      req.onsuccess = e => resolve(e.target.result);
+      req.onerror = e => reject(e.target.error);
+    });
+  },
+  async set(key, value) {
+    try {
+      const db = await this.open();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readwrite');
+        const store = tx.objectStore(this.storeName);
+        if (value === null) store.delete(key);
+        else store.put(value, key);
+        tx.oncomplete = () => resolve(true);
+        tx.onerror = e => reject(e.target.error);
+      });
+    } catch (e) {
+      try {
+        if (value === null) localStorage.removeItem(key);
+        else localStorage.setItem(key, value);
+      } catch (err) {}
+    }
+  },
+  async get(key) {
+    try {
+      const db = await this.open();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(this.storeName, 'readonly');
+        const store = tx.objectStore(this.storeName);
+        const req = store.get(key);
+        req.onsuccess = () => resolve(req.result || localStorage.getItem(key) || null);
+        req.onerror = () => resolve(localStorage.getItem(key) || null);
+      });
+    } catch (e) {
+      return localStorage.getItem(key) || null;
+    }
   }
- } catch(e){}
+};
+
+/* =========================================
+   1 & 2. ПРЕЛОАДЕР И ОКНО ВЫБОРА ЗВУКА ПРИ ВХОДЕ
+========================================= */
+const bgMusicPlayer = document.getElementById('bg-music-player');
+let bgAudioPlaying = false;
+
+async function runPreloader() {
+  const screen = document.getElementById('preloader-screen');
+  const logoWrap = document.getElementById('preloader-logo-wrap');
+
+  try {
+    const savedLogo = await MediaDB.get('kore_custom_logo');
+    if (savedLogo) {
+      const imgEl = document.getElementById('preloader-custom-img');
+      const defEl = document.getElementById('preloader-default-mark');
+      if (imgEl && defEl) {
+        imgEl.src = savedLogo;
+        imgEl.style.display = 'block';
+        defEl.style.display = 'none';
+      }
+    }
+  } catch (e) {}
+
+  setTimeout(() => {
+    if (logoWrap) logoWrap.classList.add('visible');
+  }, 100);
+
+  setTimeout(() => {
+    if (logoWrap) logoWrap.classList.add('hiding');
+    setTimeout(() => {
+      if (screen) screen.classList.add('fade-out');
+      revealVisibleSections();
+      checkSoundChoiceRequirement();
+    }, 500);
+  }, 2200);
 }
 
-/* =========================
-   ФОНАРЬ И МЕРЦАЮЩИЕ ЗВЕЗДЫ
-========================= */
-const bgCanvas = document.getElementById("bg-canvas");
-const bgCtx = bgCanvas.getContext("2d");
-const lanternCanvas = document.getElementById("lantern-canvas");
-const lanternCtx = lanternCanvas.getContext("2d");
-
-let stars = [];
-let canvasWidth = 0, canvasHeight = 0;
-let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 3;
-let targetX = mouseX, targetY = mouseY;
-
-function resizeCanvases() {
- const dpr = Math.min(window.devicePixelRatio || 1, 2);
- canvasWidth = window.innerWidth;
- canvasHeight = window.innerHeight;
-
- bgCanvas.width = canvasWidth * dpr;
- bgCanvas.height = canvasHeight * dpr;
- bgCanvas.style.width = canvasWidth + "px";
- bgCanvas.style.height = canvasHeight + "px";
- bgCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
- lanternCanvas.width = canvasWidth;
- lanternCanvas.height = canvasHeight;
-
- initStars();
-}
-
-window.addEventListener("mousemove", (e) => {
- targetX = e.clientX;
- targetY = e.clientY;
-});
-
-class Star {
- constructor() { this.reset(); }
- reset() {
-  this.x = Math.random() * canvasWidth;
-  this.y = Math.random() * canvasHeight;
-  this.size = Math.random() * 1.8 + 0.4;
-  this.alpha = Math.random();
-  this.alphaSpeed = (Math.random() * 0.012 + 0.004) * (Math.random() > 0.5 ? 1 : -1);
- }
- update() {
-  this.alpha += this.alphaSpeed;
-  if (this.alpha <= 0.05 || this.alpha >= 1) {
-   this.alphaSpeed = -this.alphaSpeed;
+function checkSoundChoiceRequirement() {
+  const soundChoiceDone = localStorage.getItem('kore_sound_choice_made');
+  if (!soundChoiceDone) {
+    const soundModal = document.getElementById('sound-choice-modal');
+    if (soundModal) soundModal.classList.add('active');
+  } else {
+    showFloatingAudioWidget();
   }
- }
- draw() {
-  bgCtx.fillStyle = `rgba(255, 0, 0, ${this.alpha})`;
-  bgCtx.beginPath();
-  bgCtx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-  bgCtx.fill();
- }
 }
 
-function initStars() {
- const count = window.innerWidth < 600 ? 40 : 80;
- stars = Array.from({ length: count }, () => new Star());
+async function handleSoundChoice(wantSound) {
+  const soundModal = document.getElementById('sound-choice-modal');
+  if (soundModal) soundModal.classList.remove('active');
+  localStorage.setItem('kore_sound_choice_made', 'true');
+
+  if (wantSound && bgMusicPlayer) {
+    bgMusicPlayer.volume = 0.8;
+    try {
+      await bgMusicPlayer.play();
+      bgAudioPlaying = true;
+      updateAudioWidgetUI(true);
+    } catch (e) {
+      bgAudioPlaying = false;
+      updateAudioWidgetUI(false);
+    }
+  } else {
+    bgAudioPlaying = false;
+    updateAudioWidgetUI(false);
+  }
+  showFloatingAudioWidget();
 }
 
-function animateCanvases() {
- bgCtx.clearRect(0, 0, canvasWidth, canvasHeight);
- for (const star of stars) {
-  star.update();
-  star.draw();
- }
-
- lanternCtx.clearRect(0, 0, canvasWidth, canvasHeight);
- mouseX += (targetX - mouseX) * 0.04;
- mouseY += (targetY - mouseY) * 0.04;
-
- const gradient = lanternCtx.createRadialGradient(mouseX, mouseY, 10, mouseX, mouseY, 380);
- gradient.addColorStop(0, 'rgba(255, 0, 0, 0.22)');
- gradient.addColorStop(0.5, 'rgba(153, 0, 0, 0.08)');
- gradient.addColorStop(1, 'rgba(5, 0, 1, 0)');
-
- lanternCtx.fillStyle = gradient;
- lanternCtx.beginPath();
- lanternCtx.arc(mouseX, mouseY, 380, 0, Math.PI * 2);
- lanternCtx.fill();
-
- requestAnimationFrame(animateCanvases);
+function showFloatingAudioWidget() {
+  const widget = document.getElementById('floating-audio-widget');
+  if (widget) widget.classList.add('visible');
 }
 
-resizeCanvases();
-animateCanvases();
-window.addEventListener("resize", resizeCanvases);
-
-/* =========================
-   МОБИЛЬНОЕ МЕНЮ
-========================= */
-function toggleDrawer() {
- playSound("click");
- document.getElementById("mobile-drawer").classList.toggle("active");
- document.getElementById("drawer-backdrop").classList.toggle("active");
+function updateAudioWidgetUI(isPlaying) {
+  const icon = document.getElementById('floating-audio-icon');
+  const title = document.getElementById('floating-audio-title-text');
+  const status = document.getElementById('floating-audio-status-text');
+  const widgetBtn = document.getElementById('floating-audio-btn');
+  
+  if (isPlaying) {
+    if (icon) icon.className = 'fas fa-volume-high';
+    if (title) title.textContent = 'ЗВУК ВКЛЮЧЕН';
+    if (status) status.textContent = 'Воспроизводится музыка';
+    if (widgetBtn) widgetBtn.style.background = 'var(--accent-green)';
+  } else {
+    if (icon) icon.className = 'fas fa-volume-xmark';
+    if (title) title.textContent = 'ФОНОВЫЙ ЗВУК';
+    if (status) status.textContent = 'Нажмите для включения';
+    if (widgetBtn) widgetBtn.style.background = 'var(--accent-yellow)';
+  }
 }
 
-function drawerAction(modalId, title, text) {
- toggleDrawer();
- if (modalId === 'generic-modal') {
-  document.getElementById('generic-title').innerText = title;
-  document.getElementById('generic-text').innerText = text;
- }
- openModal(modalId);
+async function initAudioSettings() {
+  try {
+    const savedAudio = await MediaDB.get('kore_bg_audio');
+    if (savedAudio && bgMusicPlayer) {
+      bgMusicPlayer.src = savedAudio;
+    }
+    const widgetBg = await MediaDB.get('kore_audio_bg');
+    const widgetBorder = await MediaDB.get('kore_audio_border');
+    const widgetIcon = await MediaDB.get('kore_audio_icon');
+
+    const widget = document.getElementById('floating-audio-widget');
+    if (widget) {
+      if (widgetBg) widget.style.setProperty('--floating-bg', widgetBg);
+      if (widgetBorder) widget.style.setProperty('--floating-border', widgetBorder);
+    }
+    if (widgetIcon) {
+      const btn = document.getElementById('floating-audio-btn');
+      if (btn) btn.innerHTML = `<img src="${widgetIcon}" alt="Audio">`;
+    }
+  } catch (e) {}
 }
 
-/* =========================
-   МОДАЛЬНЫЕ ОКНА УПРАВЛЕНИЕ
-========================= */
+function toggleBgAudio() {
+  if (!bgMusicPlayer) return;
+  if (bgMusicPlayer.paused) {
+    bgMusicPlayer.volume = 0.8;
+    bgMusicPlayer.play().then(() => {
+      bgAudioPlaying = true;
+      updateAudioWidgetUI(true);
+    }).catch(() => {
+      bgAudioPlaying = false;
+      updateAudioWidgetUI(false);
+    });
+  } else {
+    bgMusicPlayer.pause();
+    bgAudioPlaying = false;
+    updateAudioWidgetUI(false);
+  }
+}
+
+/* =========================================
+   5. ФУНКЦИЯ ДЛЯ НОВОГО РАЗДЕЛА «АПГРЕЙДЕР» (В РАЗРАБОТКЕ)
+========================================= */
+function openDevNoticeModal(sectionName) {
+  toggleSideMenu();
+  const titleEl = document.getElementById('dev-notice-title');
+  const descEl = document.getElementById('dev-notice-desc');
+  if (titleEl) titleEl.textContent = `РАЗДЕЛ «${sectionName.toUpperCase()}» В РАЗРАБОТКЕ`;
+  if (descEl) descEl.textContent = `Раздел «${sectionName}» находится в разработке. Чтобы избежать ошибок и некорректной работы, страница временно заблокирована до официального релиза.`;
+  openModal('dev-notice-modal');
+}
+
+/* =========================================
+   6. ЕЖЕДНЕВНЫЕ НАГРАДЫ (ТАЙМЕР НА 5 BC)
+========================================= */
+const DAILY_COOLDOWN_MS = 24 * 60 * 60 * 1000; // 24 часа
+
+function checkDailyPrizeStatus() {
+  try {
+    const lastClaim = localStorage.getItem('kore_last_daily_claim');
+    const now = Date.now();
+    const actionBox = document.getElementById('daily-reward-action-box');
+    const timerBox = document.getElementById('daily-timer-box');
+    const resultEl = document.getElementById('prize-result');
+
+    if (!lastClaim) {
+      if (actionBox) actionBox.style.display = 'block';
+      if (timerBox) timerBox.style.display = 'none';
+      return;
+    }
+
+    const elapsed = now - parseInt(lastClaim, 10);
+    if (elapsed >= DAILY_COOLDOWN_MS) {
+      if (actionBox) actionBox.style.display = 'block';
+      if (timerBox) timerBox.style.display = 'none';
+      if (resultEl) resultEl.textContent = '';
+    } else {
+      if (actionBox) actionBox.style.display = 'none';
+      if (timerBox) timerBox.style.display = 'block';
+      startCountdownTimer(parseInt(lastClaim, 10) + DAILY_COOLDOWN_MS);
+    }
+  } catch (e) {}
+}
+
+let countdownInterval = null;
+function startCountdownTimer(targetTime) {
+  const timerEl = document.getElementById('daily-countdown-timer');
+  if (!timerEl) return;
+
+  if (countdownInterval) clearInterval(countdownInterval);
+
+  countdownInterval = setInterval(() => {
+    const now = Date.now();
+    const diff = targetTime - now;
+
+    if (diff <= 0) {
+      clearInterval(countdownInterval);
+      checkDailyPrizeStatus();
+      return;
+    }
+
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    timerEl.textContent = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }, 1000);
+}
+
+function claimDailyPrize() {
+  try {
+    const lastClaim = localStorage.getItem('kore_last_daily_claim');
+    const now = Date.now();
+
+    if (lastClaim && (now - parseInt(lastClaim, 10) < DAILY_COOLDOWN_MS)) {
+      alert('Награду можно получать только раз в 24 часа!');
+      checkDailyPrizeStatus();
+      return;
+    }
+
+    localStorage.setItem('kore_last_daily_claim', now.toString());
+
+    let currentBc = parseInt(localStorage.getItem('kore_user_bc') || '0', 10);
+    currentBc += 5;
+    localStorage.setItem('kore_user_bc', currentBc.toString());
+
+    const resultEl = document.getElementById('prize-result');
+    if (resultEl) resultEl.innerHTML = `🎉 Успешно! Вы получили 5 BC. Ваш баланс: ${currentBc} BC`;
+
+    checkDailyPrizeStatus();
+  } catch (e) {
+    alert('Произошла ошибка при получении награды.');
+  }
+}
+
+const originalOpenModal = window.openModal;
+window.openModal = function(id) {
+  if (id === 'wheel-modal') {
+    checkDailyPrizeStatus();
+  }
+  if (typeof originalOpenModal === 'function') {
+    originalOpenModal(id);
+  } else {
+    document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('active'));
+    const el = document.getElementById(id);
+    if (el) el.classList.add('active');
+  }
+};
+
+/* =========================================
+   РОЛИ И МАГАЗИН
+========================================= */
+const rolesData = [
+  {
+    name: 'БАНДИТ',
+    icon: 'fas fa-gun',
+    duration: '00:24',
+    quote: '« Сила, страх и уважение — моя валюта »',
+    desc: 'Закон? Это для тех, кто не может договориться по-хорошему. Я предпочитаю брать своё здесь и сейчас, собирать свою банду и диктовать правила улиц.',
+    defaultImg: './images/photo2.png'
+  },
+  {
+    name: 'ПЕРЕКУП',
+    icon: 'fas fa-wallet',
+    duration: '00:17',
+    quote: '« Купить дешевле, продать дороже »',
+    desc: 'Каждая вещь чего-то стоит. Вопрос только в том, кто и сколько готов за неё заплатить. Авторынок и элитная недвижимость — моя стихия.',
+    defaultImg: './images/photo1.jpg'
+  },
+  {
+    name: 'БЕЗДОМНЫЙ',
+    icon: 'fas fa-lock-open',
+    duration: '00:14',
+    quote: '« Свобода, улица и случай »',
+    desc: 'Весь город — мой дом. Начни с самых низов без гроша в кармане, заводи знакомства и поднимись на вершину криминальной или деловой империи.',
+    defaultImg: './images/photo3.jpg'
+  },
+  {
+    name: 'ГОССЛУЖАЩИЙ',
+    icon: 'fas fa-shield-halved',
+    duration: '00:21',
+    quote: '« Порядок и закон превыше всего »',
+    desc: 'Патрулируй улицы, проводи спецоперации, защищай мирных граждан и продвигайся по карьерной лестнице до руководства ведомством.',
+    defaultImg: './images/photo2.png'
+  }
+];
+
+let currentRoleIndex = 0;
+let voicePlaying = false;
+let voiceTimer = null;
+
+function initVoiceWaves() {
+  const container = document.getElementById('voice-waves');
+  if (!container) return;
+  const heights = [30, 75, 45, 90, 60, 100, 40, 80, 55, 95, 35, 70, 85, 50, 65, 90, 40, 75, 50, 30];
+  container.innerHTML = heights.map((h, i) =>
+    `<span style="height:${h}%; animation-delay:${(i * 0.05).toFixed(2)}s"></span>`
+  ).join('');
+}
+
+async function renderRole(index) {
+  const role = rolesData[index];
+  const savedRoleImg = await MediaDB.get('kore_role_img_' + index);
+  const imgEl = document.getElementById('role-character-img');
+  if (imgEl) imgEl.src = savedRoleImg || role.defaultImg;
+  
+  const iconEl = document.getElementById('role-icon');
+  if (iconEl) iconEl.innerHTML = `<i class="${role.icon}"></i>`;
+  
+  const titleEl = document.getElementById('role-title');
+  if (titleEl) titleEl.textContent = role.name;
+  
+  const durEl = document.getElementById('voice-duration');
+  if (durEl) durEl.textContent = role.duration;
+  
+  const quoteEl = document.getElementById('role-quote');
+  if (quoteEl) quoteEl.textContent = role.quote;
+  
+  const descEl = document.getElementById('role-desc');
+  if (descEl) descEl.textContent = role.desc;
+  
+  stopVoiceSample();
+}
+
+function switchRole(step) {
+  currentRoleIndex = (currentRoleIndex + step + rolesData.length) % rolesData.length;
+  renderRole(currentRoleIndex);
+}
+
+function toggleVoiceSample() {
+  const bar = document.getElementById('voice-player-bar');
+  const icon = document.getElementById('voice-play-icon');
+  if (voicePlaying) {
+    stopVoiceSample();
+  } else {
+    voicePlaying = true;
+    if (bar) bar.classList.add('playing');
+    if (icon) icon.innerHTML = '<i class="fas fa-pause"></i>';
+    clearTimeout(voiceTimer);
+    voiceTimer = setTimeout(stopVoiceSample, 4500);
+  }
+}
+
+function stopVoiceSample() {
+  voicePlaying = false;
+  const bar = document.getElementById('voice-player-bar');
+  const icon = document.getElementById('voice-play-icon');
+  if (bar) bar.classList.remove('playing');
+  if (icon) icon.innerHTML = '<i class="fas fa-play"></i>';
+  clearTimeout(voiceTimer);
+}
+
+const detailCardsContent = [
+  {
+    title: 'ВЫДАЮЩАЯСЯ ГРАФИКА И ОТКРЫТЫЙ МИР',
+    imgId: 'img-1',
+    desc: 'Детализированные города, смена времени суток, реалистичное освещение, жилые кварталы, трассы и атмосферные локации для полноценного погружения в мир KORE RUSSIA.'
+  },
+  {
+    title: 'ФРАКЦИИ, БИЗНЕС И АВТОПАРК',
+    imgId: 'img-2',
+    desc: 'Десятки организаций, собственные бизнесы, тюнинг-ателье и огромный выбор автомобилей от классики до эксклюзивных гиперкаров.'
+  },
+  {
+    title: 'БОНУС ДЛЯ НОВИЧКОВ НА СТАРТЕ',
+    imgId: 'img-3',
+    desc: 'Вводи промокод #Фарка сразу после входа в игру и получай 1 000 BC и 20 000 000$ для уверенного старта своей истории.'
+  }
+];
+
+function openDetailCardModal(idx) {
+  const item = detailCardsContent[idx];
+  if (!item) return;
+  const titleEl = document.getElementById('detail-modal-title');
+  const imgEl = document.getElementById('detail-modal-img');
+  const descEl = document.getElementById('detail-modal-desc');
+  const targetImg = document.getElementById(item.imgId);
+
+  if (titleEl) titleEl.textContent = item.title;
+  if (imgEl && targetImg) imgEl.src = targetImg.src;
+  if (descEl) descEl.textContent = item.desc;
+  openModal('detail-card-modal');
+}
+
+const productsData = [
+  { id: 'bc_30k', name: '🪙 30 тыс BC', price: '100 ₽', category: 'donate', discount: false, img: 'https://placehold.co/400x250/141418/f7b500?text=30.000+BC' },
+  { id: 'bc_60k', name: '🪙 60 тыс BC', price: '200 ₽', category: 'donate', discount: false, img: 'https://placehold.co/400x250/141418/f7b500?text=60.000+BC' },
+  { id: 'bc_100k', name: '🪙 100 тыс BC', price: '300 ₽', category: 'donate', discount: false, img: 'https://placehold.co/400x250/141418/f7b500?text=100.000+BC' },
+  { id: 'car_punker', name: 'Punker', price: '140 ₽', category: 'cars', discount: false, img: 'https://placehold.co/400x250/141418/ffffff?text=Punker' },
+  { id: 'car_porsche918', name: 'Porsche 918 Spyder', price: '200 ₽', category: 'cars', discount: false, img: 'https://placehold.co/400x250/141418/ffffff?text=Porsche+918' },
+  { id: 'skin_arni', name: 'Скин: Арни', price: '230 ₽', category: 'skins', discount: false, img: 'https://placehold.co/400x250/141418/38bdf8?text=Скин+Арни' },
+  { id: 'virt_100kk', name: '💰 100 000 000$', price: '300 ₽', category: 'virts', discount: false, img: 'https://placehold.co/400x250/141418/22c55e?text=100.000.000$' }
+];
+
+async function renderShop() {
+  const buckets = {
+    donate: document.getElementById('cat-donate'),
+    cars: document.getElementById('cat-cars'),
+    skins: document.getElementById('cat-skins'),
+    virts: document.getElementById('cat-virts')
+  };
+  const select = document.getElementById('admin-prod-select');
+
+  Object.values(buckets).forEach(el => { if (el) el.innerHTML = ''; });
+  if (select) select.innerHTML = '';
+
+  for (const prod of productsData) {
+    const savedImg = await MediaDB.get('kore_prod_' + prod.id);
+    const currentImg = savedImg || prod.img;
+
+    const html = `
+      <div class="shop-item-card" onclick="openProductModal('${prod.id}')">
+        ${prod.discount ? '<div class="shop-discount-tag">СКИДКА</div>' : ''}
+        <img src="${currentImg}" alt="${prod.name}" id="img-prod-${prod.id}">
+        <div class="shop-item-title">${prod.name}</div>
+        <div class="shop-item-bottom">
+          <span class="shop-item-price">${prod.price}</span>
+          <span class="shop-cart-pill"><i class="fas fa-shopping-cart"></i></span>
+        </div>
+      </div>
+    `;
+
+    if (buckets[prod.category]) buckets[prod.category].innerHTML += html;
+    if (select) {
+      const opt = document.createElement('option');
+      opt.value = prod.id;
+      opt.textContent = `${prod.name} (${prod.price})`;
+      select.appendChild(opt);
+    }
+  }
+}
+
+function openShopPage() {
+  const page = document.getElementById('shop-page');
+  if (page) page.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeShopPage() {
+  const page = document.getElementById('shop-page');
+  if (page) page.classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+async function openProductModal(prodId) {
+  const prod = productsData.find(p => p.id === prodId);
+  if (!prod) return;
+  const savedImg = await MediaDB.get('kore_prod_' + prod.id);
+  const currentImg = savedImg || prod.img;
+  
+  const titleEl = document.getElementById('prod-modal-title');
+  const imgEl = document.getElementById('prod-modal-img');
+  const priceEl = document.getElementById('prod-modal-price');
+  const buyBtn = document.getElementById('prod-modal-buy-btn');
+
+  if (titleEl) titleEl.textContent = prod.name;
+  if (imgEl) imgEl.src = currentImg;
+  if (priceEl) priceEl.textContent = prod.price;
+
+  const textMsg = encodeURIComponent(`Хочу приобрести: ${prod.name} (${prod.price})`);
+  if (buyBtn) buyBtn.href = `https://t.me/Glarzzz?text=${textMsg}`;
+  openModal('product-modal');
+}
+
+function toggleSideMenu() {
+  const menu = document.getElementById('side-menu');
+  const overlay = document.getElementById('menu-overlay');
+  if (menu) menu.classList.toggle('active');
+  if (overlay) overlay.classList.toggle('active');
+}
+
+function scrollToSection(id) {
+  closeShopPage();
+  if (id === 'top') {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    return;
+  }
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth' });
+}
+
+function menuGoSection(id) {
+  toggleSideMenu();
+  scrollToSection(id);
+}
+
+function menuOpenModal(modalId) {
+  toggleSideMenu();
+  openModal(modalId);
+}
+
 function openModal(id) {
- playSound("click");
- closeModals();
- const el = document.getElementById(id);
- if (el) el.classList.add("active");
+  closeModals();
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
 }
 
 function closeModals() {
- document.querySelectorAll(".modal-overlay").forEach(m => m.classList.remove("active"));
+  document.querySelectorAll('.modal-backdrop').forEach(m => m.classList.remove('active'));
 }
 
-document.querySelectorAll(".modal-overlay").forEach(m => {
- m.addEventListener("click", e => { if (e.target === m) closeModals(); });
+document.querySelectorAll('.modal-backdrop').forEach(m => {
+  m.addEventListener('click', e => {
+    if (e.target === m) closeModals();
+  });
 });
 
-function claimPrize() {
- playSound("win");
- document.getElementById("prize-result").innerHTML = "🎉 ВЫ ВЫИГРАЛИ:<br>💰 100.000.000$ + 💎 2.500 BC!";
-}
-
-/* =========================
-   ЭКРАН ЗАГРУЗКИ (FS)
-========================= */
-const loaderScreen = document.getElementById("loader-screen");
-const loaderFill = document.getElementById("loader-fill");
-const loaderNum = document.getElementById("loader-num");
-const loaderStatus = document.getElementById("loader-status");
-const mainContent = document.getElementById("main-content");
-const loaderDuration = 2800;
-const loaderStart = performance.now();
-
-const loaderMessages = [
- { progress: 0, text: "ИНИЦИАЛИЗАЦИЯ СИСТЕМЫ..." },
- { progress: 35, text: "ПОДКЛЮЧЕНИЕ К SUPABASE БД..." },
- { progress: 70, text: "ЗАГРУЗКА ИНТЕРФЕЙСА..." },
- { progress: 95, text: "ГОТОВО..." }
-];
-
-function finishLoading() {
- loaderScreen.classList.add("hide");
- mainContent.classList.add("visible");
- setTimeout(checkScrollAnimations, 100);
-}
-
-function updateLoader(now) {
- const elapsed = now - loaderStart;
- const progress = Math.min(100, Math.floor(elapsed / loaderDuration * 100));
- loaderFill.style.width = progress + "%";
- loaderNum.textContent = progress + "%";
- let message = loaderMessages[0];
- for (const item of loaderMessages) { if (progress >= item.progress) message = item; }
- loaderStatus.textContent = message.text;
- if (progress < 100) requestAnimationFrame(updateLoader);
- else finishLoading();
-}
-requestAnimationFrame(updateLoader);
-
-/* =========================
-   ПОЯВЛЕНИЕ КАРТОЧЕК
-========================= */
-const animatedCards = document.querySelectorAll(".animated-card");
-function checkScrollAnimations() {
- const trigger = window.innerHeight * 0.92;
- animatedCards.forEach((card, index) => {
-  if (card.getBoundingClientRect().top < trigger) {
-   card.classList.add("in-view");
-   card.style.transitionDelay = Math.min(index * 70, 210) + "ms";
-  }
- });
-}
-window.addEventListener("scroll", checkScrollAnimations, { passive: true });
-
-/* =========================
-   КОПИРОВАНИЕ ПРОМОКОДА
-========================= */
 async function copyPromo() {
- playSound("click");
- const promo = "#Фарка";
- const btn = document.getElementById("promo-btn");
- const hint = document.getElementById("promo-hint");
- try {
-  if (navigator.clipboard && window.isSecureContext) {
-   await navigator.clipboard.writeText(promo);
-  } else {
-   const textarea = document.createElement("textarea");
-   textarea.value = promo;
-   textarea.style.position = "fixed";
-   textarea.style.opacity = "0";
-   document.body.appendChild(textarea);
-   textarea.select();
-   document.execCommand("copy");
-   textarea.remove();
-  }
-  btn.textContent = "СКОПИРОВАНО!";
-  hint.textContent = "Промокод скопирован в буфер обмена";
-  setTimeout(() => {
-   btn.textContent = "#Фарка";
-   hint.textContent = "Нажми на промокод, чтобы скопировать";
-  }, 1800);
- } catch (error) { hint.textContent = "Промокод: #Фарка"; }
+  const promo = '#Фарка';
+  const btn = document.getElementById('promo-btn');
+  const hint = document.getElementById('promo-hint');
+  try {
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(promo);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = promo;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+    }
+    if (btn) btn.textContent = 'СКОПИРОВАНО!';
+    if (hint) hint.textContent = 'Промокод скопирован в буфер';
+    setTimeout(() => {
+      if (btn) btn.textContent = '#Фарка';
+      if (hint) hint.textContent = 'Нажми, чтобы скопировать';
+    }, 1800);
+  } catch (e) {}
 }
 
-/* =========================
-   АДМИН-ПАНЕЛЬ И SUPABASE ФОТО
-========================= */
-function openAdminAuth() { openModal("admin-auth-modal"); }
-function checkAdminAuth() {
- const login = document.getElementById("admin-login").value;
- const pass = document.getElementById("admin-pass").value;
- if (login === "Admin" && pass === "Aaa007!") {
+async function handlePreregistration(event) {
+  event.preventDefault();
+  const nick = document.getElementById('prereg-nick').value.trim();
+  const nickRepeat = document.getElementById('prereg-nick-repeat').value.trim();
+  const pass = document.getElementById('prereg-pass').value;
+  const passRepeat = document.getElementById('prereg-pass-repeat').value;
+  const email = document.getElementById('prereg-email').value.trim();
+  const promo = document.getElementById('prereg-promo').value.trim();
+
+  const nickErr = document.getElementById('nick-error');
+  const passErr = document.getElementById('pass-error');
+  let valid = true;
+
+  if (nick !== nickRepeat) { if (nickErr) nickErr.classList.add('active'); valid = false; }
+  else if (nickErr) nickErr.classList.remove('active');
+
+  if (pass !== passRepeat) { if (passErr) passErr.classList.add('active'); valid = false; }
+  else if (passErr) passErr.classList.remove('active');
+
+  if (!valid) return;
+
+  const userData = { nickname: nick, email, promo, date: new Date().toLocaleString('ru-RU') };
+
+  try {
+    const existing = JSON.parse(localStorage.getItem('kore_preregistered_users') || '[]');
+    if (existing.some(u => u.nickname.toLowerCase() === nick.toLowerCase())) {
+      alert('Этот игровой никнейм уже зарегистрирован!');
+      return;
+    }
+    existing.push(userData);
+    localStorage.setItem('kore_preregistered_users', JSON.stringify(existing));
+  } catch (e) {}
+
+  alert(`Поздравляем, ${nick}! Предрегистрация успешно завершена.`);
+  const form = document.getElementById('prereg-form');
+  if (form) form.reset();
   closeModals();
-  openModal("admin-panel-modal");
- } else {
-  alert("Неверный логин или пароль!");
- }
 }
 
-const heightSlider = document.getElementById("frame-height-slider");
-const heightValue = document.getElementById("height-val");
-
-function updateFrameHeight(value, save = true) {
- const height = Number(value);
- if (!Number.isFinite(height)) return;
- document.querySelectorAll(".photo-frame").forEach(frame => { frame.style.height = height + "px"; });
- heightValue.textContent = height + "px";
- if (save) {
-  try { localStorage.setItem("kore_frame_height", String(height)); } catch (e) {}
- }
+/* =========================================
+   АДМИН-ПАНЕЛЬ
+========================================= */
+function openAdminAuth() {
+  openModal('admin-auth-modal');
 }
 
-heightSlider.addEventListener("input", event => updateFrameHeight(event.target.value));
+function checkAdminAuth() {
+  const login = document.getElementById('admin-login').value;
+  const pass = document.getElementById('admin-pass').value;
+  if (login === 'Admin' && pass === 'Aaa007!') {
+    closeModals();
+    openModal('admin-panel-modal');
+  } else {
+    alert('Неверный логин или пароль!');
+  }
+}
 
-async function loadSavedImages() {
- ["img-1", "img-2", "img-3"].forEach(id => {
+function setAdminStatus(msg) {
+  const statusEl = document.getElementById('admin-save-status');
+  if (statusEl) statusEl.textContent = msg;
+}
+
+function readFileOriginalQuality(file, callback) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => callback(e.target.result);
+  reader.readAsDataURL(file);
+}
+
+function applyLogoEverywhere(logoUrl) {
+  const targets = ['header-logo-box', 'menu-header-logo', 'menu-center-logo'];
+  targets.forEach(id => {
+    const box = document.getElementById(id);
+    if (!box) return;
+    if (logoUrl) {
+      box.style.background = 'transparent';
+      box.innerHTML = `<img src="${logoUrl}" alt="Logo">`;
+    } else {
+      box.style.background = '';
+      box.innerHTML = 'K';
+    }
+  });
+}
+
+function applySiteBackground(bgUrl, darken) {
+  if (bgUrl) {
+    document.body.style.backgroundImage = `linear-gradient(rgba(8, 8, 10, ${darken}), rgba(8, 8, 10, ${darken})), url('${bgUrl}')`;
+    document.body.style.backgroundSize = '100% auto';
+    document.body.style.backgroundPosition = 'top center';
+    document.body.style.backgroundRepeat = 'repeat-y';
+  } else {
+    document.body.style.backgroundImage = 'none';
+  }
+}
+
+async function applyAllSavedMedia() {
   try {
-   const saved = localStorage.getItem("kore_" + id);
-   if (saved) document.getElementById(id).src = saved;
+    const savedLogo = await MediaDB.get('kore_custom_logo');
+    applyLogoEverywhere(savedLogo);
+
+    const savedBg = await MediaDB.get('kore_site_bg');
+    const darken = (await MediaDB.get('kore_bg_darken')) || '0.45';
+    const slider = document.getElementById('bg-darken-slider');
+    const darkenVal = document.getElementById('bg-darken-val');
+    if (slider) slider.value = darken;
+    if (darkenVal) darkenVal.textContent = darken;
+    applySiteBackground(savedBg, darken);
+
+    await initAudioSettings();
+    await renderRole(currentRoleIndex);
+    await renderShop();
   } catch (e) {}
- });
-
- try {
-  const height = localStorage.getItem("kore_frame_height");
-  if (height) {
-   heightSlider.value = height;
-   updateFrameHeight(height, false);
-  }
- } catch (e) {}
-
- // Загрузка из Supabase если подключено
- if (supabaseClient) {
-  try {
-   const { data, error } = await supabaseClient.from('site_settings').select('*');
-   if (data && !error) {
-    data.forEach(item => {
-     if (item.key && item.value && document.getElementById(item.key)) {
-      document.getElementById(item.key).src = item.value;
-     }
-    });
-    document.getElementById("supabase-status").textContent = "Данные успешно загружены из Supabase!";
-   }
-  } catch(err) {
-   console.warn("Supabase fetch error:", err);
-  }
- }
 }
 
-async function uploadImage(event, targetId) {
- const file = event.target.files && event.target.files[0];
- if (!file || !file.type.startsWith("image/")) return;
- 
- const statusEl = document.getElementById("supabase-status");
- statusEl.textContent = "Загрузка файла...";
+async function saveAdminSettings() {
+  const bgInput = document.getElementById('admin-audio-bg').value;
+  const borderInput = document.getElementById('admin-audio-border').value;
+  await MediaDB.set('kore_audio_bg', bgInput);
+  await MediaDB.set('kore_audio_border', borderInput);
+  
+  const widget = document.getElementById('floating-audio-widget');
+  if (widget) {
+    widget.style.setProperty('--floating-bg', bgInput);
+    widget.style.setProperty('--floating-border', borderInput);
+  }
+  setAdminStatus('Настройки успешно сохранены!');
+}
 
- if (supabaseClient) {
+document.getElementById('file-logo').addEventListener('change', e => {
+  readFileOriginalQuality(e.target.files[0], async dataUrl => {
+    await MediaDB.set('kore_custom_logo', dataUrl);
+    applyLogoEverywhere(dataUrl);
+    setAdminStatus('Логотип успешно обновлён!');
+  });
+});
+
+async function removeLogo() {
+  await MediaDB.set('kore_custom_logo', null);
+  applyLogoEverywhere(null);
+  setAdminStatus('Логотип сброшен.');
+}
+
+document.getElementById('file-audio-icon').addEventListener('change', e => {
+  readFileOriginalQuality(e.target.files[0], async dataUrl => {
+    await MediaDB.set('kore_audio_icon', dataUrl);
+    const btn = document.getElementById('floating-audio-btn');
+    if (btn) btn.innerHTML = `<img src="${dataUrl}" alt="Audio">`;
+    setAdminStatus('Иконка кнопки звука обновлена!');
+  });
+});
+
+async function resetAudioWidgetIcon() {
+  await MediaDB.set('kore_audio_icon', null);
+  const btn = document.getElementById('floating-audio-btn');
+  if (btn) btn.innerHTML = `<i class="fas fa-volume-xmark" id="floating-audio-icon"></i>`;
+  setAdminStatus('Иконка звука сброшена.');
+}
+
+document.getElementById('file-site-bg').addEventListener('change', e => {
+  readFileOriginalQuality(e.target.files[0], async dataUrl => {
+    const darken = document.getElementById('bg-darken-slider').value;
+    await MediaDB.set('kore_site_bg', dataUrl);
+    applySiteBackground(dataUrl, darken);
+    setAdminStatus('Главный фон обновлён!');
+  });
+});
+
+document.getElementById('bg-darken-slider').addEventListener('input', async e => {
+  const val = e.target.value;
+  const darkenVal = document.getElementById('bg-darken-val');
+  if (darkenVal) darkenVal.textContent = val;
+  await MediaDB.set('kore_bg_darken', val);
+  const savedBg = await MediaDB.get('kore_site_bg');
+  if (savedBg) applySiteBackground(savedBg, val);
+});
+
+async function removeSiteBg() {
+  await MediaDB.set('kore_site_bg', null);
+  applySiteBackground(null, 0.45);
+  setAdminStatus('Фон удалён.');
+}
+
+document.getElementById('file-bg-audio').addEventListener('change', e => {
+  readFileOriginalQuality(e.target.files[0], async dataUrl => {
+    await MediaDB.set('kore_bg_audio', dataUrl);
+    if (bgMusicPlayer) bgMusicPlayer.src = dataUrl;
+    setAdminStatus('Аудиофайл обновлён!');
+  });
+});
+
+async function resetBgAudio() {
+  await MediaDB.set('kore_bg_audio', null);
+  if (bgMusicPlayer) bgMusicPlayer.src = './music/bg_track.mp4';
+  setAdminStatus('Трек сброшен на стандартный.');
+}
+
+function viewPreregisteredUsers() {
+  const list = document.getElementById('admin-users-list');
+  if (!list) return;
+  list.style.display = list.style.display === 'none' ? 'block' : 'none';
+  if (list.style.display === 'block') {
+    const users = JSON.parse(localStorage.getItem('kore_preregistered_users') || '[]');
+    list.innerHTML = users.length
+      ? users.map((u, i) => `<div style="padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.08);">#${i + 1} <strong>${u.nickname}</strong> — ${u.email} (${u.date})</div>`).join('')
+      : 'Зарегистрированных аккаунтов нет.';
+  }
+}
+
+function revealVisibleSections() {
+  const trigger = window.innerHeight * 0.95;
+  document.querySelectorAll('.section-block').forEach(sec => {
+    if (sec.getBoundingClientRect().top < trigger) {
+      sec.classList.add('visible');
+    }
+  });
+}
+
+window.addEventListener('scroll', revealVisibleSections, { passive: true });
+
+window.addEventListener('DOMContentLoaded', () => {
   try {
-   const fileName = targetId + "_" + Date.now() + "_" + file.name;
-   const { data, error } = await supabaseClient.storage.from('forum_images').upload(fileName, file);
-   if (!error) {
-    const { data: publicUrlData } = supabaseClient.storage.from('forum_images').getPublicUrl(fileName);
-    const publicUrl = publicUrlData.publicUrl;
-    
-    document.getElementById(targetId).src = publicUrl;
-    
-    // Сохранение ссылки в таблицу Supabase
-    await supabaseClient.from('site_settings').upsert({ key: targetId, value: publicUrl });
-    statusEl.textContent = "Успешно сохранено в Supabase!";
-    return;
-   }
+    initVoiceWaves();
+    applyAllSavedMedia();
+    runPreloader();
   } catch (err) {
-   console.warn("Supabase storage error, falling back to local storage:", err);
+    console.error('Initialization error caught safely:', err);
   }
- }
-
- // Fallback через FileReader и localStorage
- const reader = new FileReader();
- reader.onload = event => {
-  const imageData = event.target.result;
-  document.getElementById(targetId).src = imageData;
-  try { 
-   localStorage.setItem("kore_" + targetId, imageData); 
-   statusEl.textContent = "Сохранено локально (Supabase недоступен)";
-  } catch (e) {}
- };
- reader.readAsDataURL(file);
-}
-
-document.getElementById("file-img-1").addEventListener("change", e => uploadImage(e, "img-1"));
-document.getElementById("file-img-2").addEventListener("change", e => uploadImage(e, "img-2"));
-document.getElementById("file-img-3").addEventListener("change", e => uploadImage(e, "img-3"));
-
-loadSavedImages();
+});
 </script>
 </body>
 </html>
